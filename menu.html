@@ -500,7 +500,12 @@ function init() {
   document.getElementById('bizName').textContent = SETTINGS.business_name || 'התפריט שלי';
   document.getElementById('bizTagline').textContent = SETTINGS.tagline || '';
   if (SETTINGS.logo_url) document.getElementById('logoImg').src = SETTINGS.logo_url;
-  if (SETTINGS.hero_bg_url) document.getElementById('heroBgImg').src = SETTINGS.hero_bg_url;
+  if (SETTINGS.hero_bg_url) {
+    document.getElementById('heroBgImg').src = SETTINGS.hero_bg_url;
+  } else {
+    document.getElementById('heroBgImg').style.display = 'none';
+    document.getElementById('heroBgImg').parentElement.style.backgroundColor = '#92400e';
+  }
 
   // Footer
   document.getElementById('footerHours').textContent = SETTINGS.working_hours || '';
@@ -514,7 +519,12 @@ function init() {
   document.getElementById('aboutText').textContent = SETTINGS.about_text || '';
   document.getElementById('aboutHours').textContent = SETTINGS.working_hours || '';
   document.getElementById('aboutArea').textContent = SETTINGS.pickup_area || '';
-  if (SETTINGS.about_image_url) document.getElementById('aboutImg').src = SETTINGS.about_image_url;
+  if (SETTINGS.about_image_url) {
+    document.getElementById('aboutImg').src = SETTINGS.about_image_url;
+  } else {
+    document.getElementById('aboutImg').style.display = 'none';
+    document.getElementById('aboutImg').parentElement.style.backgroundColor = '#92400e';
+  }
   if (SETTINGS.pickup_area) {
     document.getElementById('aboutLocationLink').href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(SETTINGS.pickup_area);
   }
