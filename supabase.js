@@ -8,9 +8,15 @@ if (typeof window !== 'undefined' && window.supabase && window.supabase.createCl
   // CDN already loaded (admin.html)
   _createClient = window.supabase.createClient;
 } else {
-  // ESM fallback (login.html)
-  const mod = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
-  _createClient = mod.createClient;
+  // ESM dynamic import
+  try {
+    const mod = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
+    _createClient = mod.createClient;
+  } catch (e) {
+    console.error('Failed to load Supabase ESM, retrying with unpkg...', e);
+    const mod = await import('https://unpkg.com/@supabase/supabase-js@2/dist/module/index.js');
+    _createClient = mod.createClient;
+  }
 }
 
 const supabaseClient = _createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
