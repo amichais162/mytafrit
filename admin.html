@@ -760,7 +760,10 @@ function applySettingsToForm(s) {
   if (s.banner_text) document.getElementById('s-banner').value = s.banner_text;
   if (s.banner_active) document.getElementById('s-banner-active').checked = true;
   if (s.active_days && Object.keys(s.active_days).length) {
-    activeDays = s.active_days;
+    const raw = s.active_days;
+    if (raw._overrides) { dayOverrides = raw._overrides; delete raw._overrides; }
+    if (raw._defaults) { defaultHours = raw._defaults; delete raw._defaults; }
+    activeDays = raw;
     const btns = document.querySelectorAll('.day-btn');
     Object.keys(activeDays).map(Number).forEach(idx => {
       if (btns[idx]) {
@@ -770,6 +773,12 @@ function applySettingsToForm(s) {
       }
     });
     document.getElementById('defaultHoursRow').style.display = 'block';
+    if (defaultHours.open || defaultHours.close) {
+      const defOpen = document.getElementById('default-open');
+      const defClose = document.getElementById('default-close');
+      if (defOpen) defOpen.value = defaultHours.open || '';
+      if (defClose) defClose.value = defaultHours.close || '';
+    }
     renderHoursRows();
     updateHoursPreview();
   }
@@ -1121,7 +1130,10 @@ function gatherSettingsData() {
     banner_text: document.getElementById('s-banner').value.trim(),
     banner_active: document.getElementById('s-banner-active').checked,
     terms_text: document.getElementById('s-terms').value.trim(),
-    active_days: JSON.parse(JSON.stringify(activeDays)),
+    active_days: Object.assign(JSON.parse(JSON.stringify(activeDays)), {
+      _overrides: JSON.parse(JSON.stringify(dayOverrides)),
+      _defaults: JSON.parse(JSON.stringify(defaultHours))
+    }),
     allow_same_day: document.getElementById('s-allow-same-day').checked,
   };
 }
@@ -1131,9 +1143,10 @@ async function syncSettingsToLocalStorage() {
   localStorage.setItem('tafrit_settings', JSON.stringify(data));
   if (supabaseReady && currentUser) {
     try {
-      await supabaseClient.from('settings')
+      const { error } = await supabaseClient.from('settings')
         .update(data)
         .eq('user_id', currentUser.id);
+      if (error) console.warn('Settings sync to Supabase failed', error);
     } catch(e) { console.warn('Settings sync to Supabase failed', e); }
   }
 }
