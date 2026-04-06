@@ -536,7 +536,7 @@ function init() {
 function renderCategories() {
   const nav = document.getElementById('categoriesNav');
   nav.innerHTML = CATEGORIES.map(c => `
-    <button onclick="setCategory(${JSON.stringify(c.id)})" class="whitespace-nowrap px-6 py-2.5 rounded-full font-bold text-sm transition-all ${String(activeCategory) === String(c.id) ? 'bg-[#92400e] text-white shadow-lg' : 'bg-surface-container-highest text-on-surface-variant hover:bg-surface-variant'}">
+    <button onclick="setCategory('${c.id}')" class="whitespace-nowrap px-6 py-2.5 rounded-full font-bold text-sm transition-all ${String(activeCategory) === String(c.id) ? 'bg-[#92400e] text-white shadow-lg' : 'bg-surface-container-highest text-on-surface-variant hover:bg-surface-variant'}">
       ${c.name}
     </button>
   `).join('');
