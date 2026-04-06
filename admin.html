@@ -1588,7 +1588,7 @@ function cancelEditSlug() {
   document.getElementById('slug-warning').style.display = 'none';
 }
 
-function saveSlug() {
+async function saveSlug() {
   const val = document.getElementById('s-slug').value.trim();
   const errEl = document.getElementById('slug-err');
   const okEl = document.getElementById('slug-save-ok');
@@ -1598,12 +1598,32 @@ function saveSlug() {
     errEl.textContent='⚠️ כתובת הלינק יכולה להכיל רק אותיות באנגלית, מספרים ומקפים';
     errEl.style.display='block'; return;
   }
-  if (TAKEN_SLUGS.includes(val) && val !== currentSlug) {
-    errEl.textContent='⚠️ כתובת זו כבר בשימוש — נסה כתובת אחרת';
-    errEl.style.display='block'; return;
-  }
   if (val === currentSlug) {
     cancelEditSlug(); return;
+  }
+  // Check if slug is taken by another user in Supabase
+  if (supabaseReady && currentUser) {
+    try {
+      const { data, error } = await supabaseClient
+        .from('settings')
+        .select('user_id')
+        .eq('slug', val)
+        .neq('user_id', currentUser.id);
+      if (error) throw error;
+      if (data && data.length > 0) {
+        errEl.textContent='⚠️ הלינק הזה כבר תפוס, אנא בחר לינק אחר';
+        errEl.style.display='block';
+        return;
+      }
+    } catch (e) {
+      console.warn('Slug check failed', e);
+      errEl.textContent='⚠️ שגיאה בבדיקת זמינות הלינק, נסה שוב';
+      errEl.style.display='block';
+      return;
+    }
+  } else if (TAKEN_SLUGS.includes(val)) {
+    errEl.textContent='⚠️ כתובת זו כבר בשימוש — נסה כתובת אחרת';
+    errEl.style.display='block'; return;
   }
   if (currentSlug) {
     const ok = confirm(`⚠️ שינוי הלינק\n\nלינק נוכחי: mytafrit.co.il/menu.html?slug=${currentSlug}\nלינק חדש: mytafrit.co.il/menu.html?slug=${val}\n\nהלינק הקודם יפסיק לעבוד!\n\nלהמשיך?`);
