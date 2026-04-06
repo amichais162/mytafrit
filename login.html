@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+
+<html class="light" dir="rtl" lang="he"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Be+Vietnam+Pro:wght@400;500;600&amp;family=Heebo:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-high": "#ebe8e3",
+                    "surface": "#fcf9f4",
+                    "primary-fixed-dim": "#ffb693",
+                    "on-tertiary": "#ffffff",
+                    "on-surface-variant": "#55433a",
+                    "primary": "#712c00",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed": "#ffdbcc",
+                    "surface-variant": "#e5e2dd",
+                    "on-tertiary-fixed-variant": "#6e3900",
+                    "on-secondary-fixed": "#351000",
+                    "on-surface": "#1c1c19",
+                    "primary-container": "#92400e",
+                    "on-secondary-fixed-variant": "#76330d",
+                    "inverse-primary": "#ffb693",
+                    "secondary-fixed-dim": "#ffb693",
+                    "inverse-surface": "#31302d",
+                    "on-error-container": "#93000a",
+                    "on-secondary-container": "#76340e",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-container": "#fd9e70",
+                    "on-tertiary-fixed": "#2f1500",
+                    "background": "#fcf9f4",
+                    "outline": "#887269",
+                    "primary-fixed": "#ffdbcb",
+                    "on-primary": "#ffffff",
+                    "surface-tint": "#9a4614",
+                    "on-tertiary-container": "#ffc395",
+                    "on-primary-fixed-variant": "#7a3000",
+                    "surface-container-low": "#f6f3ee",
+                    "secondary": "#944a23",
+                    "outline-variant": "#dcc1b6",
+                    "surface-dim": "#dcdad5",
+                    "inverse-on-surface": "#f3f0eb",
+                    "surface-bright": "#fcf9f4",
+                    "on-primary-fixed": "#341000",
+                    "tertiary-fixed-dim": "#ffb77d",
+                    "surface-container-highest": "#e5e2dd",
+                    "on-primary-container": "#ffc2a5",
+                    "tertiary-container": "#884800",
+                    "error": "#ba1a1a",
+                    "on-background": "#1c1c19",
+                    "on-error": "#ffffff",
+                    "tertiary": "#663400",
+                    "on-secondary": "#ffffff",
+                    "tertiary-fixed": "#ffdcc3",
+                    "surface-container": "#f0ede9"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Plus Jakarta Sans", "Heebo", "sans-serif"],
+                    "body": ["Be Vietnam Pro", "Heebo", "sans-serif"],
+                    "label": ["Be Vietnam Pro", "Heebo", "sans-serif"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .form-transition {
+            transition: all 400ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        body {
+            font-family: 'Be Vietnam Pro', 'Heebo', sans-serif;
+            background-color: #fcf9f4;
+        }
+    </style>
+</head>
+<body class="bg-surface min-h-screen flex flex-col items-center">
+
+<!-- כפתור חזרה -->
+<div class="w-full max-w-md px-6 pt-6 z-20 absolute top-0 right-0 flex justify-end">
+  <a onclick="history.back(); return false;" href="#"
+     class="flex items-center gap-1 text-white/80 hover:text-white font-bold text-sm transition-colors">
+    <span class="material-symbols-outlined text-lg">arrow_back</span>
+    <span>חזרה</span>
+  </a>
+</div>
+
+<!-- Header Section -->
+<header class="w-full bg-primary-container pt-16 pb-24 px-8 flex flex-col items-center text-center relative overflow-hidden">
+  <div class="absolute -top-12 -left-12 w-48 h-48 bg-white/5 rounded-full blur-3xl"></div>
+  <div class="absolute -bottom-24 -right-24 w-64 h-64 bg-primary/20 rounded-full blur-3xl"></div>
+  <div class="mb-6 flex flex-col items-center gap-3">
+    <div class="flex items-center gap-3 bg-surface/10 px-6 py-3 rounded-xl backdrop-blur-md mb-2">
+      <span class="material-symbols-outlined text-surface text-4xl" data-icon="restaurant">restaurant</span>
+      <h1 class="text-4xl font-display font-extrabold text-surface tracking-tight">MyTafrit</h1>
+    </div>
+    <p class="text-on-primary-container text-lg font-medium max-w-[240px] leading-snug">
+      תפריט דיגיטלי מקצועי לעסק שלך
+    </p>
+  </div>
+</header>
+
+<!-- Main Content Area -->
+<main class="w-full px-6 -mt-12 mb-12 z-10 max-w-md">
+  <div class="bg-surface-container-low rounded-lg p-8 shadow-[0_20px_50px_rgba(85,67,58,0.08)] relative">
+
+    <!-- Login State -->
+    <div class="form-transition opacity-100 scale-100" id="login-state">
+      <div class="mb-8">
+        <h2 class="text-2xl font-headline font-bold text-on-surface mb-2">ברוכים הבאים</h2>
+        <p class="text-on-surface-variant text-sm">הזן את הפרטים שלך כדי להתחבר</p>
+      </div>
+      <form id="loginForm" class="space-y-6">
+        <div class="space-y-2">
+          <label class="block text-sm font-label font-semibold text-on-surface-variant mr-1">אימייל</label>
+          <input id="login-email" class="w-full bg-surface-container-highest border-none border-b-2 border-outline-variant/20 focus:ring-0 focus:border-primary-container rounded-t-md px-4 py-3 transition-colors text-on-surface" placeholder="email@example.com" type="email" required/>
+        </div>
+        <div class="space-y-2">
+          <label class="block text-sm font-label font-semibold text-on-surface-variant mr-1">סיסמה</label>
+          <div class="relative">
+            <input id="login-password" class="w-full bg-surface-container-highest border-none border-b-2 border-outline-variant/20 focus:ring-0 focus:border-primary-container rounded-t-md px-4 py-3 transition-colors text-on-surface" placeholder="••••••••" type="password" required/>
+            <button class="absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant hover:text-primary transition-colors" type="button">
+              <span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+            </button>
+          </div>
+        </div>
+        <div class="flex justify-start">
+          <a class="text-xs font-semibold text-primary hover:underline transition-all" href="#">שכחת סיסמה?</a>
+        </div>
+        <p id="login-error" class="text-sm text-red-600 font-semibold text-center" style="display:none"></p>
+        <button id="login-btn" class="w-full bg-gradient-to-br from-primary-container to-primary text-on-primary py-4 rounded-xl font-bold text-lg shadow-lg shadow-primary-container/20 hover:scale-[0.98] active:scale-[0.96] transition-all" type="submit">
+          התחבר
+        </button>
+      </form>
+      <div class="mt-8 text-center">
+        <p class="text-on-surface-variant text-sm">
+          אין לך חשבון?
+          <button class="text-primary font-bold mr-1 hover:underline" onclick="toggleForm('register')">הירשם</button>
+        </p>
+      </div>
+    </div>
+
+    <!-- Register State -->
+    <div class="form-transition hidden opacity-0 scale-95" id="register-state">
+      <div class="mb-8">
+        <h2 class="text-2xl font-headline font-bold text-on-surface mb-2">הצטרף אלינו</h2>
+        <p class="text-on-surface-variant text-sm">התחל ליצור את התפריט הדיגיטלי שלך עוד היום</p>
+      </div>
+      <form id="registerForm" class="space-y-5">
+        <div class="space-y-2">
+          <label class="block text-sm font-label font-semibold text-on-surface-variant mr-1">שם מלא</label>
+          <input id="reg-name" class="w-full bg-surface-container-highest border-none border-b-2 border-outline-variant/20 focus:ring-0 focus:border-primary-container rounded-t-md px-4 py-3 transition-colors text-on-surface" placeholder="ישראל ישראלי" type="text"/>
+        </div>
+        <div class="space-y-2">
+          <label class="block text-sm font-label font-semibold text-on-surface-variant mr-1">אימייל</label>
+          <input id="reg-email" class="w-full bg-surface-container-highest border-none border-b-2 border-outline-variant/20 focus:ring-0 focus:border-primary-container rounded-t-md px-4 py-3 transition-colors text-on-surface" placeholder="email@example.com" type="email" required/>
+        </div>
+        <div class="space-y-2">
+          <label class="block text-sm font-label font-semibold text-on-surface-variant mr-1">סיסמה</label>
+          <input id="reg-password" class="w-full bg-surface-container-highest border-none border-b-2 border-outline-variant/20 focus:ring-0 focus:border-primary-container rounded-t-md px-4 py-3 transition-colors text-on-surface" placeholder="••••••••" type="password" required minlength="6"/>
+        </div>
+        <p id="reg-msg" class="text-sm font-semibold text-center" style="display:none"></p>
+        <div class="pt-2">
+          <button id="reg-btn" class="w-full bg-gradient-to-br from-primary-container to-primary text-on-primary py-4 rounded-xl font-bold text-lg shadow-lg shadow-primary-container/20 hover:scale-[0.98] active:scale-[0.96] transition-all" type="submit">
+            צור חשבון
+          </button>
+        </div>
+      </form>
+      <div class="mt-8 text-center">
+        <p class="text-on-surface-variant text-sm">
+          יש לך חשבון?
+          <button class="text-primary font-bold mr-1 hover:underline" onclick="toggleForm('login')">התחבר</button>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chef's Note -->
+  <div class="mt-8 bg-tertiary-container/10 p-6 rounded-lg relative overflow-hidden border border-tertiary-container/20">
+    <div class="flex items-start gap-4">
+      <span class="material-symbols-outlined text-tertiary-container text-2xl mt-1" data-icon="restaurant">restaurant</span>
+      <div>
+        <h4 class="font-headline font-bold text-tertiary-container mb-1">הידעת?</h4>
+        <p class="text-on-surface-variant text-xs leading-relaxed">
+          עסקים המשתמשים בתפריט דיגיטלי מדווחים על עלייה של 15% במכירות בזכות חוויית משתמש אינטואיטיבית.
+        </p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="mt-auto pb-8 text-center px-8 space-y-3">
+  <a href="mailto:support@mytafrit.co.il" class="block text-outline text-xs font-label font-semibold hover:text-primary transition-colors">
+    support@mytafrit.co.il
+  </a>
+  <a href="terms.html" class="block text-outline text-xs font-label hover:text-primary transition-colors">
+    תנאי שימוש ומדיניות פרטיות
+  </a>
+  <p class="text-outline text-xs tracking-widest font-label font-medium opacity-60">© 2025 Mytafrit. All rights reserved.</p>
+</footer>
+
+<script type="module">
+import { supabase } from './supabase.js';
+
+// ===== TOGGLE LOGIN / REGISTER =====
+window.toggleForm = function(state) {
+  const login = document.getElementById('login-state');
+  const register = document.getElementById('register-state');
+  document.getElementById('login-error').style.display = 'none';
+  document.getElementById('reg-msg').style.display = 'none';
+  if (state === 'register') {
+    login.classList.add('hidden', 'opacity-0', 'scale-95');
+    login.classList.remove('opacity-100', 'scale-100');
+    register.classList.remove('hidden');
+    setTimeout(() => { register.classList.add('opacity-100', 'scale-100'); register.classList.remove('opacity-0', 'scale-95'); }, 50);
+  } else {
+    register.classList.add('hidden', 'opacity-0', 'scale-95');
+    register.classList.remove('opacity-100', 'scale-100');
+    login.classList.remove('hidden');
+    setTimeout(() => { login.classList.add('opacity-100', 'scale-100'); login.classList.remove('opacity-0', 'scale-95'); }, 50);
+  }
+};
+
+// ===== LOGIN =====
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  const errEl = document.getElementById('login-error');
+  const btn = document.getElementById('login-btn');
+
+  errEl.style.display = 'none';
+  btn.disabled = true;
+  btn.textContent = 'מתחבר...';
+
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+  if (error) {
+    errEl.textContent = 'אימייל או סיסמה שגויים';
+    errEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'התחבר';
+    return;
+  }
+  window.location.href = 'admin.html';
+});
+
+// ===== REGISTER =====
+document.getElementById('registerForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const name = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const password = document.getElementById('reg-password').value;
+  const msgEl = document.getElementById('reg-msg');
+  const btn = document.getElementById('reg-btn');
+
+  msgEl.style.display = 'none';
+  btn.disabled = true;
+  btn.textContent = 'יוצר חשבון...';
+
+  const { error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: { data: { full_name: name } }
+  });
+
+  btn.disabled = false;
+  btn.textContent = 'צור חשבון';
+
+  if (error) {
+    msgEl.textContent = error.message;
+    msgEl.style.color = '#dc2626';
+    msgEl.style.display = 'block';
+    return;
+  }
+  msgEl.textContent = 'נשלח אימייל אישור לכתובת שלך';
+  msgEl.style.color = '#16a34a';
+  msgEl.style.display = 'block';
+});
+
+// ===== AUTO-REDIRECT IF LOGGED IN =====
+const { data: { session } } = await supabase.auth.getSession();
+if (session) window.location.href = 'admin.html';
+</script>
+</body></html>

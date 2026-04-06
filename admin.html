@@ -1,0 +1,1810 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ניהול התפריט</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root {
+  --accent: #92400e;
+  --accent-light: #fffbeb;
+  --accent-dark: #78350f;
+  --surface: #ffffff;
+  --bg: #f5f7fa;
+  --border: #e8ecf0;
+  --text: #111827;
+  --text-2: #6b7280;
+  --text-3: #9ca3af;
+  --radius: 14px;
+  --radius-sm: 10px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 8px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+}
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+body { font-family:'Heebo',sans-serif; background:var(--bg); color:var(--text); direction:rtl; font-size:15px; }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+@keyframes slideUp { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+@keyframes slideDown { from{transform:translateY(-8px);opacity:0} to{transform:translateY(0);opacity:1} }
+@keyframes popIn { from{transform:scale(0.96);opacity:0} to{transform:scale(1);opacity:1} }
+@keyframes scaleIn { from{transform:scale(0.95);opacity:0} to{transform:scale(1);opacity:1} }
+.modal-overlay { animation:fadeIn 0.2s ease; }
+.modal-box { animation:scaleIn 0.2s ease; }
+@media (max-width:640px) {
+  .modal-box { border-radius:20px 20px 0 0 !important; max-height:94vh !important; }
+  #productFormOverlay { align-items:flex-end !important; padding:0 !important; }
+}
+input,textarea,select { font-family:'Heebo',sans-serif; direction:rtl; }
+.form-label { font-size:13px; font-weight:600; color:var(--text); margin-bottom:6px; display:block; }
+.form-hint { font-size:12px; color:var(--text-3); margin-top:4px; display:block; line-height:1.5; }
+.form-hint.warning { color:#d97706; }
+.form-input {
+  width:100%; border:1.5px solid var(--border); border-radius:var(--radius-sm);
+  padding:10px 14px; font-size:14px; outline:none; background:var(--surface);
+  font-family:'Heebo',sans-serif; direction:rtl; color:var(--text);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.form-input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(146,64,14,0.12); }
+.form-input.error { border-color:#ef4444; background:#fef2f2; }
+.form-textarea {
+  width:100%; border:1.5px solid var(--border); border-radius:var(--radius-sm);
+  padding:10px 14px; font-size:14px; outline:none; background:var(--surface);
+  font-family:'Heebo',sans-serif; resize:vertical; direction:rtl; color:var(--text);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.form-textarea:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(146,64,14,0.12); }
+.card { background:var(--surface); border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid var(--border); }
+.btn-primary {
+  background:var(--accent); color:white; border:none; border-radius:var(--radius-sm);
+  padding:10px 18px; font-size:14px; font-weight:700; cursor:pointer;
+  font-family:'Heebo',sans-serif; display:inline-flex; align-items:center; gap:6px;
+  transition:all 0.15s; white-space:nowrap;
+}
+.btn-primary:hover { background:var(--accent-dark); transform:translateY(-1px); }
+.btn-primary:active { transform:scale(0.98); }
+.btn-outline {
+  background:var(--surface); color:var(--text); border:1.5px solid var(--border);
+  border-radius:var(--radius-sm); padding:9px 16px; font-size:14px; font-weight:600;
+  cursor:pointer; font-family:'Heebo',sans-serif; display:inline-flex; align-items:center;
+  gap:5px; transition:all 0.15s; white-space:nowrap;
+}
+.btn-outline:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-light); }
+.btn-ghost {
+  background:none; border:none; cursor:pointer; border-radius:8px; padding:6px;
+  transition:background 0.15s; display:flex; align-items:center; justify-content:center; color:var(--text-2);
+}
+.btn-ghost:hover { background:var(--bg); color:var(--text); }
+.btn-danger {
+  background:none; border:none; cursor:pointer; border-radius:8px; padding:6px;
+  display:flex; align-items:center; justify-content:center; color:#dc2626; transition:background 0.15s;
+}
+.btn-danger:hover { background:#fef2f2; }
+/* Tabs */
+.tabs-bar { display:flex; border-bottom:1px solid var(--border); overflow-x:auto; scrollbar-width:none; background:white; }
+.tabs-bar::-webkit-scrollbar { display:none; }
+.tab-btn {
+  flex:1; min-width:0; display:flex; flex-direction:column; align-items:center; gap:3px;
+  padding:12px 6px 10px; border:none; background:transparent; cursor:pointer;
+  font-family:'Heebo',sans-serif; font-size:11px; font-weight:600; color:var(--text-3);
+  transition:all 0.2s; border-bottom:2px solid transparent; white-space:nowrap;
+}
+.tab-btn svg { width:20px; height:20px; }
+.tab-btn.active { color:var(--accent); border-bottom-color:var(--accent); }
+.tab-btn:not(.active):hover { color:var(--text-2); background:var(--bg); }
+/* Toggle */
+.switch { position:relative; display:inline-block; width:44px; height:24px; flex-shrink:0; }
+.switch input { opacity:0; width:0; height:0; }
+.slider { position:absolute; inset:0; background:#d1d5db; border-radius:99px; cursor:pointer; transition:0.2s; }
+.slider:before { content:''; position:absolute; width:18px; height:18px; right:3px; bottom:3px; background:white; border-radius:50%; transition:0.2s; box-shadow:0 1px 3px rgba(0,0,0,0.15); }
+input:checked + .slider { background:var(--accent); }
+input:checked + .slider:before { transform:translateX(-20px); }
+/* Drag */
+.drag-item { transition:opacity 0.15s; }
+.drag-item.drag-source { opacity:0.3; }
+.drag-item.drag-over-above { border-top:2px solid var(--accent) !important; }
+.drag-item.drag-over-below { border-bottom:2px solid var(--accent) !important; }
+.drag-handle { cursor:grab; color:var(--border); flex-shrink:0; transition:color 0.15s; padding:6px 4px; }
+.drag-handle:hover { color:var(--text-3); }
+/* Search */
+.search-wrap { position:relative; }
+.search-icon { position:absolute; right:12px; top:50%;transform:translateY(-50%);color:var(--text-3);pointer-events:none; }
+/* Link popup */
+.link-popup { animation:slideDown 0.2s ease; }
+@keyframes slideDown { from{transform:translateY(-6px);opacity:0} to{transform:translateY(0);opacity:1} }
+/* Section animation */
+.section-enter { animation:slideUp 0.2s ease; }
+
+</style>
+</head>
+<body>
+
+<div id="subscriptionBanner" style="display:none;text-align:center;padding:10px 16px;font-size:14px;font-weight:600;color:white;font-family:'Heebo',sans-serif;"></div>
+
+<!-- HEADER -->
+<header style="background:white;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+  <div style="max-width:640px;margin:0 auto;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;">
+    <div style="display:flex;align-items:center;gap:9px;">
+      <div style="width:30px;height:30px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="16" height="16" fill="none" stroke="white" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <span style="font-size:16px;font-weight:700;color:var(--text);">ניהול תפריט</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;position:relative;">
+      <button onclick="toggleLinkPopup()" id="linkBtn" class="btn-outline" style="padding:7px 12px;font-size:13px;gap:5px;">
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" stroke-width="2" stroke-linecap="round"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" stroke-width="2" stroke-linecap="round"/></svg>
+        שיתוף
+      </button>
+      <div id="linkPopup" class="link-popup" style="display:none;position:absolute;top:calc(100% + 8px);left:0;min-width:260px;background:white;border-radius:var(--radius);box-shadow:var(--shadow-md);border:1px solid var(--border);padding:14px;z-index:100;">
+        <p style="font-size:11px;font-weight:600;color:var(--text-3);margin-bottom:8px;">לינק לשיתוף עם לקוחות</p>
+        <div id="linkPopupContent"></div>
+      </div>
+      <button onclick="viewMenu()" class="btn-ghost" style="padding:7px;">
+        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke-width="2"/></svg>
+      </button>
+    </div>
+  </div>
+  <!-- Tabs -->
+  <div class="tabs-bar">
+    <button onclick="switchTab('products')" id="tab-products" class="tab-btn active">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z" stroke-width="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16" stroke-width="2"/></svg>
+      מוצרים
+    </button>
+    <button onclick="switchTab('categories')" id="tab-categories" class="tab-btn">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" stroke-width="2" rx="1"/><rect x="14" y="3" width="7" height="7" stroke-width="2" rx="1"/><rect x="14" y="14" width="7" height="7" stroke-width="2" rx="1"/><rect x="3" y="14" width="7" height="7" stroke-width="2" rx="1"/></svg>
+      קטגוריות
+    </button>
+    <button onclick="switchTab('business')" id="tab-business" class="tab-btn">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" stroke-width="2"/><polyline points="9 22 9 12 15 12 15 22" stroke-width="2"/></svg>
+      העסק
+    </button>
+    <button onclick="switchTab('settings')" id="tab-settings" class="tab-btn">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" stroke-width="2"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" stroke-width="2"/></svg>
+      הגדרות
+    </button>
+  </div>
+</header>
+<div id="popupBackdrop" style="display:none;position:fixed;inset:0;z-index:49;" onclick="closeLinkPopup()"></div>
+
+<div style="max-width:640px;margin:0 auto;padding:20px 16px 48px;">
+
+  <!-- ===== PRODUCTS ===== -->
+  <div id="section-products" class="section-enter">
+    <div class="flex items-center gap-3 mb-3 flex-wrap">
+      <h2 class="text-lg font-bold text-gray-800">מוצרים (<span id="productCount">0</span>)</h2>
+      <div class="search-wrap flex-1 min-w-[160px]">
+        <svg class="search-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="productSearch" class="form-input" style="padding-right:36px" placeholder="חיפוש מוצר..." oninput="renderProducts()"/>
+      </div>
+      <button class="btn-primary" onclick="openProductForm(null)">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        מוצר חדש
+      </button>
+    </div>
+    <div class="flex items-center justify-between mb-3">
+      <p class="text-xs text-gray-400 flex items-center gap-1">
+        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="9" y1="18" x2="9" y2="6"/><line x1="15" y1="18" x2="15" y2="6"/></svg>
+        גרור שורות לשינוי סדר המוצרים בתפריט
+      </p>
+      <button id="saveProductsOrderBtn" onclick="saveProductsOrder()" class="btn-primary" style="display:none;padding:6px 12px;font-size:12px">
+        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="20 6 9 13 4 9"/></svg>
+        שמור סדר
+      </button>
+    </div>
+    <div id="productsList" class="flex flex-col gap-2"></div>
+    <div id="productsEmpty" class="card p-12 text-center text-gray-400" style="display:none">
+      <p class="text-lg">אין מוצרים עדיין</p><p class="text-sm mt-1">הוסף את המוצר הראשון!</p>
+    </div>
+  </div>
+
+  <!-- ===== CATEGORIES ===== -->
+  <div id="section-categories" style="display:none">
+    <div class="flex items-center gap-3 mb-3 flex-wrap">
+      <h2 class="text-lg font-bold text-gray-800">קטגוריות (<span id="categoryCount">0</span>)</h2>
+      <div class="search-wrap flex-1 min-w-[160px]">
+        <svg class="search-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="categorySearch" class="form-input" style="padding-right:36px" placeholder="חיפוש קטגוריה..." oninput="renderCategories()"/>
+      </div>
+      <button class="btn-primary" onclick="startNewCategory()">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        קטגוריה חדשה
+      </button>
+    </div>
+    <div class="flex items-center justify-between mb-3">
+      <p class="text-xs text-gray-400 flex items-center gap-1">
+        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="9" y1="18" x2="9" y2="6"/><line x1="15" y1="18" x2="15" y2="6"/></svg>
+        גרור שורות לשינוי סדר הקטגוריות בתפריט
+      </p>
+      <button id="saveCatsOrderBtn" onclick="saveCategoriesOrder()" class="btn-primary" style="display:none;padding:6px 12px;font-size:12px">
+        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="20 6 9 13 4 9"/></svg>
+        שמור סדר
+      </button>
+    </div>
+    <div id="newCategoryRow" class="card p-3 mb-3 flex items-center gap-2" style="display:none">
+      <input id="newCategoryInput" class="form-input flex-1" placeholder="שם הקטגוריה" onkeydown="if(event.key==='Enter')saveNewCategory()"/>
+      <button class="btn-primary" style="padding:8px 14px" onclick="saveNewCategory()">✓</button>
+      <button class="btn-outline" style="padding:8px 14px" onclick="cancelNewCategory()">✕</button>
+    </div>
+    <div id="categoriesList" class="card divide-y divide-gray-100"></div>
+    <div id="categoriesEmpty" class="card p-10 text-center text-gray-400 text-sm" style="display:none">אין קטגוריות עדיין</div>
+  </div>
+
+  <!-- ===== BUSINESS ===== -->
+  <div id="section-business" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+      <h2 style="font-size:17px;font-weight:700;color:var(--text);">פרטי העסק</h2>
+      <div style="display:flex;gap:8px;" id="businessHeaderBtns">
+        <button onclick="startEditBusiness()" id="businessEditBtn" class="btn-outline" style="font-size:13px;padding:8px 16px;">
+          <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke-width="2"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2"/></svg>
+          ערוך
+        </button>
+        <button onclick="saveSettings()" id="businessSaveBtn" class="btn-primary" style="display:none;font-size:13px;padding:8px 16px;">שמור</button>
+        <button onclick="cancelEditBusiness()" id="businessCancelBtn" class="btn-outline" style="display:none;font-size:13px;padding:8px 16px;">בטל</button>
+      </div>
+    </div>
+    <div id="saveSuccess" style="display:none;margin-bottom:14px;padding:12px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:var(--radius-sm);text-align:center;font-size:14px;color:#15803d;font-weight:600;">✓ נשמר בהצלחה!</div>
+    <div id="businessFieldsWrap" style="display:flex;flex-direction:column;gap:12px;">
+
+      <!-- VIEW MODE -->
+      <div id="businessViewMode" class="card" style="padding:16px;">
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px;">
+            <span style="font-size:13px;font-weight:600;color:var(--text-3);">שם העסק</span>
+            <span id="view-business-name" style="font-size:13px;font-weight:600;color:var(--text);">—</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px;">
+            <span style="font-size:13px;font-weight:600;color:var(--text-3);">תיאור קצר</span>
+            <span id="view-tagline" style="font-size:13px;color:var(--text);text-align:left;max-width:60%;">—</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px;">
+            <span style="font-size:13px;font-weight:600;color:var(--text-3);">שם איש קשר</span>
+            <span id="view-contact-name" style="font-size:13px;color:var(--text);">—</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px;">
+            <span style="font-size:13px;font-weight:600;color:var(--text-3);">וואטסאפ</span>
+            <span id="view-whatsapp" style="font-size:13px;color:var(--text);direction:ltr;">—</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px;">
+            <span style="font-size:13px;font-weight:600;color:var(--text-3);">טלפון</span>
+            <span id="view-phone" style="font-size:13px;color:var(--text);direction:ltr;">—</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px;">
+            <span style="font-size:13px;font-weight:600;color:var(--text-3);">אזור איסוף</span>
+            <span id="view-area" style="font-size:13px;color:var(--text);">—</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px;">
+            <span style="font-size:13px;font-weight:600;color:var(--text-3);">שעות פעילות</span>
+            <span id="view-hours" style="font-size:13px;color:var(--text);text-align:left;max-width:60%;">—</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px;">
+            <span style="font-size:13px;font-weight:600;color:var(--text-3);">לוגו</span>
+            <span id="view-logo" style="font-size:13px;color:var(--text);">—</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px;">
+            <span style="font-size:13px;font-weight:600;color:var(--text-3);">תמונת רקע לראש הדף</span>
+            <span id="view-hero-bg" style="font-size:13px;color:var(--text);">—</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px;">
+            <span style="font-size:13px;font-weight:600;color:var(--text-3);">תמונת אודות</span>
+            <span id="view-about-img" style="font-size:13px;color:var(--text);">—</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px;">
+            <span style="font-size:13px;font-weight:600;color:var(--text-3);">אודות</span>
+            <span id="view-about" style="font-size:13px;color:var(--text);text-align:left;max-width:60%;white-space:pre-line;">—</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;">
+            <span style="font-size:13px;font-weight:600;color:var(--text-3);">תקנון</span>
+            <span id="view-terms" style="font-size:13px;color:var(--text);text-align:left;max-width:60%;white-space:pre-line;">—</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- EDIT MODE (hidden by default) -->
+      <div id="businessEditMode" style="display:none;flex-direction:column;gap:12px;">
+
+      <div class="card" style="padding:16px;display:flex;flex-direction:column;gap:14px;">
+        <div>
+          <label class="form-label">שם העסק <span style="color:#ef4444">*</span></label>
+          <input id="s-business-name" class="form-input" placeholder="שם העסק יופיע ככותרת בתפריט הציבורי"/>
+          <p id="s-name-err" class="text-xs text-red-500 mt-1" style="display:none">⚠️ שם העסק הוא שדה חובה</p>
+        </div>
+        <div>
+          <label class="form-label">תיאור קצר</label>
+          <input id="s-tagline" class="form-input" placeholder="לדוגמא: מאפים טריים בעבודת יד | הזמנה מראש בלבד"/>
+          <span class="form-hint warning">💡 יופיע מתחת לשם העסק בתפריט</span>
+        </div>
+      </div>
+
+      <div class="card" style="padding:16px;display:flex;flex-direction:column;gap:14px;">
+        <div>
+          <label class="form-label">שם איש קשר <span style="font-size:12px;font-weight:400;color:var(--text-3)">(ישמש בתבנית הודעות וואטסאפ)</span></label>
+          <input id="s-contact-name" class="form-input" placeholder="לדוגמא: יעל"/>
+        </div>
+        <div>
+          <label class="form-label">מספר וואטסאפ לקבלת הזמנות <span style="color:#ef4444">*</span></label>
+          <input id="s-whatsapp" class="form-input" type="tel" placeholder="05X-XXXXXXX" dir="ltr" style="text-align:right" oninput="formatWhatsapp(this)"/>
+          <p id="whatsapp-preview" class="text-xs mt-1" style="display:none"></p>
+          <p id="s-wa-err" class="text-xs text-red-500 mt-1" style="display:none">⚠️ מספר וואטסאפ הוא שדה חובה — בלעדיו לא ניתן לקבל הזמנות</p>
+        </div>
+      </div>
+
+      <div class="card" style="padding:16px;display:flex;flex-direction:column;gap:14px;">
+        <div>
+          <label class="form-label">טלפון העסק <span style="font-size:12px;font-weight:400;color:var(--text-3)">(יוצג בתפריט)</span></label>
+          <input id="s-phone" class="form-input" type="tel" placeholder="050-0000000" dir="ltr" style="text-align:right" oninput="this.value=this.value.replace(/[^0-9-]/g,'')"/>
+        </div>
+        <div>
+          <label class="form-label">אזור איסוף</label>
+          <input id="s-area" class="form-input" placeholder="לדוגמא: גוש דן, רמת גן"/>
+        </div>
+        <div>
+        <label class="form-label" style="margin-bottom:4px;">שעות פעילות</label>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin:8px 0 4px;">
+          <label style="font-size:13px;color:var(--text-2);">אפשר הזמנה מהיום להיום</label>
+          <label class="switch">
+            <input type="checkbox" id="s-allow-same-day"/>
+            <span class="slider"></span>
+          </label>
+        </div>
+        <span class="form-hint warning">💡 אם תאפשר הזמנה מהיום להיום, הלקוח יוכל לבחור את היום הנוכחי כמועד איסוף — רק אם טרם הגיע שעת הסגירה</span>
+        <div class="mt-3">
+          <p class="text-xs font-semibold text-gray-500 mb-2" style="margin-top:10px;">בחר ימי פעילות:</p>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;" id="dayBtns">
+            <button type="button" onclick="toggleDay(0,this)" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">א'</button>
+            <button type="button" onclick="toggleDay(1,this)" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">ב'</button>
+            <button type="button" onclick="toggleDay(2,this)" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">ג'</button>
+            <button type="button" onclick="toggleDay(3,this)" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">ד'</button>
+            <button type="button" onclick="toggleDay(4,this)" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">ה'</button>
+            <button type="button" onclick="toggleDay(5,this)" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">ו'</button>
+            <button type="button" onclick="toggleDay(6,this)" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">ש'</button>
+          </div>
+          <div id="defaultHoursRow" class="bg-gray-50 rounded-xl p-3 mb-2" style="display:none">
+            <p class="text-xs font-semibold text-gray-500 mb-2">שעות לכל הימים שנבחרו:</p>
+            <div class="flex items-center gap-3 flex-wrap" style="direction:ltr">
+              <div class="flex items-center gap-1.5">
+                <input type="time" id="default-open" class="form-input" style="width:130px;direction:ltr" oninput="handleDefaultTimeInput('open',this)"/>
+                <span class="text-xs text-gray-400" style="direction:rtl">פתיחה</span>
+              </div>
+              <span class="text-gray-300">—</span>
+              <div class="flex items-center gap-1.5">
+                <input type="time" id="default-close" class="form-input" style="width:130px;direction:ltr" oninput="handleDefaultTimeInput('close',this)"/>
+                <span class="text-xs text-gray-400" style="direction:rtl">סגירה</span>
+              </div>
+            </div>
+          </div>
+          <div id="hoursPerDay" class="space-y-2"></div>
+          <div id="hoursPreview" class="mt-3 p-3 bg-amber-50 border border-amber-100 rounded-xl" style="display:none">
+            <p class="text-xs font-semibold text-amber-700 mb-1">תצוגה מקדימה:</p>
+            <p id="hoursPreviewText" class="text-sm text-amber-900 font-medium leading-relaxed whitespace-pre-line" style="direction:rtl"></p>
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <div class="card" style="padding:16px;display:flex;flex-direction:column;gap:14px;">
+        <div>
+          <label class="form-label">לוגו <span style="font-size:11px;font-weight:400;color:var(--text-3)">עד 500KB — נדחסת אוטומטית</span></label>
+          <span class="form-hint warning">💡 תפריט עם לוגו נראה הרבה יותר מקצועי</span>
+          <div class="flex items-center gap-3 mt-2">
+            <div id="logoPreview" class="w-16 h-16 rounded-xl overflow-hidden bg-amber-50 flex items-center justify-center text-2xl border border-amber-100 flex-shrink-0">🥐</div>
+            <div class="flex-1">
+              <label class="btn-outline cursor-pointer mb-1" style="display:inline-flex;font-size:13px;padding:7px 12px;">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                העלה תמונה
+                <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(this,'logoPreview','s-logo-url','logo-info',500)"/>
+              </label>
+              <div id="logo-info" class="text-xs text-green-600 font-semibold mb-1" style="display:none"></div>
+              <input id="s-logo-url" class="form-input text-xs" placeholder="או הדבק URL..." oninput="updatePreviewFromUrl(this,'logoPreview','🥐')"/>
+            </div>
+          </div>
+        </div>
+        <div>
+          <label class="form-label">תמונת רקע לראש הדף (Hero Background) <span style="font-size:11px;font-weight:400;color:var(--text-3)">עד 1MB — נדחסת אוטומטית</span></label>
+          <div class="flex items-center gap-3 mt-2">
+            <div id="heroBgPreview" class="w-16 h-16 rounded-xl overflow-hidden bg-gray-50 flex items-center justify-center border border-gray-100 flex-shrink-0">
+              <svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            </div>
+            <div class="flex-1">
+              <label class="btn-outline cursor-pointer mb-1" style="display:inline-flex;font-size:13px;padding:7px 12px;">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                העלה תמונה
+                <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(this,'heroBgPreview','s-hero-bg-url','hero-bg-info',1024)"/>
+              </label>
+              <div id="hero-bg-info" class="text-xs text-green-600 font-semibold mb-1" style="display:none"></div>
+              <input id="s-hero-bg-url" class="form-input text-xs" placeholder="או הדבק URL..." oninput="updatePreviewFromUrl(this,'heroBgPreview',null)"/>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="padding:16px;display:flex;flex-direction:column;gap:14px;">
+        <div>
+          <label class="form-label">תמונה לעמוד אודות <span style="font-size:11px;font-weight:400;color:var(--text-3)">עד 1MB — נדחסת אוטומטית</span></label>
+          <div class="flex items-center gap-3 mt-2">
+            <div id="aboutImgPreview" class="w-16 h-16 rounded-xl overflow-hidden bg-gray-50 flex items-center justify-center border border-gray-100 flex-shrink-0">
+              <svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            </div>
+            <div class="flex-1">
+              <label class="btn-outline cursor-pointer mb-1" style="display:inline-flex;font-size:13px;padding:7px 12px;">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                העלה תמונה
+                <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(this,'aboutImgPreview','s-about-img-url','about-info',1024)"/>
+              </label>
+              <div id="about-info" class="text-xs text-green-600 font-semibold mb-1" style="display:none"></div>
+              <input id="s-about-img-url" class="form-input text-xs" placeholder="או הדבק URL..." oninput="updatePreviewFromUrl(this,'aboutImgPreview',null)"/>
+            </div>
+          </div>
+        </div>
+        <div>
+          <label class="form-label">טקסט אודות</label>
+          <textarea id="s-about" class="form-textarea" rows="2" style="overflow:hidden;resize:none;" placeholder="הכנס כאן את טקסט אודות..." oninput="autoResizeTextarea(this)"></textarea>
+          <button type="button" onclick="loadSampleAbout()" class="btn-outline" style="margin-top:6px;padding:5px 12px;font-size:12px;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-left:4px;"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+            טען טקסט לדוגמא
+          </button>
+        </div>
+      </div>
+
+      <div class="card" style="padding:16px;display:flex;flex-direction:column;gap:14px;">
+        <div>
+          <label class="form-label">תקנון <span style="font-size:12px;font-weight:400;color:var(--text-3)">(אם ריק — הלינק לא יופיע בתפריט)</span></label>
+          <textarea id="s-terms" class="form-textarea" rows="4" placeholder="הכנס כאן את תקנון העסק..."></textarea>
+          <button type="button" onclick="loadSampleTerms()" class="btn-outline" style="margin-top:6px;padding:5px 12px;font-size:12px;">טען תקנון לדוגמא</button>
+        </div>
+      </div>
+
+      </div><!-- end businessEditMode -->
+    </div>
+  </div>
+
+  <!-- ===== SETTINGS ===== -->
+  <div id="section-settings" class="section-enter" style="display:none">
+    <h2 style="font-size:17px;font-weight:700;color:var(--text);margin-bottom:16px;">הגדרות</h2>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+
+      <!-- Banner -->
+      <div class="card" style="padding:16px;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;">
+          <div>
+            <p style="font-size:14px;font-weight:700;color:var(--text);">באנר בראש העמוד</p>
+            <p style="font-size:12px;color:var(--text-3);margin-top:3px;">הודעה שתופיע בראש התפריט הציבורי</p>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:3px;">
+            <label class="switch" onclick="if(document.getElementById('s-banner-active').disabled)showTooltip(event,'לחץ על ערוך תחילה')">
+              <input type="checkbox" id="s-banner-active" disabled onchange="updateBannerPreview();updateBannerStatus()"/>
+              <span class="slider"></span>
+            </label>
+            <span id="bannerStatusText" style="font-size:11px;font-weight:600;color:var(--text-3);">לא פעיל</span>
+          </div>
+        </div>
+        <div id="bannerViewMode">
+          <div id="bannerCurrentText" style="font-size:13px;color:var(--text-2);margin-bottom:8px;min-height:18px;"></div>
+          <button onclick="startEditBanner()" class="btn-outline" style="padding:7px 16px;font-size:13px;">
+            <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke-width="2"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2"/></svg>
+            ערוך
+          </button>
+        </div>
+        <div id="bannerEditMode" style="display:none;">
+          <div style="display:flex;gap:8px;margin-bottom:8px;">
+            <input id="s-banner" class="form-input" style="flex:1;font-size:13px;" placeholder='לדוגמא: "סגורים ביום שישי — חג שמח!"' oninput="updateBannerPreview()"/>
+          </div>
+          <div id="bannerPreview" style="display:none;margin-bottom:8px;background:#92400e;color:white;text-align:center;font-size:13px;padding:9px 14px;font-weight:600;border-radius:8px;"></div>
+          <div style="display:flex;gap:8px;">
+            <button onclick="saveBanner()" class="btn-primary" style="padding:8px 16px;font-size:13px;">שמור</button>
+            <button onclick="cancelEditBanner()" class="btn-outline" style="padding:8px 16px;font-size:13px;">בטל</button>
+          </div>
+        </div>
+        <div id="bannerSaveSuccess" style="display:none;margin-top:8px;font-size:12px;color:#16a34a;font-weight:600;text-align:center;">✓ הבאנר נשמר!</div>
+      </div>
+
+      <!-- Public link -->
+      <div class="card" style="padding:16px;">
+        <p style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;">כתובת הלינק של התפריט הציבורי</p>
+        <p style="font-size:12px;color:var(--text-3);margin-bottom:12px;">באנגלית בלבד — אותיות קטנות, מספרים ומקפים (-)</p>
+
+        <!-- Link display when set -->
+        <div id="slugDisplayRow" style="display:none;background:var(--bg);border-radius:10px;padding:12px;margin-bottom:12px;">
+          <p style="font-size:11px;font-weight:600;color:var(--text-3);margin-bottom:6px;">הלינק שלך:</p>
+          <p id="slugDisplayText" style="font-size:14px;font-weight:700;color:var(--accent);direction:ltr;text-align:left;word-break:break-all;margin-bottom:10px;"></p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button onclick="copySlugLink()" id="copySlugBtn" class="btn-primary" style="padding:8px 14px;font-size:13px;flex:1;">
+              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" stroke-width="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke-width="2"/></svg>
+              העתק לינק
+            </button>
+            <button onclick="shareSlugLink()" class="btn-outline" style="padding:8px 14px;font-size:13px;flex:1;">
+              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8" stroke-width="2"/><polyline points="16 6 12 2 8 6" stroke-width="2"/><line x1="12" y1="2" x2="12" y2="15" stroke-width="2"/></svg>
+              שתף
+            </button>
+            <button onclick="viewMenuFromSettings()" class="btn-outline" style="padding:8px 14px;font-size:13px;flex:1;">
+              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke-width="2"/></svg>
+              צפה
+            </button>
+          </div>
+        </div>
+
+        <!-- Slug edit -->
+        <div id="slugEditArea">
+          <button onclick="startEditSlug()" id="slugEditBtn" class="btn-outline" style="padding:7px 16px;font-size:13px;">
+            <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke-width="2"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2"/></svg>
+            ערוך כתובת
+          </button>
+          <div id="slugInputRow" style="display:none;margin-top:10px;">
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+              <div style="display:flex;align-items:center;flex:1;min-width:180px;border:1.5px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;background:white;">
+                <span style="font-size:12px;color:var(--text-3);padding:10px 8px;background:var(--bg);border-left:1px solid var(--border);white-space:nowrap;flex-shrink:0;">mytafrit.co.il/menu/</span>
+                <input id="s-slug" style="flex:1;border:none;outline:none;padding:10px 10px;font-size:13px;font-family:'Heebo',sans-serif;direction:ltr;text-align:left;background:transparent;transition:border-color 0.15s;" placeholder="my-business" dir="ltr" oninput="validateSlug(this)" onblur="formatSlug(this)"/>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:8px;">
+              <button onclick="saveSlug()" class="btn-primary" style="padding:8px 16px;font-size:13px;">שמור</button>
+              <button onclick="cancelEditSlug()" class="btn-outline" style="padding:8px 16px;font-size:13px;">בטל</button>
+            </div>
+          </div>
+        </div>
+        <p id="slug-preview" style="display:none;font-size:12px;color:var(--accent);margin-top:6px;font-weight:600;"></p>
+        <p id="slug-err" style="display:none;font-size:12px;color:#ef4444;margin-top:6px;"></p>
+        <p id="slug-save-ok" style="display:none;font-size:12px;color:#16a34a;font-weight:600;margin-top:6px;">✓ הלינק עודכן בהצלחה!</p>
+        <div id="slug-warning" style="display:none;margin-top:10px;padding:10px 12px;background:#fffbeb;border-radius:8px;font-size:12px;color:#92400e;line-height:1.5;border:1px solid #fde68a;">
+          ⚠️ שינוי הלינק יבטל את הלינק הקודם — כל מי שיש לו את הלינק הישן לא יוכל להגיע לתפריט שלך.
+        </div>
+      </div>
+
+      <!-- Subscription -->
+      <div class="card" style="padding:16px;">
+        <p style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:12px;">המנוי שלי</p>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">
+          <div style="display:flex;justify-content:space-between;font-size:13px;">
+            <span style="color:var(--text-3);">סטטוס</span>
+            <span id="subStatus" style="font-weight:600;"></span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;">
+            <span style="color:var(--text-3);">תאריך פקיעה</span>
+            <span id="subExpires" style="font-weight:600;color:var(--text);"></span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;">
+            <span style="color:var(--text-3);">ימים שנשארו</span>
+            <span id="subDaysLeft" style="font-weight:600;"></span>
+          </div>
+        </div>
+        <a href="mailto:support@mytafrit.co.il?subject=%D7%97%D7%99%D7%93%D7%95%D7%A9%20%D7%9E%D7%A0%D7%95%D7%99%20Mytafrit&body=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%97%D7%93%D7%A9%20%D7%90%D7%AA%20%D7%94%D7%9E%D7%A0%D7%95%D7%99%20%D7%A9%D7%9C%D7%99" class="btn-primary" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;font-size:13px;text-decoration:none;justify-content:center;width:100%;">
+          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke-width="2"/><polyline points="22,6 12,13 2,6" stroke-width="2"/></svg>
+          חידוש מנוי
+        </a>
+        <p style="font-size:12px;color:var(--text-3);margin-top:10px;text-align:center;">לכל שאלה: <a href="mailto:support@mytafrit.co.il" style="color:var(--accent);font-weight:600;text-decoration:none;">support@mytafrit.co.il</a></p>
+      </div>
+
+    </div>
+    <button onclick="supabaseClient.auth.signOut().then(()=>window.location.href='login.html')" style="display:inline-flex;align-items:center;gap:5px;background:none;border:none;padding:6px 0;margin-top:8px;font-size:13px;font-family:'Heebo',sans-serif;color:var(--text-3);cursor:pointer;transition:color 0.15s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-3)'">
+      <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" stroke-width="2"/><polyline points="16 17 21 12 16 7" stroke-width="2"/><line x1="21" y1="12" x2="9" y2="12" stroke-width="2"/></svg>
+      התנתק
+    </button>
+  </div>
+</div>
+
+<!-- PRODUCT FORM MODAL -->
+<div id="productFormOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:100;align-items:center;justify-content:center;padding:16px" class="modal-overlay">
+  <div class="modal-box bg-white rounded-2xl w-full max-w-lg shadow-2xl flex flex-col" style="max-height:90vh">
+    <div class="flex items-center justify-between p-5 border-b border-gray-100 flex-shrink-0">
+      <h3 id="productFormTitle" style="font-family:'Frank Ruhl Libre',serif" class="font-bold text-gray-900 text-lg">מוצר חדש</h3>
+      <button onclick="closeProductForm()" class="btn-ghost text-gray-500">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="overflow-y-auto flex-1 p-5 space-y-4">
+      <div>
+        <label class="form-label">שם המוצר <span class="text-red-500">*</span></label>
+        <input id="pf-name" class="form-input" placeholder='לדוגמא: "קרואסון חמאה"' oninput="this.style.borderColor=''"/>
+      </div>
+      <div>
+        <label class="form-label">תיאור</label>
+        <textarea id="pf-desc" class="form-textarea" rows="2" placeholder="תיאור קצר של המוצר..."></textarea>
+      </div>
+      <div>
+        <label class="form-label">מחיר (₪) <span class="text-red-500">*</span></label>
+        <input id="pf-price" class="form-input" type="number" min="0" step="0.5" placeholder="0"/>
+      </div>
+      <div>
+        <label class="form-label">קטגוריות <span class="text-red-500">*</span> <span style="font-weight:400;color:var(--text-3);font-size:12px;">(ניתן לבחור יותר מאחת)</span></label>
+        <div id="pf-categories" class="flex flex-wrap gap-2 mt-1"></div>
+        <p id="pf-cat-warning" style="font-size:12px;color:#ef4444;font-weight:600;margin-top:6px;display:none;">⚠️ יש לבחור לפחות קטגוריה אחת</p>
+      </div>
+      <div>
+        <label class="form-label">תמונה</label>
+        <span class="form-hint">עד 500KB — תמונות גדולות נדחסות אוטומטית</span>
+        <div class="flex items-center gap-3 mt-2">
+          <div id="pf-img-preview" class="w-16 h-16 rounded-xl overflow-hidden bg-amber-50 flex items-center justify-center text-2xl border border-amber-100 flex-shrink-0">🥐</div>
+          <div class="flex-1">
+            <label class="btn-outline cursor-pointer mb-1" style="display:inline-flex">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              העלה תמונה
+              <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(this,'pf-img-preview','pf-img-url','pf-img-info',500)"/>
+            </label>
+            <div id="pf-img-info" class="text-xs text-green-600 font-semibold mb-1" style="display:none"></div>
+            <input id="pf-img-url" class="form-input text-xs" placeholder="או הדבק URL..." oninput="updatePreviewFromUrl(this,'pf-img-preview','🥐')"/>
+          </div>
+        </div>
+      </div>
+      <div>
+        <label class="form-label">אלרגנים</label>
+        <input id="pf-allergens" class="form-input" placeholder='לדוגמא: "גלוטן, חלב, ביצים"'/>
+      </div>
+      <div>
+        <label class="form-label">סוג</label>
+        <div class="flex gap-2 mt-1 flex-wrap">
+          <button type="button" onclick="selectDietary('חלבי')" id="dt-chalavi" class="dietary-btn px-4 py-2 rounded-xl border-2 text-sm font-semibold transition-all border-gray-200 bg-white text-gray-500">חלבי</button>
+          <button type="button" onclick="selectDietary('פרווה')" id="dt-parve" class="dietary-btn px-4 py-2 rounded-xl border-2 text-sm font-semibold transition-all border-gray-200 bg-white text-gray-500">פרווה</button>
+          <button type="button" onclick="selectDietary('בשרי')" id="dt-basari" class="dietary-btn px-4 py-2 rounded-xl border-2 text-sm font-semibold transition-all border-gray-200 bg-white text-gray-500">בשרי</button>
+        </div>
+      </div>
+      <div>
+        <label class="form-label">תוויות</label>
+        <div class="flex flex-wrap gap-4 mt-1">
+          <label class="flex items-center gap-2 cursor-pointer select-none"><input type="checkbox" id="pf-bestseller" class="w-4 h-4 accent-amber-800"/><span class="text-sm font-medium text-gray-700">נמכר ביותר</span></label>
+          <label class="flex items-center gap-2 cursor-pointer select-none"><input type="checkbox" id="pf-new" class="w-4 h-4 accent-amber-800"/><span class="text-sm font-medium text-gray-700">מוצר חדש</span></label>
+          <label class="flex items-center gap-2 cursor-pointer select-none"><input type="checkbox" id="pf-active" checked class="w-4 h-4 accent-amber-800"/><span class="text-sm font-medium text-gray-700">פעיל (מוצג בתפריט)</span></label>
+        </div>
+      </div>
+    </div>
+    <div class="flex gap-3 p-5 border-t border-gray-100 flex-shrink-0">
+      <button onclick="saveProduct()" class="btn-primary flex-1 justify-center py-3 text-base">שמור</button>
+      <button onclick="closeProductForm()" class="btn-outline flex-1 justify-center py-3 text-base">ביטול</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { supabase as supabaseClient } from './supabase.js';
+window.supabaseClient = supabaseClient;
+
+const DAY_NAMES = ['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
+const TAKEN_SLUGS = ['admin','login','register','tafrit','menu','about','help'];
+
+let categories = [];
+let products = [];
+
+let pendingProductsOrder = null;
+let pendingCategoriesOrder = null;
+let editingProductId=null, selectedDietary='', selectedCategories=[];
+let currentSlug='';
+let activeDays = {};
+let dragSrcId=null, dragSrcType=null;
+let currentUser = null;
+let supabaseReady = false;
+
+// ===== SESSION CHECK =====
+(async function checkSession() {
+  try {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (!session) {
+      window.location.href = 'login.html';
+      return;
+    }
+    currentUser = session.user;
+    supabaseReady = true;
+    await loadDataFromSupabase();
+  } catch(e) {
+    console.warn('Supabase session check failed, falling back to localStorage', e);
+    loadFromLocalStorage();
+    initUI();
+  }
+})();
+
+// ===== SUPABASE DATA LOADING =====
+async function loadDataFromSupabase() {
+  try {
+    const userId = currentUser.id;
+
+    // Load all data in parallel
+    const [settingsRes, catsRes, prodsRes, profileRes] = await Promise.all([
+      supabaseClient.from('settings').select('*').eq('user_id', userId).single(),
+      supabaseClient.from('categories').select('*').eq('user_id', userId).order('sort_order'),
+      supabaseClient.from('products').select('*').eq('user_id', userId).order('sort_order'),
+      supabaseClient.from('profiles').select('*').eq('id', userId).single()
+    ]);
+
+    // Settings
+    if (settingsRes.data) {
+      const s = settingsRes.data;
+      currentSlug = s.slug || '';
+      applySettingsToForm(s);
+      // Cache to localStorage
+      localStorage.setItem('tafrit_settings', JSON.stringify(s));
+      if (s.slug) localStorage.setItem('tafrit_slug', s.slug);
+    }
+
+    // Categories
+    if (catsRes.data && catsRes.data.length) {
+      categories = catsRes.data;
+      localStorage.setItem('tafrit_categories', JSON.stringify(categories));
+    }
+
+    // Products
+    if (prodsRes.data && prodsRes.data.length) {
+      products = prodsRes.data;
+      localStorage.setItem('tafrit_products', JSON.stringify(products));
+    }
+
+    // Profile (subscription)
+    if (profileRes.data) {
+      localStorage.setItem('tafrit_profile', JSON.stringify(profileRes.data));
+    }
+
+    initUI();
+  } catch(e) {
+    console.warn('Supabase load failed, falling back to localStorage', e);
+    loadFromLocalStorage();
+    initUI();
+  }
+}
+
+function applySettingsToForm(s) {
+  if (s.business_name) document.getElementById('s-business-name').value = s.business_name;
+  if (s.tagline) document.getElementById('s-tagline').value = s.tagline;
+  if (s.whatsapp) {
+    let wa = s.whatsapp;
+    if (wa.startsWith('972')) wa = '0' + wa.slice(3);
+    document.getElementById('s-whatsapp').value = wa;
+  }
+  if (s.phone) document.getElementById('s-phone').value = s.phone;
+  if (s.pickup_area) document.getElementById('s-area').value = s.pickup_area;
+  if (s.about_text) document.getElementById('s-about').value = s.about_text;
+  if (s.logo_url) document.getElementById('s-logo-url').value = s.logo_url;
+  if (s.about_image_url) document.getElementById('s-about-img-url').value = s.about_image_url;
+  if (s.hero_bg_url) document.getElementById('s-hero-bg-url').value = s.hero_bg_url;
+  if (s.contact_name) document.getElementById('s-contact-name').value = s.contact_name;
+  if (s.logo_url) updatePreviewFromUrl(document.getElementById('s-logo-url'), 'logoPreview', '\uD83E\uDD50');
+  if (s.hero_bg_url) updatePreviewFromUrl(document.getElementById('s-hero-bg-url'), 'heroBgPreview', null);
+  if (s.about_image_url) updatePreviewFromUrl(document.getElementById('s-about-img-url'), 'aboutImgPreview', null);
+  if (s.terms_text) document.getElementById('s-terms').value = s.terms_text;
+  if (s.allow_same_day) document.getElementById('s-allow-same-day').checked = true;
+  if (s.banner_text) document.getElementById('s-banner').value = s.banner_text;
+  if (s.banner_active) document.getElementById('s-banner-active').checked = true;
+  if (s.active_days && Object.keys(s.active_days).length) {
+    activeDays = s.active_days;
+    const btns = document.querySelectorAll('.day-btn');
+    Object.keys(activeDays).map(Number).forEach(idx => {
+      if (btns[idx]) {
+        btns[idx].style.background = 'var(--accent)';
+        btns[idx].style.borderColor = 'var(--accent)';
+        btns[idx].style.color = 'white';
+      }
+    });
+    document.getElementById('defaultHoursRow').style.display = 'block';
+    renderHoursRows();
+    updateHoursPreview();
+  }
+}
+
+function initUI() {
+  switchTab('products');
+  renderProducts();
+  renderCategories();
+  updateSlugDisplay();
+  initBannerView();
+  updateBusinessView();
+  initSubscription();
+}
+
+// ===== VIEW MENU =====
+function viewMenu() {
+  if (!currentSlug) {
+    alert('עדיין לא הגדרת לינק לתפריט.\nעבור להגדרות ← כתובת הלינק הציבורי.');
+    switchTab('settings');
+    setTimeout(()=>{document.getElementById('s-slug').focus();document.getElementById('s-slug').scrollIntoView({behavior:'smooth',block:'center'})},200);
+    return;
+  }
+  window.open(currentSlug ? 'menu.html?slug=' + encodeURIComponent(currentSlug) : 'menu.html', '_blank');
+}
+
+function switchTab(tab) {
+  ['products','categories','business','settings'].forEach(t=>{
+    const section=document.getElementById('section-'+t);
+    const btn=document.getElementById('tab-'+t);
+    if (!section||!btn) return;
+    if (t===tab) {
+      section.style.display='block';
+      section.style.animation='none';
+      requestAnimationFrame(()=>{ section.style.animation=''; section.style.animation='slideUp 0.2s ease'; });
+      btn.classList.add('active'); btn.classList.remove('tab-inactive');
+    } else {
+      section.style.display='none';
+      btn.classList.remove('active'); btn.classList.add('tab-inactive');
+    }
+  });
+}
+
+// ===== BANNER =====
+function updateBannerPreview() {
+  const active = document.getElementById('s-banner-active').checked;
+  const text = document.getElementById('s-banner').value;
+  const preview = document.getElementById('bannerPreview');
+  if (active && text.trim()) { preview.textContent=text; preview.style.display='block'; }
+  else { preview.style.display='none'; }
+}
+
+// ===== SLUG =====
+function validateSlug(input) {
+  const val = input.value;
+  const errEl = document.getElementById('slug-err');
+  const previewEl = document.getElementById('slug-preview');
+  const warnEl = document.getElementById('slug-warning');
+  const okEl = document.getElementById('slug-save-ok');
+  errEl.style.display='none'; previewEl.style.display='none'; okEl.style.display='none';
+  if (!val) { warnEl.style.display='none'; return; }
+  if (/[\u0590-\u05FF]/.test(val)) { errEl.textContent='⚠️ כתובת הלינק יכולה להכיל רק אותיות באנגלית, מספרים ומקפים (-)'; errEl.style.display='block'; return; }
+  if (!/^[a-z0-9-]*$/.test(val)) { errEl.textContent='⚠️ תווים לא חוקיים — אותיות קטנות, מספרים ומקפים בלבד'; errEl.style.display='block'; return; }
+  if (TAKEN_SLUGS.includes(val) && val!==currentSlug) { errEl.textContent='⚠️ כתובת זו כבר בשימוש — נסה כתובת אחרת'; errEl.style.display='block'; return; }
+  previewEl.textContent='🔗 mytafrit.co.il/menu/'+val;
+  previewEl.style.display='block';
+  warnEl.style.display=(!val||val===currentSlug)?'none':'block';
+}
+
+function formatSlug(input) {
+  input.value=input.value.toLowerCase().replace(/[^a-z0-9-]/g,'').replace(/-+/g,'-').replace(/^-|-$/g,'');
+  validateSlug(input);
+}
+
+// ===== WHATSAPP =====
+function formatWhatsapp(input) {
+  input.value = input.value.replace(/[^0-9-]/g, '');
+  const raw = input.value.replace(/\D/g,'');
+  const preview = document.getElementById('whatsapp-preview');
+  if (raw.startsWith('05') && raw.length >= 10) {
+    input.dataset.formatted = '972' + raw.slice(1);
+    input.dataset.valid = 'true';
+    preview.textContent = '✓ פורמט וואטסאפ: ' + input.dataset.formatted;
+    preview.className = 'text-xs text-green-600 mt-1'; preview.style.display='block';
+    input.classList.remove('error');
+  } else if (raw.length > 0) {
+    input.dataset.valid = 'false';
+    preview.textContent = 'מספר לא תקין — הכנס מספר ישראלי (05X-XXXXXXX)';
+    preview.className = 'text-xs text-red-500 mt-1'; preview.style.display='block';
+  } else {
+    input.dataset.valid = '';
+    preview.style.display='none';
+  }
+}
+
+// ===== HOURS BUILDER =====
+let defaultHours = { open: '', close: '' };
+// dayOverrides: days that have been manually edited and differ from default
+let dayOverrides = {};
+
+function toggleDay(idx, btn) {
+  if (activeDays[idx]) {
+    delete activeDays[idx];
+    delete dayOverrides[idx];
+    btn.style.background='white'; btn.style.borderColor='var(--border)'; btn.style.color='var(--text-3)';
+  } else {
+    activeDays[idx] = { open: defaultHours.open, close: defaultHours.close };
+    btn.style.background='var(--accent)'; btn.style.borderColor='var(--accent)'; btn.style.color='white';
+  }
+  const hasDays = Object.keys(activeDays).length > 0;
+  document.getElementById('defaultHoursRow').style.display = hasDays ? 'block' : 'none';
+  renderHoursRows();
+  updateHoursPreview();
+}
+
+function handleDefaultTimeInput(field, input) {
+  const val = input.value;
+  defaultHours[field] = val;
+  Object.keys(activeDays).map(Number).forEach(idx => {
+    if (!dayOverrides[idx] || !dayOverrides[idx][field]) {
+      activeDays[idx][field] = val;
+    }
+  });
+  renderHoursRows();
+  updateHoursPreview();
+}
+
+function renderHoursRows() {
+  const container = document.getElementById('hoursPerDay');
+  const sortedDays = Object.keys(activeDays).map(Number).sort((a,b)=>a-b);
+  if (!sortedDays.length) { container.innerHTML=''; return; }
+
+  container.innerHTML = sortedDays.map(idx => {
+    const isOverridden = dayOverrides[idx];
+    return `
+    <div class="rounded-xl p-3 flex items-center gap-3 flex-wrap" style="animation:popIn 0.2s ease;background:${isOverridden?'#fffbeb':'#f9fafb'};border:1.5px solid ${isOverridden?'#fde68a':'#f3f4f6'}">
+      <span class="font-bold text-amber-900 text-sm w-16 flex-shrink-0 text-right">יום ${DAY_NAMES[idx]}</span>
+      ${isOverridden ? `
+      <div style="display:flex;align-items:center;gap:10px;flex:1;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:5px;">
+          <span style="font-size:12px;color:var(--text-3);">סגירה</span>
+          <input type="time" id="close-${idx}" class="form-input" style="width:120px;direction:ltr;" value="${activeDays[idx].close}"
+            oninput="handleDayTimeInput(${idx},'close',this)"/>
+        </div>
+        <span style="color:var(--border);">—</span>
+        <div style="display:flex;align-items:center;gap:5px;">
+          <span style="font-size:12px;color:var(--text-3);">פתיחה</span>
+          <input type="time" id="open-${idx}" class="form-input" style="width:120px;direction:ltr;" value="${activeDays[idx].open}"
+            oninput="handleDayTimeInput(${idx},'open',this)"/>
+        </div>
+        <button onclick="resetDayOverride(${idx})" style="font-size:12px;color:var(--text-3);background:none;border:none;cursor:pointer;font-family:'Heebo',sans-serif;padding:0;">↺ איפוס</button>
+      </div>` : `
+      <div class="flex-1 text-sm text-gray-400 flex items-center justify-between" style="direction:ltr">
+        <span style="direction:rtl">${activeDays[idx].open && activeDays[idx].close ? `${stripLeadingZero(activeDays[idx].close)}–${stripLeadingZero(activeDays[idx].open)}` : 'ממתין לשעות ברירת מחדל'}</span>
+        <button onclick="overrideDay(${idx})" class="text-xs text-amber-700 hover:text-amber-900 font-semibold transition-colors" style="direction:rtl">ערוך בנפרד</button>
+      </div>`}
+    </div>`;
+  }).join('');
+}
+
+function overrideDay(idx) {
+  if (!dayOverrides[idx]) dayOverrides[idx] = {};
+  dayOverrides[idx].open = true;
+  dayOverrides[idx].close = true;
+  renderHoursRows();
+}
+
+function resetDayOverride(idx) {
+  delete dayOverrides[idx];
+  activeDays[idx] = { open: defaultHours.open, close: defaultHours.close };
+  renderHoursRows();
+  updateHoursPreview();
+}
+
+function handleDayTimeInput(idx, field, input) {
+  const val = input.value;
+  activeDays[idx][field] = val;
+  if (!dayOverrides[idx]) dayOverrides[idx] = {};
+  dayOverrides[idx][field] = true;
+  updateHoursPreview();
+}
+
+function stripLeadingZero(timeStr) {
+  if (!timeStr || !timeStr.includes(':')) return timeStr;
+  const [h,m] = timeStr.split(':');
+  return parseInt(h,10) + ':' + m;
+}
+
+function updateHoursPreview() {
+  const preview = document.getElementById('hoursPreview');
+  const previewText = document.getElementById('hoursPreviewText');
+  const sortedDays = Object.keys(activeDays).map(Number).sort((a,b)=>a-b);
+  if (!sortedDays.length) { preview.style.display='none'; return; }
+
+  const groups = [];
+  for (const idx of sortedDays) {
+    const d = activeDays[idx];
+    const open = stripLeadingZero(d.open);
+    const close = stripLeadingZero(d.close);
+    // LTR: open on left, close on right
+    const hours = (d.open && d.close) ? `${open}–${close}` : 'שעות לא הוגדרו';
+    const last = groups[groups.length-1];
+    if (last && last.hours===hours && last.lastIdx===idx-1) {
+      last.endDay=idx; last.lastIdx=idx;
+    } else {
+      groups.push({startDay:idx,endDay:idx,lastIdx:idx,hours});
+    }
+  }
+
+  const lines = groups.map(g => {
+    const dayStr = g.startDay===g.endDay
+      ? `יום ${DAY_NAMES[g.startDay]}`
+      : `יום ${DAY_NAMES[g.startDay]} – יום ${DAY_NAMES[g.endDay]}`;
+    // Display: day name (RTL) + hours (LTR)
+    return `${dayStr}: \u200E${g.hours}\u200F`;
+  });
+  previewText.textContent = lines.join('\n');
+  preview.style.display='block';
+}
+
+// ===== IMAGE COMPRESSION =====
+async function compressImage(file, maxKB) {
+  return new Promise(resolve=>{
+    const img=new Image(), url=URL.createObjectURL(file);
+    img.onload=()=>{
+      URL.revokeObjectURL(url);
+      const canvas=document.createElement('canvas');
+      let {width,height}=img;
+      const maxDim=1200;
+      if (width>maxDim||height>maxDim){if(width>height){height=Math.round(height*maxDim/width);width=maxDim;}else{width=Math.round(width*maxDim/height);height=maxDim;}}
+      canvas.width=width;canvas.height=height;
+      canvas.getContext('2d').drawImage(img,0,0,width,height);
+      let q=0.85;
+      const go=()=>{const d=canvas.toDataURL('image/jpeg',q);const s=Math.round((d.length*3)/4/1024);if(s<=maxKB||q<=0.3){resolve({dataUrl:d,sizeKB:s});}else{q-=0.08;go();}};
+      go();
+    };
+    img.src=url;
+  });
+}
+
+async function handleImageUpload(input,previewId,urlFieldId,infoId,maxKB){
+  const file=input.files[0];if(!file)return;
+  const origKB=Math.round(file.size/1024);
+  const {dataUrl,sizeKB}=await compressImage(file,maxKB);
+  const p=document.getElementById(previewId);
+  p.innerHTML=`<img src="${dataUrl}" class="w-full h-full object-cover" alt=""/>`;
+  p.className='w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 border border-amber-100';
+  if(urlFieldId)document.getElementById(urlFieldId).value=dataUrl;
+  if(infoId){const el=document.getElementById(infoId);el.textContent=origKB>maxKB?`✓ נדחסה מ-${origKB}KB ל-${sizeKB}KB`:`✓ הועלתה (${sizeKB}KB)`;el.style.display='block';setTimeout(()=>el.style.display='none',4000);}
+}
+
+function updatePreviewFromUrl(input,previewId,fallback){
+  const url=input.value.trim(),el=document.getElementById(previewId);
+  if(!url){el.innerHTML=fallback||'<svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>';return;}
+  el.innerHTML=`<img src="${url}" class="w-full h-full object-cover" alt="" onerror="this.parentElement.innerHTML='❌'"/>`;
+}
+
+// ===== DRAG & DROP =====
+function setupDrag(listEl, type) {
+  listEl.querySelectorAll('.drag-item').forEach(item=>{
+    item.addEventListener('dragstart',e=>{
+      dragSrcId=item.dataset.id; dragSrcType=type;
+      e.dataTransfer.effectAllowed='move';
+      setTimeout(()=>item.classList.add('drag-source'),0);
+    });
+    item.addEventListener('dragend',()=>{
+      item.classList.remove('drag-source');
+      listEl.querySelectorAll('.drag-over-above,.drag-over-below').forEach(el=>el.classList.remove('drag-over-above','drag-over-below'));
+    });
+    item.addEventListener('dragover',e=>{
+      e.preventDefault();
+      listEl.querySelectorAll('.drag-over-above,.drag-over-below').forEach(el=>el.classList.remove('drag-over-above','drag-over-below'));
+      const rect=item.getBoundingClientRect();
+      item.classList.add(e.clientY<rect.top+rect.height/2?'drag-over-above':'drag-over-below');
+    });
+    item.addEventListener('dragleave',()=>item.classList.remove('drag-over-above','drag-over-below'));
+    item.addEventListener('drop',e=>{
+      e.preventDefault();
+      item.classList.remove('drag-over-above','drag-over-below');
+      if(!dragSrcId||dragSrcType!==type)return;
+      const arr=type==='product'?(pendingProductsOrder||[...products]):(pendingCategoriesOrder||[...categories]);
+      const srcIdx=arr.findIndex(x=>String(x.id)===String(dragSrcId));
+      const tgtIdx=arr.findIndex(x=>String(x.id)===item.dataset.id);
+      if(srcIdx===-1||tgtIdx===-1||srcIdx===tgtIdx)return;
+      const rect=item.getBoundingClientRect();
+      const before=e.clientY<rect.top+rect.height/2;
+      const[moved]=arr.splice(srcIdx,1);
+      const newIdx=arr.findIndex(x=>String(x.id)===item.dataset.id);
+      arr.splice(before?newIdx:newIdx+1,0,moved);
+      if(type==='product'){pendingProductsOrder=arr;document.getElementById('saveProductsOrderBtn').style.display='inline-flex';}
+      else{pendingCategoriesOrder=arr;document.getElementById('saveCatsOrderBtn').style.display='inline-flex';}
+      const parent=item.parentNode;
+      const srcEl=[...parent.querySelectorAll('.drag-item')].find(el=>el.dataset.id===String(dragSrcId));
+      if(before)parent.insertBefore(srcEl,item);else item.after(srcEl);
+      dragSrcId=null;
+    });
+  });
+}
+
+// ===== TOOLTIP =====
+function showTooltip(e, text) {
+  var el = document.getElementById('floatingTooltip');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'floatingTooltip';
+    el.style.cssText = 'position:fixed;background:#374151;color:white;font-size:12px;font-weight:600;padding:6px 12px;border-radius:8px;z-index:9999;pointer-events:none;font-family:Heebo,sans-serif;white-space:nowrap;animation:fadeIn 0.15s ease';
+    document.body.appendChild(el);
+  }
+  el.textContent = text;
+  el.style.display = 'block';
+  el.style.top = (e.clientY - 36) + 'px';
+  el.style.left = (e.clientX - el.offsetWidth / 2) + 'px';
+  clearTimeout(el._t);
+  el._t = setTimeout(function() { el.style.display = 'none'; }, 1500);
+}
+
+// ===== SYNC DATA (Supabase + localStorage fallback) =====
+function gatherSettingsData() {
+  const sortedDays = Object.keys(activeDays).map(Number).sort((a,b)=>a-b);
+  let hoursStr = '';
+  if (sortedDays.length) {
+    const groups = [];
+    for (const idx of sortedDays) {
+      const d = activeDays[idx];
+      const open = stripLeadingZero(d.open);
+      const close = stripLeadingZero(d.close);
+      const hours = (d.open && d.close) ? close+'–'+open : '';
+      const last = groups[groups.length-1];
+      if (last && last.hours===hours && last.lastIdx===idx-1) { last.endDay=idx; last.lastIdx=idx; }
+      else { groups.push({startDay:idx,endDay:idx,lastIdx:idx,hours}); }
+    }
+    hoursStr = groups.map(g => {
+      const dayStr = g.startDay===g.endDay ? DAY_NAMES[g.startDay] : DAY_NAMES[g.startDay]+'–'+DAY_NAMES[g.endDay];
+      return dayStr+': '+g.hours;
+    }).join(' | ');
+  }
+  return {
+    business_name: document.getElementById('s-business-name').value.trim(),
+    tagline: document.getElementById('s-tagline').value.trim(),
+    whatsapp: (function(){ var r=document.getElementById('s-whatsapp').value.trim().replace(/\D/g,''); return r.startsWith('05')?'972'+r.slice(1):r; })(),
+    phone: document.getElementById('s-phone').value.trim(),
+    logo_url: document.getElementById('s-logo-url').value.trim(),
+    hero_bg_url: document.getElementById('s-hero-bg-url').value.trim(),
+    contact_name: document.getElementById('s-contact-name').value.trim(),
+    about_image_url: document.getElementById('s-about-img-url').value.trim(),
+    about_text: document.getElementById('s-about').value.trim(),
+    working_hours: hoursStr,
+    pickup_area: document.getElementById('s-area').value.trim(),
+    banner_text: document.getElementById('s-banner').value.trim(),
+    banner_active: document.getElementById('s-banner-active').checked,
+    terms_text: document.getElementById('s-terms').value.trim(),
+    active_days: JSON.parse(JSON.stringify(activeDays)),
+    allow_same_day: document.getElementById('s-allow-same-day').checked,
+  };
+}
+
+async function syncSettingsToLocalStorage() {
+  const data = gatherSettingsData();
+  localStorage.setItem('tafrit_settings', JSON.stringify(data));
+  if (supabaseReady && currentUser) {
+    try {
+      await supabaseClient.from('settings')
+        .update(data)
+        .eq('user_id', currentUser.id);
+    } catch(e) { console.warn('Settings sync to Supabase failed', e); }
+  }
+}
+
+async function syncProductsToLocalStorage() {
+  localStorage.setItem('tafrit_products', JSON.stringify(products));
+  if (supabaseReady && currentUser) {
+    // Sort order is saved per-product via sort_order field
+    try {
+      const updates = products.map((p, i) => ({
+        id: p.id,
+        user_id: currentUser.id,
+        name: p.name,
+        description: p.description || null,
+        price: p.price || 0,
+        image_url: p.image_url || null,
+        allergens: p.allergens || null,
+        dietary_type: p.dietary_type || null,
+        is_active: p.is_active !== false,
+        is_bestseller: !!p.is_bestseller,
+        is_new: !!p.is_new,
+        sort_order: i,
+        categories: p.categories || [],
+      }));
+      await supabaseClient.from('products').upsert(updates, { onConflict: 'id' });
+    } catch(e) { console.warn('Products sync to Supabase failed', e); }
+  }
+}
+
+async function syncCategoriesToLocalStorage() {
+  localStorage.setItem('tafrit_categories', JSON.stringify(categories));
+  if (supabaseReady && currentUser) {
+    try {
+      const updates = categories.map((c, i) => ({
+        id: c.id,
+        user_id: currentUser.id,
+        name: c.name,
+        sort_order: i,
+      }));
+      await supabaseClient.from('categories').upsert(updates, { onConflict: 'id' });
+    } catch(e) { console.warn('Categories sync to Supabase failed', e); }
+  }
+}
+
+// ===== GLOBAL SUCCESS TOAST =====
+function showSuccess(msg) {
+  const toast = document.getElementById('globalSuccessToast');
+  if (!toast) return;
+  toast.textContent = '✓ ' + (msg || 'נשמר בהצלחה!');
+  toast.style.display = 'block';
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => { toast.style.display = 'none'; }, 2500);
+}
+
+function saveProductsOrder(){
+  if(pendingProductsOrder){products.length=0;products.push(...pendingProductsOrder);pendingProductsOrder=null;}
+  const btn=document.getElementById('saveProductsOrderBtn');
+  btn.style.display='none';
+  syncProductsToLocalStorage();
+  showSuccess('סדר המוצרים נשמר!');
+}
+
+function saveCategoriesOrder(){
+  if(pendingCategoriesOrder){categories.length=0;categories.push(...pendingCategoriesOrder);pendingCategoriesOrder=null;}
+  const btn=document.getElementById('saveCatsOrderBtn');
+  btn.style.display='none';
+  syncCategoriesToLocalStorage();
+  showSuccess('סדר הקטגוריות נשמר!');
+}
+
+// ===== RENDER PRODUCTS =====
+function renderProducts(){
+  const list=document.getElementById('productsList'),empty=document.getElementById('productsEmpty');
+  const search=document.getElementById('productSearch').value.trim().toLowerCase();
+  let filtered=search?products.filter(p=>p.name.toLowerCase().includes(search)||(p.description||'').toLowerCase().includes(search)):products;
+  document.getElementById('productCount').textContent=products.length;
+  if(!products.length){list.innerHTML='';empty.innerHTML='<p class="text-lg text-gray-400">אין מוצרים עדיין</p><p class="text-sm text-gray-400 mt-1">הוסף את המוצר הראשון!</p>';empty.style.display='block';return;}
+  if(!filtered.length){list.innerHTML='';empty.innerHTML='<p class="text-lg text-gray-400">לא נמצאו מוצרים</p>';empty.style.display='block';return;}
+  empty.style.display='none';
+  list.innerHTML=filtered.map(p=>{
+    const catNames=(p.categories||[]).map(cid=>categories.find(c=>String(c.id)===String(cid))?.name||'').filter(Boolean).join(', ');
+    const ds=p.dietary_type==='חלבי'?'background:#dbeafe;color:#1e40af':p.dietary_type==='בשרי'?'background:#fce7f3;color:#9d174d':'background:#f3f4f6;color:#374151';
+    return `<div class="card drag-item px-3 py-2.5 flex items-center gap-3" draggable="true" data-id="${p.id}" style="${p.is_active?'':'opacity:0.45;filter:grayscale(30%)'}">
+      <div class="drag-handle"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="9" y1="18" x2="9" y2="6"/><line x1="15" y1="18" x2="15" y2="6"/></svg></div>
+      <div class="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 ${p.image_url?'':'bg-amber-50 flex items-center justify-center text-xl'}">
+        ${p.image_url?`<img src="${p.image_url}" class="w-full h-full object-cover" alt="${p.name}"/>`:'🥐'}
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-1.5 flex-wrap">
+          <span class="font-bold text-gray-900 text-sm">${p.name}</span>
+          ${p.is_bestseller?`<span style="background:var(--accent);color:white;font-size:9px;font-weight:700;padding:1px 6px;border-radius:99px">נמכר ביותר</span>`:''}
+          ${p.is_new?`<span style="background:#065f46;color:white;font-size:9px;font-weight:700;padding:1px 6px;border-radius:99px">חדש</span>`:''}
+        </div>
+        <div class="flex items-center gap-2 mt-0.5 flex-wrap">
+          <span class="text-amber-800 font-bold text-sm">₪${p.price}</span>
+          ${catNames?`<span class="text-gray-400 text-xs">${catNames}</span>`:''}
+          ${p.dietary_type?`<span style="${ds};font-size:9px;font-weight:700;padding:1px 6px;border-radius:99px">${p.dietary_type}</span>`:''}
+        </div>
+      </div>
+      <div class="flex gap-0.5 flex-shrink-0">
+        <button class="btn-ghost text-gray-500" onclick="openProductForm('${p.id}')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+        <button class="btn-danger" onclick="deleteProduct('${p.id}')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg></button>
+      </div>
+    </div>`;
+  }).join('');
+  setupDrag(list,'product');
+}
+
+// ===== PRODUCT FORM =====
+function openProductForm(id){
+  editingProductId=id;selectedDietary='';selectedCategories=[];
+  ['pf-name','pf-desc','pf-price','pf-img-url','pf-allergens'].forEach(f=>{const el=document.getElementById(f);el.value='';el.style.borderColor='';});
+  document.getElementById('pf-bestseller').checked=false;
+  document.getElementById('pf-new').checked=false;
+  document.getElementById('pf-active').checked=true;
+  document.getElementById('pf-img-preview').innerHTML='🥐';
+  document.getElementById('pf-img-preview').className='w-16 h-16 rounded-xl overflow-hidden bg-amber-50 flex items-center justify-center text-2xl border border-amber-100 flex-shrink-0';
+  document.getElementById('pf-cat-warning').style.display='none';
+  document.getElementById('pf-img-info').style.display='none';
+  document.querySelectorAll('.dietary-btn').forEach(b=>{b.style.borderColor='var(--border)';b.style.background='white';b.style.color='var(--text-2)';});
+  if(id){
+    const p=products.find(x=>String(x.id)===String(id));
+    document.getElementById('productFormTitle').textContent='עריכת מוצר';
+    document.getElementById('pf-name').value=p.name;
+    document.getElementById('pf-desc').value=p.description||'';
+    document.getElementById('pf-price').value=p.price;
+    document.getElementById('pf-allergens').value=p.allergens||'';
+    document.getElementById('pf-bestseller').checked=p.is_bestseller;
+    document.getElementById('pf-new').checked=p.is_new;
+    document.getElementById('pf-active').checked=p.is_active;
+    selectedCategories=[...(p.categories||[])];
+    selectedDietary=p.dietary_type||'';
+    if(p.image_url){document.getElementById('pf-img-url').value=p.image_url;document.getElementById('pf-img-preview').innerHTML=`<img src="${p.image_url}" class="w-full h-full object-cover" alt=""/>`;document.getElementById('pf-img-preview').className='w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 border border-amber-100';}
+    if(selectedDietary){const map={'חלבי':'dt-chalavi','פרווה':'dt-parve','בשרי':'dt-basari'};const b=document.getElementById(map[selectedDietary]);if(b){b.style.borderColor='var(--accent)';b.style.background='var(--accent-light)';b.style.color='var(--accent-dark)';}}
+  }else{document.getElementById('productFormTitle').textContent='מוצר חדש';}
+  renderCategoryChips();
+  document.getElementById('productFormOverlay').style.display='flex';
+  document.body.style.overflow='hidden';
+  setTimeout(()=>{const modalBody=document.querySelector('#productFormOverlay .overflow-y-auto');if(modalBody)modalBody.scrollTop=0;},50);
+}
+
+function closeProductForm(){document.getElementById('productFormOverlay').style.display='none';document.body.style.overflow='';}
+
+function renderCategoryChips(){
+  const c=document.getElementById('pf-categories');
+  if(!categories.length){c.innerHTML='<p style="font-size:12px;color:#ef4444;font-weight:600;">אין קטגוריות — יש להוסיף קטגוריות תחילה</p>';return;}
+  c.innerHTML=categories.map(cat=>{const sel=selectedCategories.some(sc=>String(sc)===String(cat.id));return`<button type="button" onclick="toggleCategory('${cat.id}',this)" class="px-3 py-1.5 rounded-xl border-2 text-sm font-semibold transition-all cursor-pointer" style="${sel?'background:var(--accent);color:white;border-color:#92400e':'background:white;color:#374151;border-color:#e5e7eb'}">${sel?'✓ ':''}${cat.name}</button>`;}).join('');
+}
+
+function toggleCategory(id,el){
+  if(selectedCategories.some(x=>String(x)===String(id))){selectedCategories=selectedCategories.filter(x=>String(x)!==String(id));el.style.background='white';el.style.color='#374151';el.style.borderColor='#e5e7eb';el.textContent=categories.find(c=>String(c.id)===String(id))?.name||'';}
+  else{selectedCategories.push(id);el.style.background='var(--accent)';el.style.color='white';el.style.borderColor='var(--accent)';el.textContent='✓ '+(categories.find(c=>String(c.id)===String(id))?.name||'');}
+  document.getElementById('pf-cat-warning').style.display=selectedCategories.length?'none':'block';
+}
+
+function selectDietary(type){
+  selectedDietary=selectedDietary===type?'':type;
+  const map={'חלבי':'dt-chalavi','פרווה':'dt-parve','בשרי':'dt-basari'};
+  Object.values(map).forEach(btnId=>{const b=document.getElementById(btnId);b.style.borderColor='var(--border)';b.style.background='white';b.style.color='var(--text-2)';});
+  if(selectedDietary&&map[selectedDietary]){const b=document.getElementById(map[selectedDietary]);b.style.borderColor='var(--accent)';b.style.background='var(--accent-light)';b.style.color='var(--accent-dark)';}
+}
+
+async function saveProduct(){
+  const name=document.getElementById('pf-name').value.trim();
+  const price=parseFloat(document.getElementById('pf-price').value);
+  if(!name){document.getElementById('pf-name').focus();document.getElementById('pf-name').style.borderColor='#dc2626';return;}
+  if(!selectedCategories.length){document.getElementById('pf-cat-warning').style.display='block';return;}
+  const data={name,description:document.getElementById('pf-desc').value.trim(),price:isNaN(price)?0:price,categories:[...selectedCategories],dietary_type:selectedDietary,image_url:document.getElementById('pf-img-url').value.trim(),allergens:document.getElementById('pf-allergens').value.trim(),is_bestseller:document.getElementById('pf-bestseller').checked,is_new:document.getElementById('pf-new').checked,is_active:document.getElementById('pf-active').checked};
+  const isEdit = !!editingProductId;
+  if(editingProductId){
+    const idx=products.findIndex(p=>String(p.id)===String(editingProductId));
+    if(idx!==-1) products[idx]={...products[idx],...data};
+  } else {
+    const newId = crypto.randomUUID();
+    const newProduct = {id:newId, sort_order:products.length, ...data};
+    if (supabaseReady && currentUser) {
+      newProduct.user_id = currentUser.id;
+      try {
+        const { data: inserted } = await supabaseClient.from('products').insert(newProduct).select().single();
+        if (inserted) { products.push(inserted); syncProductsToLocalStorage(); renderProducts(); closeProductForm(); showSuccess("המוצר נוסף בהצלחה!"); return; }
+      } catch(e) { console.warn('Supabase insert product failed', e); }
+    }
+    products.push(newProduct);
+  }
+  syncProductsToLocalStorage();
+  renderProducts();closeProductForm();showSuccess(isEdit?"המוצר עודכן בהצלחה!":"המוצר נוסף בהצלחה!");
+}
+
+async function deleteProduct(id){const p=products.find(x=>String(x.id)===String(id));if(!p||!confirm(`למחוק את "${p.name}"?`))return;products=products.filter(x=>String(x.id)!==String(id));if(supabaseReady){try{await supabaseClient.from('products').delete().eq('id',id);}catch(e){console.warn('Supabase delete product failed',e);}}syncProductsToLocalStorage();renderProducts();}
+
+// ===== CATEGORIES =====
+function renderCategories(){
+  const list=document.getElementById('categoriesList'),empty=document.getElementById('categoriesEmpty');
+  const search=document.getElementById('categorySearch').value.trim().toLowerCase();
+  document.getElementById('categoryCount').textContent=categories.length;
+  let filtered=search?categories.filter(c=>c.name.toLowerCase().includes(search)):categories;
+  if(!categories.length){
+    list.innerHTML='';
+    empty.style.display='block';
+    empty.innerHTML='<p style="font-weight:600;font-size:15px;color:var(--text-2);">אין קטגוריות עדיין</p><p style="font-size:13px;margin-top:4px;color:var(--text-3);">הוסף את הקטגוריה הראשונה</p>';
+    return;}
+  if(!filtered.length){list.innerHTML='<p class="text-center text-gray-400 py-6 text-sm">לא נמצאו קטגוריות</p>';empty.style.display='none';return;}
+  empty.style.display='none';
+  list.innerHTML=filtered.map((c,i)=>`
+    <div class="flex items-center gap-3 p-3 drag-item" draggable="true" data-id="${c.id}">
+      <div class="drag-handle"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="9" y1="18" x2="9" y2="6"/><line x1="15" y1="18" x2="15" y2="6"/></svg></div>
+      <div id="cat-view-${c.id}" class="flex-1 flex items-center justify-between gap-2">
+        <span class="font-semibold text-gray-800">${c.name}</span>
+        <div class="flex gap-1">
+          <button class="btn-ghost text-gray-500" onclick="startEditCategory('${c.id}')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+          <button class="btn-danger" onclick="deleteCategory('${c.id}')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg></button>
+        </div>
+      </div>
+      <div id="cat-edit-${c.id}" class="flex-1 flex items-center gap-2" style="display:none">
+        <input id="cat-input-${c.id}" class="form-input flex-1" value="${c.name}" onkeydown="if(event.key==='Enter')saveEditCategory('${c.id}')"/>
+        <button class="btn-primary" style="padding:7px 12px" onclick="saveEditCategory('${c.id}')">✓</button>
+        <button class="btn-outline" style="padding:7px 12px" onclick="cancelEditCategory('${c.id}')">✕</button>
+      </div>
+    </div>`).join('');
+  setupDrag(list,'category');
+}
+
+function startNewCategory(){document.getElementById('newCategoryRow').style.display='flex';setTimeout(()=>document.getElementById('newCategoryInput').focus(),50);}
+function cancelNewCategory(){document.getElementById('newCategoryRow').style.display='none';}
+async function saveNewCategory(){const name=document.getElementById('newCategoryInput').value.trim();if(!name)return;const newId=crypto.randomUUID();const newCat={id:newId,name,sort_order:categories.length};if(supabaseReady&&currentUser){newCat.user_id=currentUser.id;try{const{data:inserted}=await supabaseClient.from('categories').insert(newCat).select().single();if(inserted){categories.push(inserted);document.getElementById('newCategoryInput').value='';document.getElementById('newCategoryRow').style.display='none';syncCategoriesToLocalStorage();renderCategories();showSuccess('הקטגוריה נוספה בהצלחה!');return;}}catch(e){console.warn('Supabase insert category failed',e);}}categories.push(newCat);document.getElementById('newCategoryInput').value='';document.getElementById('newCategoryRow').style.display='none';syncCategoriesToLocalStorage();renderCategories();showSuccess('הקטגוריה נוספה בהצלחה!');}
+function startEditCategory(id){document.getElementById('cat-view-'+id).style.display='none';document.getElementById('cat-edit-'+id).style.display='flex';setTimeout(()=>document.getElementById('cat-input-'+id).focus(),50);}
+function cancelEditCategory(id){document.getElementById('cat-view-'+id).style.display='flex';document.getElementById('cat-edit-'+id).style.display='none';}
+async function saveEditCategory(id){const name=document.getElementById('cat-input-'+id).value.trim();if(!name)return;const cat=categories.find(c=>String(c.id)===String(id));if(cat)cat.name=name;if(supabaseReady){try{await supabaseClient.from('categories').update({name}).eq('id',id);}catch(e){console.warn('Supabase update category failed',e);}}syncCategoriesToLocalStorage();renderCategories();showSuccess('הקטגוריה עודכנה בהצלחה!');}
+async function deleteCategory(id){const cat=categories.find(c=>String(c.id)===String(id));if(!cat||!confirm(`למחוק את "${cat.name}"?\nמוצרים המשויכים אליה לא יוצגו תחתיה.`))return;categories=categories.filter(c=>String(c.id)!==String(id));if(supabaseReady){try{await supabaseClient.from('categories').delete().eq('id',id);}catch(e){console.warn('Supabase delete category failed',e);}}syncCategoriesToLocalStorage();renderCategories();}
+
+// ===== LOCALSTORAGE FALLBACK LOADER =====
+function loadFromLocalStorage() {
+  try {
+    const storedProducts = JSON.parse(localStorage.getItem('tafrit_products'));
+    if (storedProducts && storedProducts.length) products = storedProducts;
+  } catch(e) {}
+  try {
+    const storedCategories = JSON.parse(localStorage.getItem('tafrit_categories'));
+    if (storedCategories && storedCategories.length) categories = storedCategories;
+  } catch(e) {}
+  try {
+    const storedSlug = localStorage.getItem('tafrit_slug');
+    if (storedSlug) currentSlug = storedSlug;
+  } catch(e) {}
+  try {
+    const s = JSON.parse(localStorage.getItem('tafrit_settings'));
+    if (s) applySettingsToForm(s);
+  } catch(e) {}
+}
+
+// ===== LINK POPUP =====
+function toggleLinkPopup() {
+  const popup=document.getElementById('linkPopup');
+  const backdrop=document.getElementById('popupBackdrop');
+  if(popup.style.display!=='none'){closeLinkPopup();return;}
+  renderLinkPopup(); popup.style.display='block'; backdrop.style.display='block';
+}
+function closeLinkPopup() {
+  document.getElementById('linkPopup').style.display='none';
+  document.getElementById('popupBackdrop').style.display='none';
+}
+function renderLinkPopup() {
+  const el=document.getElementById('linkPopupContent');
+  if (!currentSlug) {
+    el.innerHTML=`<button onclick="closeLinkPopup();switchTab('settings');setTimeout(()=>{document.getElementById('s-slug').focus();document.getElementById('s-slug').scrollIntoView({behavior:'smooth',block:'center'})},200)" style="width:100%;padding:10px;background:var(--accent);color:white;border:none;border-radius:8px;font-family:'Heebo',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">+ צור לינק לתפריט שלך</button>`;
+  } else {
+    el.innerHTML=`<div style="background:var(--bg);border-radius:8px;padding:8px 10px;margin-bottom:8px;font-size:12px;color:var(--text);word-break:break-all;direction:ltr;text-align:left;">mytafrit.co.il/menu/${currentSlug}</div><button onclick="copyLinkFromPopup()" id="copyPopupBtn" style="width:100%;padding:9px;background:var(--accent);color:white;border:none;border-radius:8px;font-family:'Heebo',sans-serif;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;"><svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" stroke-width="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke-width="2"/></svg>העתק לינק</button>`;
+  }
+}
+function copyLinkFromPopup() {
+  if(!currentSlug)return;
+  navigator.clipboard.writeText('mytafrit.co.il/menu/'+currentSlug).then(()=>{
+    const btn=document.getElementById('copyPopupBtn');if(btn){btn.textContent='✓ הועתק!';setTimeout(()=>renderLinkPopup(),1800);}
+  });
+}
+
+function copySlugLink() {
+  if (!currentSlug) return;
+  const link = 'mytafrit.co.il/menu/' + currentSlug;
+  navigator.clipboard.writeText(link).then(() => {
+    const btn = document.getElementById('copySlugBtn');
+    if (btn) { btn.textContent = '✓ הועתק!'; setTimeout(() => { btn.innerHTML = '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" stroke-width="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke-width="2"/></svg> העתק לינק'; }, 2000); }
+  });
+}
+function shareSlugLink() {
+  if (!currentSlug) return;
+  const link = 'https://mytafrit.co.il/menu/' + currentSlug;
+  if (navigator.share) {
+    navigator.share({ title: 'התפריט שלי', url: link });
+  } else {
+    navigator.clipboard.writeText(link).then(() => alert('הלינק הועתק לשיתוף!'));
+  }
+}
+function updateSlugDisplay() {
+  const row = document.getElementById('slugDisplayRow');
+  const text = document.getElementById('slugDisplayText');
+  if (row && text) {
+    if (currentSlug) {
+      row.style.display = 'block';
+      text.textContent = 'mytafrit.co.il/menu/' + currentSlug;
+    } else {
+      row.style.display = 'none';
+    }
+  }
+}
+
+// ===== BANNER EDIT MODE =====
+let bannerBackup = { text: '', active: false };
+function startEditBanner() {
+  bannerBackup.text = document.getElementById('s-banner').value;
+  bannerBackup.active = document.getElementById('s-banner-active').checked;
+  document.getElementById('s-banner-active').disabled = false;
+  document.getElementById('bannerViewMode').style.display = 'none';
+  document.getElementById('bannerEditMode').style.display = 'block';
+}
+function cancelEditBanner() {
+  document.getElementById('s-banner').value = bannerBackup.text;
+  document.getElementById('s-banner-active').checked = bannerBackup.active;
+  document.getElementById('s-banner-active').disabled = true;
+  updateBannerStatus();
+  document.getElementById('bannerEditMode').style.display = 'none';
+  document.getElementById('bannerViewMode').style.display = 'block';
+  document.getElementById('bannerPreview').style.display = 'none';
+}
+function updateBannerStatus() {
+  const active = document.getElementById('s-banner-active').checked;
+  const statusEl = document.getElementById('bannerStatusText');
+  if (statusEl) {
+    statusEl.textContent = active ? 'פעיל' : 'לא פעיל';
+    statusEl.style.color = active ? '#16a34a' : 'var(--text-3)';
+  }
+}
+
+function saveBanner() {
+  const text = document.getElementById('s-banner').value.trim();
+  document.getElementById('s-banner-active').disabled = true;
+  document.getElementById('bannerEditMode').style.display = 'none';
+  document.getElementById('bannerViewMode').style.display = 'block';
+  const currentText = document.getElementById('bannerCurrentText');
+  if (currentText) currentText.textContent = text || 'אין טקסט באנר';
+  syncSettingsToLocalStorage();
+  const ok = document.getElementById('bannerSaveSuccess');
+  ok.style.display = 'block';
+  setTimeout(() => ok.style.display = 'none', 2500);
+}
+
+// ===== SLUG EDIT MODE =====
+let slugBackup = '';
+function startEditSlug() {
+  slugBackup = document.getElementById('s-slug').value;
+  document.getElementById('slugEditBtn').style.display = 'none';
+  document.getElementById('slugInputRow').style.display = 'block';
+}
+function cancelEditSlug() {
+  document.getElementById('s-slug').value = slugBackup;
+  document.getElementById('slugInputRow').style.display = 'none';
+  document.getElementById('slugEditBtn').style.display = 'inline-flex';
+  document.getElementById('slug-err').style.display = 'none';
+  document.getElementById('slug-preview').style.display = 'none';
+  document.getElementById('slug-warning').style.display = 'none';
+}
+
+function saveSlug() {
+  const val = document.getElementById('s-slug').value.trim();
+  const errEl = document.getElementById('slug-err');
+  const okEl = document.getElementById('slug-save-ok');
+  errEl.style.display = 'none';
+  if (!val) { errEl.textContent='⚠️ כתובת הלינק היא שדה חובה'; errEl.style.display='block'; return; }
+  if (/[֐-׿]/.test(val) || !/^[a-z0-9-]*$/.test(val)) {
+    errEl.textContent='⚠️ כתובת הלינק יכולה להכיל רק אותיות באנגלית, מספרים ומקפים';
+    errEl.style.display='block'; return;
+  }
+  if (TAKEN_SLUGS.includes(val) && val !== currentSlug) {
+    errEl.textContent='⚠️ כתובת זו כבר בשימוש — נסה כתובת אחרת';
+    errEl.style.display='block'; return;
+  }
+  if (val === currentSlug) {
+    cancelEditSlug(); return;
+  }
+  if (currentSlug) {
+    const ok = confirm(`⚠️ שינוי הלינק\n\nלינק נוכחי: mytafrit.co.il/menu/${currentSlug}\nלינק חדש: mytafrit.co.il/menu/${val}\n\nהלינק הקודם יפסיק לעבוד!\n\nלהמשיך?`);
+    if (!ok) return;
+  }
+  currentSlug = val;
+  updateSlugDisplay();
+  document.getElementById('slug-warning').style.display = 'none';
+  document.getElementById('slug-preview').style.display = 'none';
+  document.getElementById('slugInputRow').style.display = 'none';
+  document.getElementById('slugEditBtn').style.display = 'inline-flex';
+  localStorage.setItem('tafrit_slug', currentSlug);
+  if (supabaseReady && currentUser) {
+    supabaseClient.from('settings').update({ slug: currentSlug }).eq('user_id', currentUser.id).then().catch(e => console.warn('Slug save failed', e));
+  }
+  okEl.style.display = 'block';
+  setTimeout(() => okEl.style.display = 'none', 2500);
+}
+
+// ===== BUSINESS EDIT MODE =====
+let _businessBackup = {};
+function startEditBusiness() {
+  document.getElementById('businessEditBtn').style.display = 'none';
+  document.getElementById('businessSaveBtn').style.display = 'inline-flex';
+  document.getElementById('businessCancelBtn').style.display = 'inline-flex';
+  document.getElementById('businessViewMode').style.display = 'none';
+  document.getElementById('businessEditMode').style.display = 'flex';
+  // Save backup
+  _businessBackup = {
+    name: document.getElementById('s-business-name').value,
+    tagline: document.getElementById('s-tagline').value,
+    whatsapp: document.getElementById('s-whatsapp').value,
+    phone: document.getElementById('s-phone').value,
+    area: document.getElementById('s-area').value,
+    about: document.getElementById('s-about').value,
+    logoUrl: document.getElementById('s-logo-url').value,
+    heroUrl: document.getElementById('s-hero-bg-url').value,
+    contactName: document.getElementById('s-contact-name').value,
+    aboutUrl: document.getElementById('s-about-img-url').value,
+    terms: document.getElementById('s-terms').value,
+    allowSameDay: document.getElementById('s-allow-same-day').checked,
+    activeDaysCopy: JSON.parse(JSON.stringify(activeDays)),
+    dayOverridesCopy: JSON.parse(JSON.stringify(dayOverrides)),
+    defaultHoursCopy: JSON.parse(JSON.stringify(defaultHours)),
+  };
+  autoResizeTextarea(document.getElementById('s-about'));
+}
+function cancelEditBusiness() {
+  document.getElementById('businessEditBtn').style.display = 'inline-flex';
+  document.getElementById('businessSaveBtn').style.display = 'none';
+  document.getElementById('businessCancelBtn').style.display = 'none';
+  document.getElementById('businessViewMode').style.display = 'block';
+  document.getElementById('businessEditMode').style.display = 'none';
+  // Restore backup
+  if (_businessBackup && Object.keys(_businessBackup).length) {
+    document.getElementById('s-business-name').value = _businessBackup.name || '';
+    document.getElementById('s-tagline').value = _businessBackup.tagline || '';
+    document.getElementById('s-whatsapp').value = _businessBackup.whatsapp || '';
+    document.getElementById('s-phone').value = _businessBackup.phone || '';
+    document.getElementById('s-area').value = _businessBackup.area || '';
+    document.getElementById('s-about').value = _businessBackup.about || '';
+    document.getElementById('s-logo-url').value = _businessBackup.logoUrl || '';
+    document.getElementById('s-hero-bg-url').value = _businessBackup.heroUrl || '';
+    document.getElementById('s-contact-name').value = _businessBackup.contactName || '';
+    document.getElementById('s-about-img-url').value = _businessBackup.aboutUrl || '';
+    document.getElementById('s-terms').value = _businessBackup.terms || '';
+    document.getElementById('s-allow-same-day').checked = !!_businessBackup.allowSameDay;
+    if (_businessBackup.activeDaysCopy) {
+      activeDays = _businessBackup.activeDaysCopy;
+      dayOverrides = _businessBackup.dayOverridesCopy;
+      defaultHours = _businessBackup.defaultHoursCopy;
+      // Reset day buttons
+      document.querySelectorAll('.day-btn').forEach((btn,i) => {
+        if (activeDays[i]) { btn.style.background='var(--accent)';btn.style.borderColor='var(--accent)';btn.style.color='white'; }
+        else { btn.style.background='white';btn.style.borderColor='';btn.style.color=''; }
+      });
+    }
+    document.getElementById('whatsapp-preview').style.display = 'none';
+    document.getElementById('s-name-err').style.display = 'none';
+    document.getElementById('s-wa-err').style.display = 'none';
+  }
+}
+
+function saveSettings() {
+  let valid = true;
+  const nameErr = document.getElementById('s-name-err');
+  const waErr = document.getElementById('s-wa-err');
+  const nameInput = document.getElementById('s-business-name');
+  const waInput = document.getElementById('s-whatsapp');
+  nameErr.style.display='none'; waErr.style.display='none';
+  nameInput.classList.remove('error'); waInput.classList.remove('error');
+  if (!nameInput.value.trim()) {
+    nameErr.style.display='block'; nameInput.classList.add('error');
+    nameInput.focus(); valid = false;
+  }
+  const waVal = waInput.value.trim(), waValid = waInput.dataset.valid;
+  if (!waVal) {
+    waErr.textContent = '⚠️ מספר וואטסאפ הוא שדה חובה — בלעדיו לא ניתן לקבל הזמנות';
+    waErr.style.display='block'; waInput.classList.add('error');
+    if (valid) waInput.focus(); valid = false;
+  } else if (waValid === 'false') {
+    waErr.textContent = '⚠️ מספר הוואטסאפ לא תקין — הכנס מספר ישראלי (05X-XXXXXXX)';
+    waErr.style.display='block'; waInput.classList.add('error');
+    if (valid) waInput.focus(); valid = false;
+  }
+  if (!valid) return;
+  document.getElementById('businessEditBtn').style.display = 'inline-flex';
+  document.getElementById('businessSaveBtn').style.display = 'none';
+  document.getElementById('businessCancelBtn').style.display = 'none';
+  document.getElementById('businessViewMode').style.display = 'block';
+  document.getElementById('businessEditMode').style.display = 'none';
+  updateBusinessView();
+  syncSettingsToLocalStorage();
+  showSuccess('פרטי העסק נשמרו בהצלחה!');
+  const s = document.getElementById('saveSuccess');
+  s.style.display = 'block';
+  s.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  setTimeout(() => s.style.display = 'none', 3000);
+}
+
+function updateBusinessView() {
+  document.getElementById('view-business-name').textContent = document.getElementById('s-business-name').value.trim() || '—';
+  document.getElementById('view-tagline').textContent = document.getElementById('s-tagline').value.trim() || '—';
+  document.getElementById('view-whatsapp').textContent = document.getElementById('s-whatsapp').value.trim() || '—';
+  document.getElementById('view-phone').textContent = document.getElementById('s-phone').value.trim() || '—';
+  document.getElementById('view-area').textContent = document.getElementById('s-area').value.trim() || '—';
+  document.getElementById('view-about').textContent = document.getElementById('s-about').value.trim() || '—';
+  const logoUrl = document.getElementById('s-logo-url').value.trim();
+  document.getElementById('view-logo').innerHTML = logoUrl ? '<img src="'+logoUrl+'" style="width:40px;height:40px;object-fit:cover;border-radius:8px;" alt="logo"/>' : '—';
+  const heroBgUrl = document.getElementById('s-hero-bg-url').value.trim();
+  document.getElementById('view-hero-bg').innerHTML = heroBgUrl ? '<img src="'+heroBgUrl+'" style="width:40px;height:40px;object-fit:cover;border-radius:8px;" alt="hero"/>' : '—';
+  document.getElementById('view-contact-name').textContent = document.getElementById('s-contact-name').value.trim() || '—';
+  document.getElementById('view-terms').textContent = document.getElementById('s-terms').value.trim() || '—';
+  const aboutImgUrl = document.getElementById('s-about-img-url').value.trim();
+  document.getElementById('view-about-img').innerHTML = aboutImgUrl ? '<img src="'+aboutImgUrl+'" style="width:40px;height:40px;object-fit:cover;border-radius:8px;" alt="about"/>' : '—';
+  const sortedDays = Object.keys(activeDays).map(Number).sort((a,b)=>a-b);
+  if (!sortedDays.length) {
+    document.getElementById('view-hours').textContent = '—';
+  } else {
+    const groups = [];
+    for (const idx of sortedDays) {
+      const d = activeDays[idx];
+      const open = stripLeadingZero(d.open);
+      const close = stripLeadingZero(d.close);
+      const hours = (d.open && d.close) ? close+'–'+open : 'שעות לא הוגדרו';
+      const last = groups[groups.length-1];
+      if (last && last.hours===hours && last.lastIdx===idx-1) { last.endDay=idx; last.lastIdx=idx; }
+      else { groups.push({startDay:idx,endDay:idx,lastIdx:idx,hours}); }
+    }
+    const lines = groups.map(g => {
+      const dayStr = g.startDay===g.endDay ? DAY_NAMES[g.startDay] : DAY_NAMES[g.startDay]+'–'+DAY_NAMES[g.endDay];
+      return dayStr+': '+g.hours;
+    });
+    document.getElementById('view-hours').textContent = lines.join(' | ');
+  }
+}
+
+// ===== VIEW MENU FROM SETTINGS =====
+function viewMenuFromSettings() {
+  if (!currentSlug) { alert('לינק לא הוגדר עדיין'); return; }
+  window.open(currentSlug ? 'menu.html?slug=' + encodeURIComponent(currentSlug) : 'menu.html', '_blank');
+}
+
+// ===== INIT BANNER VIEW =====
+function initBannerView() {
+  const currentText = document.getElementById('bannerCurrentText');
+  const bannerVal = document.getElementById('s-banner').value.trim();
+  if (currentText) currentText.textContent = bannerVal || 'אין טקסט באנר';
+  updateBannerStatus();
+}
+
+// ===== ABOUT SAMPLES =====
+const _aboutSamples = [
+  'שלום, אני [שם], אופה ביתית מ[עיר]. מה שהתחיל כתחביב של סופי שבוע הפך לאהבה של ממש — כל בוקר המטבח שלי מתמלא בריח של מאפים טריים שיוצאים ישר מהתנור. אני מכינה הכל ביד, מחומרים טבעיים ללא חומרים משמרים. כל מוצר הוא תוצאה של מתכון שעובד ושודרג לאורך שנים. ההזמנות הן מראש בלבד כדי להבטיח שכל לקוח מקבל מוצר טרי ואיכותי. אשמח לענות על כל שאלה דרך הוואטסאפ.',
+  'שלום, אני [שם] מ[עיר]. אני מכינה עוגות ועוגיות ביתיות בהזמנה אישית — כל פריט נאפה טרי ביום האיסוף או יום לפניו. התפריט כולל עוגות לאירועים, עוגיות לשישי שבת, מארזי מתנה ועוד. הכל מחומרים איכותיים ללא חומרים משמרים, עם הרבה תשומת לב לפרטים ולמראה. אני אוהבת להתאים כל הזמנה לטעם ולאירוע — אל תהססו לשאול. ההזמנות מראש בלבד דרך הוואטסאפ.',
+  'שלום, אני [שם] מ[עיר]. אני מכין/ה אוכל ביתי בשרי מסורתי — בדיוק כמו שסבתא הכינה, רק עם כל הלב. התפריט כולל מנות מבושלות לאט, קציצות, שניצלים ועוד — הכל מבשר טרי ותבלינים טבעיים. המנות מוכנות להזמנה מראש ומוכנות לאיסוף. מתאים לארוחות משפחה, שבתות וחגים. אשמח לשמוע מכם ולהתאים את ההזמנה לצרכים שלכם.',
+  'שלום, אני [שם] מ[עיר]. אני מכין/ה מטעמים חלביים ביתיים — פשטידות, לזניות, קישים, עוגות גבינה ועוד. כל מנה מוכנה בהזמנה אישית מחומרים טריים ואיכותיים. אני מאמינ/ה שאוכל טוב מתחיל בחומרים טובים ובהרבה אהבה. ההזמנות הן מראש בלבד כדי שכל לקוח יקבל את המנה הכי טרייה ואיכותית. אשמח לדבר איתכם ולהתאים את ההזמנה לכל אירוע.',
+];
+let _aboutSampleIdx = 0;
+function loadSampleAbout() {
+  const ta = document.getElementById('s-about');
+  const current = ta.value.trim();
+  const isSample = !current || _aboutSamples.some(s => s === current);
+  if (!isSample && !confirm('הטקסט שכתבת יימחק. להמשיך?')) return;
+  if (isSample && current) {
+    const idx = _aboutSamples.indexOf(current);
+    if (idx !== -1) _aboutSampleIdx = (idx + 1) % _aboutSamples.length;
+  }
+  ta.value = _aboutSamples[_aboutSampleIdx];
+  _aboutSampleIdx = (_aboutSampleIdx + 1) % _aboutSamples.length;
+  autoResizeTextarea(ta);
+}
+
+function autoResizeTextarea(el) {
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
+}
+
+// ===== TERMS =====
+const _termsSample = 'ביטול הזמנה — ניתן לבטל הזמנה עד 24 שעות לפני מועד האיסוף. ביטול מאוחר יותר עלול לגרור חיוב מלא.\nתשלום — התשלום מתבצע במזומן בעת האיסוף בלבד. אין אפשרות לתשלום מקוון.\nשינויים בהזמנה — ניתן לשנות הזמנה עד 24 שעות לפני מועד האיסוף, בכפוף לזמינות.';
+function loadSampleTerms() {
+  const ta = document.getElementById('s-terms');
+  const current = ta.value.trim();
+  const isSample = !current || current === _termsSample;
+  if (!isSample && !confirm('הטקסט שכתבת יימחק. להמשיך?')) return;
+  ta.value = _termsSample;
+}
+
+// ===== SUBSCRIPTION =====
+function initSubscription() {
+  let expiresAt;
+  try {
+    const profile = JSON.parse(localStorage.getItem('tafrit_profile'));
+    if (profile && profile.trial_ends_at) {
+      expiresAt = new Date(profile.trial_ends_at);
+    }
+  } catch(e) {}
+  if (!expiresAt || isNaN(expiresAt.getTime())) {
+    try {
+      const s = JSON.parse(localStorage.getItem('tafrit_settings'));
+      if (s && s.subscription_expires) expiresAt = new Date(s.subscription_expires);
+    } catch(e) {}
+  }
+  // Default: 14 days from now for demo
+  if (!expiresAt || isNaN(expiresAt.getTime())) {
+    expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + 14);
+  }
+
+  const now = new Date();
+  const diff = expiresAt - now;
+  const daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
+  const dateStr = expiresAt.toLocaleDateString('he-IL', { day:'2-digit', month:'2-digit', year:'numeric' });
+
+  // Banner
+  const banner = document.getElementById('subscriptionBanner');
+  if (daysLeft <= 0) {
+    banner.style.display = 'block';
+    banner.style.background = '#dc2626';
+    banner.textContent = 'המנוי שלך פג תוקף — לחידוש פנה אלינו';
+  } else if (daysLeft <= 3) {
+    banner.style.display = 'block';
+    banner.style.background = '#dc2626';
+    banner.textContent = 'נשאר לך ' + daysLeft + ' ימים במנוי — לחידוש פנה אלינו';
+  } else if (daysLeft <= 7) {
+    banner.style.display = 'block';
+    banner.style.background = '#d97706';
+    banner.textContent = 'נשאר לך ' + daysLeft + ' ימים במנוי — לחידוש פנה אלינו';
+  }
+
+  // Subscription card
+  const statusEl = document.getElementById('subStatus');
+  const expiresEl = document.getElementById('subExpires');
+  const daysEl = document.getElementById('subDaysLeft');
+
+  expiresEl.textContent = dateStr;
+
+  if (daysLeft <= 0) {
+    statusEl.innerHTML = '<span style="color:#dc2626;">פג תוקף</span>';
+    daysEl.innerHTML = '<span style="color:#dc2626;font-weight:700;">פג תוקף</span>';
+  } else if (daysLeft <= 3) {
+    statusEl.innerHTML = '<span style="color:#d97706;">ניסיון</span>';
+    daysEl.innerHTML = '<span style="color:#dc2626;font-weight:700;">' + daysLeft + ' ימים</span>';
+  } else if (daysLeft <= 14) {
+    statusEl.innerHTML = '<span style="color:#d97706;">ניסיון</span>';
+    daysEl.innerHTML = '<span style="color:#d97706;">' + daysLeft + ' ימים</span>';
+  } else {
+    statusEl.innerHTML = '<span style="color:#16a34a;">פעיל</span>';
+    daysEl.innerHTML = '<span style="color:var(--text);">' + daysLeft + ' ימים</span>';
+  }
+}
+
+// ===== Expose functions to window for onclick handlers =====
+Object.assign(window, {
+  switchTab, viewMenu, toggleLinkPopup, closeLinkPopup,
+  openProductForm, closeProductForm, saveProduct, deleteProduct,
+  renderProducts, renderCategories,
+  startNewCategory, cancelNewCategory, saveNewCategory,
+  startEditCategory, cancelEditCategory, saveEditCategory, deleteCategory,
+  saveProductsOrder, saveCategoriesOrder,
+  startEditBusiness, cancelEditBusiness, saveSettings,
+  startEditBanner, cancelEditBanner, saveBanner, updateBannerPreview,
+  startEditSlug, cancelEditSlug, saveSlug, validateSlug, formatSlug,
+  toggleDay, toggleCategory, selectDietary,
+  handleImageUpload, updatePreviewFromUrl, formatWhatsapp, autoResizeTextarea,
+  copySlugLink, shareSlugLink, viewMenuFromSettings,
+  showTooltip, overrideDay, resetDayOverride,
+  loadSampleAbout, loadSampleTerms,
+  handleDefaultTimeInput,
+});
+</script>
+<!-- Global success toast -->
+<div id="globalSuccessToast" style="display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#15803d;color:white;padding:12px 24px;border-radius:12px;font-size:14px;font-weight:600;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,0.15);white-space:nowrap;animation:slideUp 0.2s ease;">✓ נשמר בהצלחה!</div>
+
+</body>
+</html>

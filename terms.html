@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="he"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&amp;family=Be+Vietnam+Pro:wght@400;500;700&amp;family=Heebo:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed": "#2f1500",
+                    "surface-tint": "#9a4614",
+                    "on-background": "#1c1c19",
+                    "on-primary-fixed-variant": "#7a3000",
+                    "on-tertiary-fixed-variant": "#6e3900",
+                    "tertiary": "#663400",
+                    "outline-variant": "#dcc1b6",
+                    "inverse-surface": "#31302d",
+                    "on-secondary-fixed": "#351000",
+                    "on-secondary-container": "#76340e",
+                    "secondary-container": "#fd9e70",
+                    "tertiary-fixed-dim": "#ffb77d",
+                    "outline": "#887269",
+                    "secondary-fixed": "#ffdbcc",
+                    "primary-fixed": "#ffdbcb",
+                    "tertiary-container": "#884800",
+                    "surface-container-low": "#f6f3ee",
+                    "primary-fixed-dim": "#ffb693",
+                    "on-secondary-fixed-variant": "#76330d",
+                    "surface-bright": "#fcf9f4",
+                    "on-secondary": "#ffffff",
+                    "secondary-fixed-dim": "#ffb693",
+                    "inverse-primary": "#ffb693",
+                    "surface-dim": "#dcdad5",
+                    "on-tertiary": "#ffffff",
+                    "inverse-on-surface": "#f3f0eb",
+                    "primary-container": "#92400e",
+                    "secondary": "#944a23",
+                    "primary": "#712c00",
+                    "error-container": "#ffdad6",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-highest": "#e5e2dd",
+                    "on-primary": "#ffffff",
+                    "surface-container-high": "#ebe8e3",
+                    "surface-variant": "#e5e2dd",
+                    "on-primary-fixed": "#341000",
+                    "background": "#fcf9f4",
+                    "tertiary-fixed": "#ffdcc3",
+                    "on-error-container": "#93000a",
+                    "on-primary-container": "#ffc2a5",
+                    "surface": "#fcf9f4",
+                    "surface-container": "#f0ede9",
+                    "error": "#ba1a1a",
+                    "on-tertiary-container": "#ffc395",
+                    "on-surface-variant": "#55433a",
+                    "on-surface": "#1c1c19",
+                    "on-error": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Plus Jakarta Sans", "Heebo"],
+                    "body": ["Be Vietnam Pro", "Heebo"],
+                    "label": ["Be Vietnam Pro", "Heebo"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #fcf9f4;
+            color: #1c1c19;
+            font-family: 'Be Vietnam Pro', 'Heebo', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .editorial-shadow {
+            box-shadow: 0 32px 64px -12px rgba(85, 67, 58, 0.06);
+        }
+    </style>
+</head>
+<body class="bg-surface selection:bg-secondary-container selection:text-on-secondary-container">
+
+<nav class="fixed top-0 w-full z-50 bg-[#fcf9f4]/80 backdrop-blur-md">
+  <div class="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto w-full">
+    <a class="flex items-center gap-2 group" href="index.html">
+      <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary">
+        <span class="material-symbols-outlined" data-icon="restaurant">restaurant</span>
+      </div>
+      <span class="font-['Plus_Jakarta_Sans'] font-black text-2xl text-amber-900 tracking-tight">MyTafrit</span>
+    </a>
+    <a class="flex items-center gap-1 text-amber-900 font-bold hover:opacity-70 transition-opacity duration-300 cursor-pointer"
+       onclick="history.back(); return false;" href="#">
+      <span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+      <span class="hidden sm:inline">חזרה</span>
+    </a>
+  </div>
+</nav>
+
+<main class="pt-24 pb-12 px-6 max-w-4xl mx-auto">
+  <header class="mb-16 text-center">
+    <h1 class="font-headline font-extrabold text-5xl md:text-6xl text-primary mb-4 tracking-tight">תנאים ופרטיות</h1>
+    <p class="text-on-surface-variant text-lg max-w-xl mx-auto leading-relaxed">אנחנו ב-Mytafrit מאמינים בשקיפות ובבניית קשר אישי עם היוצרים שלנו. הנה כל מה שצריך לדעת על השימוש בפלטפורמה.</p>
+  </header>
+
+  <div class="w-full space-y-20">
+      <section class="scroll-mt-32" id="terms">
+        <div class="flex items-center gap-3 mb-8">
+          <span class="material-symbols-outlined text-primary text-3xl" data-icon="gavel">gavel</span>
+          <h2 class="font-headline font-bold text-3xl text-on-surface">תנאי שימוש</h2>
+        </div>
+        <div class="bg-surface-container-low p-8 md:p-10 rounded-lg editorial-shadow space-y-8">
+          <div class="flex gap-6 items-start">
+            <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-primary-fixed flex items-center justify-center text-primary">
+              <span class="material-symbols-outlined" data-icon="home_storage">home_storage</span>
+            </div>
+            <div class="space-y-2">
+              <h3 class="font-bold text-xl text-primary">שירות לעסקי אוכל ביתיים</h3>
+              <p class="text-on-surface-variant leading-relaxed">הפלטפורמה מיועדת לשימוש עסקי אוכל המייצרים מהבית או מהמטבח המקומי, במטרה להנגיש את התפריט ללקוחות בצורה דיגיטלית ונעימה.</p>
+            </div>
+          </div>
+          <div class="flex gap-6 items-start">
+            <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-tertiary-fixed flex items-center justify-center text-tertiary">
+              <span class="material-symbols-outlined" data-icon="timer">timer</span>
+            </div>
+            <div class="space-y-2">
+              <h3 class="font-bold text-xl text-tertiary">תקופת ניסיון ותשלום</h3>
+              <p class="text-on-surface-variant leading-relaxed">אנו מציעים תקופת ניסיון של 14 יום ללא עלות. לאחר מכן, המשך השימוש מותנה במנוי בתשלום. התשלום מתבצע מראש ולא יינתנו החזרים כספיים.</p>
+            </div>
+          </div>
+          <div class="flex gap-6 items-start">
+            <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-secondary-fixed flex items-center justify-center text-secondary">
+              <span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+            </div>
+            <div class="space-y-2">
+              <h3 class="font-bold text-xl text-secondary">אחריות ושימוש לרעה</h3>
+              <p class="text-on-surface-variant leading-relaxed">Mytafrit אינה אחראית על התוכן המועלה על ידי המשתמשים. חל איסור מוחלט על שימוש לרעה במערכת. אנו שומרים לעצמנו את הזכות להשעות חשבון במקרה של הפרת התנאים.</p>
+            </div>
+          </div>
+          <div class="bg-tertiary-container/10 p-6 rounded-lg border-r-4 border-tertiary-container">
+            <p class="text-on-tertiary-fixed text-sm font-medium leading-relaxed italic">
+              "אנחנו כאן כדי לעזור לכם לצמוח. השימוש במערכת מהווה הסכמה לתנאים אלו, שנועדו להגן על קהילת היוצרים שלנו."
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <div class="h-px bg-outline-variant/30 w-full"></div>
+
+      <section class="scroll-mt-32" id="privacy">
+        <div class="flex items-center gap-3 mb-8">
+          <span class="material-symbols-outlined text-primary text-3xl" data-icon="lock">lock</span>
+          <h2 class="font-headline font-bold text-3xl text-on-surface">מדיניות פרטיות</h2>
+        </div>
+        <div class="bg-surface-container-low p-8 md:p-10 rounded-lg editorial-shadow space-y-10">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="space-y-4">
+              <h3 class="font-bold text-lg text-primary flex items-center gap-2">
+                <span class="material-symbols-outlined" data-icon="database">database</span>
+                איסוף נתונים
+              </h3>
+              <p class="text-on-surface-variant text-sm leading-relaxed">אנו אוספים כתובת אימייל ונתוני תפריט לצורך מתן השירות בלבד. המידע מאובטח ומוגן.</p>
+            </div>
+            <div class="space-y-4">
+              <h3 class="font-bold text-lg text-primary flex items-center gap-2">
+                <span class="material-symbols-outlined" data-icon="no_accounts">no_accounts</span>
+                שיתוף ומכירה
+              </h3>
+              <p class="text-on-surface-variant text-sm leading-relaxed">לעולם לא נמכור את המידע שלכם לצד שלישי. המידע שלכם הוא שלכם, ואנחנו רק הצינור שמאפשר לכם להציג אותו לעולם.</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="space-y-4">
+              <h3 class="font-bold text-lg text-primary flex items-center gap-2">
+                <span class="material-symbols-outlined" data-icon="delete_forever">delete_forever</span>
+                שליטה בחשבון
+              </h3>
+              <p class="text-on-surface-variant text-sm leading-relaxed">ניתן למחוק את החשבון והמידע המקושר אליו בכל עת דרך הגדרות הפרופיל או בפנייה ישירה אלינו.</p>
+            </div>
+            <div class="space-y-4">
+              <h3 class="font-bold text-lg text-primary flex items-center gap-2">
+                <span class="material-symbols-outlined" data-icon="contact_support">contact_support</span>
+                צרו קשר
+              </h3>
+              <p class="text-on-surface-variant text-sm leading-relaxed">לכל שאלה בענייני פרטיות, ניתן לפנות אלינו בכתובת:
+                <a class="text-primary font-bold hover:underline" href="mailto:support@mytafrit.co.il">support@mytafrit.co.il</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+</main>
+
+<footer class="bg-[#f6f3ee] w-full py-12 mt-20">
+  <div class="flex flex-col items-center px-8 max-w-7xl mx-auto w-full gap-8 text-center">
+    <div class="flex flex-col items-center gap-6">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-amber-900" data-icon="restaurant">restaurant</span>
+        <span class="font-['Plus_Jakarta_Sans'] font-black text-xl text-amber-900 tracking-tight">MyTafrit</span>
+      </div>
+      <div class="text-sm font-['Be_Vietnam_Pro']">
+        <a class="text-stone-500 hover:text-amber-900 transition-colors duration-300" href="terms.html">תנאי שימוש ומדיניות פרטיות</a>
+      </div>
+      <p class="font-['Be_Vietnam_Pro'] text-sm tracking-wide text-stone-500">© 2025 Mytafrit. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+</body></html>
