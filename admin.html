@@ -1000,7 +1000,7 @@ function updateHoursPreview() {
 }
 
 // ===== IMAGE COMPRESSION =====
-async function compressImage(file, maxKB) {
+function compressImageToBlob(file, maxKB) {
   return new Promise(resolve=>{
     const img=new Image(), url=URL.createObjectURL(file);
     img.onload=()=>{
@@ -1012,22 +1012,74 @@ async function compressImage(file, maxKB) {
       canvas.width=width;canvas.height=height;
       canvas.getContext('2d').drawImage(img,0,0,width,height);
       let q=0.85;
-      const go=()=>{const d=canvas.toDataURL('image/jpeg',q);const s=Math.round((d.length*3)/4/1024);if(s<=maxKB||q<=0.3){resolve({dataUrl:d,sizeKB:s});}else{q-=0.08;go();}};
-      go();
+      const tryCompress=()=>{
+        canvas.toBlob(blob=>{
+          const sizeKB=Math.round(blob.size/1024);
+          if(sizeKB<=maxKB||q<=0.3){resolve({blob,sizeKB});}
+          else{q-=0.08;tryCompress();}
+        },'image/jpeg',q);
+      };
+      tryCompress();
     };
     img.src=url;
   });
 }
 
+// Pending blobs: keyed by urlFieldId, holds blob until save
+const pendingImageBlobs = {};
+
+async function uploadImageToStorage(blob, folder) {
+  const fileName=`${folder}/${currentUser.id}_${Date.now()}.jpg`;
+  const {data,error}=await supabaseClient.storage
+    .from('images')
+    .upload(fileName, blob, {contentType:'image/jpeg', upsert:false});
+  if(error) throw new Error('Upload failed: '+error.message);
+  const {data:urlData}=supabaseClient.storage.from('images').getPublicUrl(data.path);
+  return urlData.publicUrl;
+}
+
+function deleteOldImageFromStorage(url) {
+  if(!url || !url.includes('/storage/v1/object/public/images/')) return;
+  const path=url.split('/storage/v1/object/public/images/')[1];
+  if(path) supabaseClient.storage.from('images').remove([decodeURIComponent(path)]).catch(e=>console.warn('Old image delete failed',e));
+}
+
+async function flushPendingImage(urlFieldId) {
+  const pending=pendingImageBlobs[urlFieldId];
+  if(!pending) return null;
+  delete pendingImageBlobs[urlFieldId];
+  const field=document.getElementById(urlFieldId);
+  const oldUrl=pending.previousUrl;
+  const folder=urlFieldId==='pf-img-url'?'products':'settings';
+  const publicUrl=await uploadImageToStorage(pending.blob, folder);
+  field.value=publicUrl;
+  deleteOldImageFromStorage(oldUrl);
+  return publicUrl;
+}
+
 async function handleImageUpload(input,previewId,urlFieldId,infoId,maxKB){
   const file=input.files[0];if(!file)return;
   const origKB=Math.round(file.size/1024);
-  const {dataUrl,sizeKB}=await compressImage(file,maxKB);
+  const infoEl=infoId?document.getElementById(infoId):null;
+
+  if(infoEl){infoEl.textContent='⏳ דוחס...';infoEl.style.display='block';infoEl.style.color='';}
+
+  const {blob,sizeKB}=await compressImageToBlob(file,maxKB);
+
+  // Preview with local blob URL — no upload yet
+  const localUrl=URL.createObjectURL(blob);
   const p=document.getElementById(previewId);
-  p.innerHTML=`<img src="${dataUrl}" class="w-full h-full object-cover" alt=""/>`;
+  p.innerHTML=`<img src="${localUrl}" class="w-full h-full object-cover" alt=""/>`;
   p.className='w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 border border-amber-100';
-  if(urlFieldId)document.getElementById(urlFieldId).value=dataUrl;
-  if(infoId){const el=document.getElementById(infoId);el.textContent=origKB>maxKB?`✓ נדחסה מ-${origKB}KB ל-${sizeKB}KB`:`✓ הועלתה (${sizeKB}KB)`;el.style.display='block';setTimeout(()=>el.style.display='none',4000);}
+
+  // Store blob + preserve the *real* previous URL (not __pending__ from a prior pick)
+  const existing=pendingImageBlobs[urlFieldId];
+  const previousUrl=existing?existing.previousUrl:document.getElementById(urlFieldId).value.trim();
+  pendingImageBlobs[urlFieldId]={blob, previousUrl};
+  // Mark field so save knows an upload is pending
+  document.getElementById(urlFieldId).value='__pending__';
+
+  if(infoEl){infoEl.textContent=origKB>maxKB?`✓ נדחסה מ-${origKB}KB ל-${sizeKB}KB — תעלה בשמירה`:`✓ מוכנה (${sizeKB}KB) — תעלה בשמירה`;setTimeout(()=>infoEl.style.display='none',4000);}
 }
 
 function updatePreviewFromUrl(input,previewId,fallback){
@@ -1288,7 +1340,7 @@ function openProductForm(id){
   setTimeout(()=>{const modalBody=document.querySelector('#productFormOverlay .overflow-y-auto');if(modalBody)modalBody.scrollTop=0;},50);
 }
 
-function closeProductForm(){document.getElementById('productFormOverlay').style.display='none';document.body.style.overflow='';}
+function closeProductForm(){delete pendingImageBlobs['pf-img-url'];document.getElementById('productFormOverlay').style.display='none';document.body.style.overflow='';}
 
 function renderCategoryChips(){
   const c=document.getElementById('pf-categories');
@@ -1314,7 +1366,26 @@ async function saveProduct(){
   const price=parseFloat(document.getElementById('pf-price').value);
   if(!name){document.getElementById('pf-name').focus();document.getElementById('pf-name').style.borderColor='#dc2626';return;}
   if(!selectedCategories.length){document.getElementById('pf-cat-warning').style.display='block';return;}
-  const data={name,description:document.getElementById('pf-desc').value.trim(),price:isNaN(price)?0:price,categories:[...selectedCategories],dietary_type:selectedDietary,image_url:document.getElementById('pf-img-url').value.trim(),allergens:document.getElementById('pf-allergens').value.trim(),is_bestseller:document.getElementById('pf-bestseller').checked,is_new:document.getElementById('pf-new').checked,is_active:document.getElementById('pf-active').checked};
+  // Upload pending product image if exists
+  if(pendingImageBlobs['pf-img-url']){
+    try {
+      await flushPendingImage('pf-img-url');
+    } catch(err) {
+      console.error('Product image upload failed:', err);
+      showSuccess('❌ העלאת תמונה נכשלה: '+err.message);
+      return;
+    }
+  }
+
+  const newImageUrl=document.getElementById('pf-img-url').value.trim();
+
+  // If editing and image was cleared, delete old image from Storage
+  if(editingProductId && !newImageUrl){
+    const oldProduct=products.find(p=>String(p.id)===String(editingProductId));
+    if(oldProduct && oldProduct.image_url) deleteOldImageFromStorage(oldProduct.image_url);
+  }
+
+  const data={name,description:document.getElementById('pf-desc').value.trim(),price:isNaN(price)?0:price,categories:[...selectedCategories],dietary_type:selectedDietary,image_url:newImageUrl,allergens:document.getElementById('pf-allergens').value.trim(),is_bestseller:document.getElementById('pf-bestseller').checked,is_new:document.getElementById('pf-new').checked,is_active:document.getElementById('pf-active').checked};
   const isEdit = !!editingProductId;
   if(editingProductId){
     const idx=products.findIndex(p=>String(p.id)===String(editingProductId));
@@ -1335,7 +1406,7 @@ async function saveProduct(){
   renderProducts();closeProductForm();showSuccess(isEdit?"המוצר עודכן בהצלחה!":"המוצר נוסף בהצלחה!");
 }
 
-async function deleteProduct(id){const p=products.find(x=>String(x.id)===String(id));if(!p||!confirm(`למחוק את "${p.name}"?`))return;products=products.filter(x=>String(x.id)!==String(id));if(supabaseReady){try{await supabaseClient.from('products').delete().eq('id',id);}catch(e){console.warn('Supabase delete product failed',e);}}syncProductsToLocalStorage();renderProducts();}
+async function deleteProduct(id){const p=products.find(x=>String(x.id)===String(id));if(!p||!confirm(`למחוק את "${p.name}"?`))return;if(p.image_url)deleteOldImageFromStorage(p.image_url);products=products.filter(x=>String(x.id)!==String(id));if(supabaseReady){try{await supabaseClient.from('products').delete().eq('id',id);}catch(e){console.warn('Supabase delete product failed',e);}}syncProductsToLocalStorage();renderProducts();}
 
 // ===== CATEGORIES =====
 function renderCategories(){
@@ -1573,6 +1644,10 @@ function startEditBusiness() {
   autoResizeTextarea(document.getElementById('s-about'));
 }
 function cancelEditBusiness() {
+  // Discard any pending image blobs
+  delete pendingImageBlobs['s-logo-url'];
+  delete pendingImageBlobs['s-hero-bg-url'];
+  delete pendingImageBlobs['s-about-img-url'];
   document.getElementById('businessEditBtn').style.display = 'inline-flex';
   document.getElementById('businessSaveBtn').style.display = 'none';
   document.getElementById('businessCancelBtn').style.display = 'none';
@@ -1608,7 +1683,7 @@ function cancelEditBusiness() {
   }
 }
 
-function saveSettings() {
+async function saveSettings() {
   let valid = true;
   const nameErr = document.getElementById('s-name-err');
   const waErr = document.getElementById('s-wa-err');
@@ -1631,6 +1706,37 @@ function saveSettings() {
     if (valid) waInput.focus(); valid = false;
   }
   if (!valid) return;
+
+  // Upload any pending settings images before saving
+  const settingsImageFields = ['s-logo-url','s-hero-bg-url','s-about-img-url'];
+  const pendingUploads = settingsImageFields.filter(f => pendingImageBlobs[f]);
+  if (pendingUploads.length) {
+    document.getElementById('businessSaveBtn').disabled = true;
+    document.getElementById('businessSaveBtn').textContent = '⏳ מעלה תמונות...';
+    try {
+      await Promise.all(pendingUploads.map(f => flushPendingImage(f)));
+    } catch(err) {
+      console.error('Image upload failed:', err);
+      document.getElementById('businessSaveBtn').disabled = false;
+      document.getElementById('businessSaveBtn').textContent = 'שמור';
+      showSuccess('❌ העלאת תמונה נכשלה: ' + err.message);
+      return;
+    }
+    document.getElementById('businessSaveBtn').disabled = false;
+    document.getElementById('businessSaveBtn').textContent = 'שמור';
+  }
+
+  // Delete old images from Storage if fields were cleared
+  const backupUrls = {
+    's-logo-url': _businessBackup.logoUrl || '',
+    's-hero-bg-url': _businessBackup.heroUrl || '',
+    's-about-img-url': _businessBackup.aboutUrl || ''
+  };
+  for (const [fieldId, oldUrl] of Object.entries(backupUrls)) {
+    const newUrl = document.getElementById(fieldId).value.trim();
+    if (!newUrl && oldUrl) deleteOldImageFromStorage(oldUrl);
+  }
+
   document.getElementById('businessEditBtn').style.display = 'inline-flex';
   document.getElementById('businessSaveBtn').style.display = 'none';
   document.getElementById('businessCancelBtn').style.display = 'none';
