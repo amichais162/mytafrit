@@ -531,7 +531,7 @@ input:checked + .slider:before { transform:translateX(-20px); }
           <div id="slugInputRow" style="display:none;margin-top:10px;">
             <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
               <div style="display:flex;align-items:center;flex:1;min-width:180px;border:1.5px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;background:white;">
-                <span style="font-size:12px;color:var(--text-3);padding:10px 8px;background:var(--bg);border-left:1px solid var(--border);white-space:nowrap;flex-shrink:0;">mytafrit.co.il/menu/</span>
+                <span style="font-size:12px;color:var(--text-3);padding:10px 8px;background:var(--bg);border-left:1px solid var(--border);white-space:nowrap;flex-shrink:0;">mytafrit.co.il/menu.html?slug=</span>
                 <input id="s-slug" style="flex:1;border:none;outline:none;padding:10px 10px;font-size:13px;font-family:'Heebo',sans-serif;direction:ltr;text-align:left;background:transparent;transition:border-color 0.15s;" placeholder="my-business" dir="ltr" oninput="validateSlug(this)" onblur="formatSlug(this)"/>
               </div>
             </div>
@@ -843,7 +843,7 @@ function validateSlug(input) {
   if (/[\u0590-\u05FF]/.test(val)) { errEl.textContent='⚠️ כתובת הלינק יכולה להכיל רק אותיות באנגלית, מספרים ומקפים (-)'; errEl.style.display='block'; return; }
   if (!/^[a-z0-9-]*$/.test(val)) { errEl.textContent='⚠️ תווים לא חוקיים — אותיות קטנות, מספרים ומקפים בלבד'; errEl.style.display='block'; return; }
   if (TAKEN_SLUGS.includes(val) && val!==currentSlug) { errEl.textContent='⚠️ כתובת זו כבר בשימוש — נסה כתובת אחרת'; errEl.style.display='block'; return; }
-  previewEl.textContent='🔗 mytafrit.co.il/menu/'+val;
+  previewEl.textContent='🔗 mytafrit.co.il/menu.html?slug='+val;
   previewEl.style.display='block';
   warnEl.style.display=(!val||val===currentSlug)?'none':'block';
 }
@@ -1413,19 +1413,19 @@ function renderLinkPopup() {
   if (!currentSlug) {
     el.innerHTML=`<button onclick="closeLinkPopup();switchTab('settings');setTimeout(()=>{document.getElementById('s-slug').focus();document.getElementById('s-slug').scrollIntoView({behavior:'smooth',block:'center'})},200)" style="width:100%;padding:10px;background:var(--accent);color:white;border:none;border-radius:8px;font-family:'Heebo',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">+ צור לינק לתפריט שלך</button>`;
   } else {
-    el.innerHTML=`<div style="background:var(--bg);border-radius:8px;padding:8px 10px;margin-bottom:8px;font-size:12px;color:var(--text);word-break:break-all;direction:ltr;text-align:left;">mytafrit.co.il/menu/${currentSlug}</div><button onclick="copyLinkFromPopup()" id="copyPopupBtn" style="width:100%;padding:9px;background:var(--accent);color:white;border:none;border-radius:8px;font-family:'Heebo',sans-serif;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;"><svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" stroke-width="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke-width="2"/></svg>העתק לינק</button>`;
+    el.innerHTML=`<div style="background:var(--bg);border-radius:8px;padding:8px 10px;margin-bottom:8px;font-size:12px;color:var(--text);word-break:break-all;direction:ltr;text-align:left;">mytafrit.co.il/menu.html?slug=${currentSlug}</div><button onclick="copyLinkFromPopup()" id="copyPopupBtn" style="width:100%;padding:9px;background:var(--accent);color:white;border:none;border-radius:8px;font-family:'Heebo',sans-serif;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;"><svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" stroke-width="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke-width="2"/></svg>העתק לינק</button>`;
   }
 }
 function copyLinkFromPopup() {
   if(!currentSlug)return;
-  navigator.clipboard.writeText('mytafrit.co.il/menu/'+currentSlug).then(()=>{
+  navigator.clipboard.writeText('https://mytafrit.co.il/menu.html?slug='+currentSlug).then(()=>{
     const btn=document.getElementById('copyPopupBtn');if(btn){btn.textContent='✓ הועתק!';setTimeout(()=>renderLinkPopup(),1800);}
   });
 }
 
 function copySlugLink() {
   if (!currentSlug) return;
-  const link = 'mytafrit.co.il/menu/' + currentSlug;
+  const link = 'https://mytafrit.co.il/menu.html?slug=' + currentSlug;
   navigator.clipboard.writeText(link).then(() => {
     const btn = document.getElementById('copySlugBtn');
     if (btn) { btn.textContent = '✓ הועתק!'; setTimeout(() => { btn.innerHTML = '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" stroke-width="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke-width="2"/></svg> העתק לינק'; }, 2000); }
@@ -1433,7 +1433,7 @@ function copySlugLink() {
 }
 function shareSlugLink() {
   if (!currentSlug) return;
-  const link = 'https://mytafrit.co.il/menu/' + currentSlug;
+  const link = 'https://mytafrit.co.il/menu.html?slug=' + currentSlug;
   if (navigator.share) {
     navigator.share({ title: 'התפריט שלי', url: link });
   } else {
@@ -1446,7 +1446,7 @@ function updateSlugDisplay() {
   if (row && text) {
     if (currentSlug) {
       row.style.display = 'block';
-      text.textContent = 'mytafrit.co.il/menu/' + currentSlug;
+      text.textContent = 'mytafrit.co.il/menu.html?slug=' + currentSlug;
     } else {
       row.style.display = 'none';
     }
@@ -1527,7 +1527,7 @@ function saveSlug() {
     cancelEditSlug(); return;
   }
   if (currentSlug) {
-    const ok = confirm(`⚠️ שינוי הלינק\n\nלינק נוכחי: mytafrit.co.il/menu/${currentSlug}\nלינק חדש: mytafrit.co.il/menu/${val}\n\nהלינק הקודם יפסיק לעבוד!\n\nלהמשיך?`);
+    const ok = confirm(`⚠️ שינוי הלינק\n\nלינק נוכחי: mytafrit.co.il/menu.html?slug=${currentSlug}\nלינק חדש: mytafrit.co.il/menu.html?slug=${val}\n\nהלינק הקודם יפסיק לעבוד!\n\nלהמשיך?`);
     if (!ok) return;
   }
   currentSlug = val;
