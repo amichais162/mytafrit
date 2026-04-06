@@ -410,6 +410,10 @@ input:checked + .slider:before { transform:translateX(-20px); }
                 העלה תמונה
                 <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(this,'heroBgPreview','s-hero-bg-url','hero-bg-info',1024)"/>
               </label>
+              <button type="button" class="btn-outline mb-1" style="display:inline-flex;font-size:13px;padding:7px 12px;margin-right:6px;" onclick="openGalleryModal('s-hero-bg-url','heroBgPreview')">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                או בחר מגלריה
+              </button>
               <div id="hero-bg-info" class="text-xs text-green-600 font-semibold mb-1" style="display:none"></div>
               <input id="s-hero-bg-url" class="form-input text-xs" placeholder="או הדבק URL..." oninput="updatePreviewFromUrl(this,'heroBgPreview',null)"/>
             </div>
@@ -430,6 +434,10 @@ input:checked + .slider:before { transform:translateX(-20px); }
                 העלה תמונה
                 <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(this,'aboutImgPreview','s-about-img-url','about-info',1024)"/>
               </label>
+              <button type="button" class="btn-outline mb-1" style="display:inline-flex;font-size:13px;padding:7px 12px;margin-right:6px;" onclick="openGalleryModal('s-about-img-url','aboutImgPreview')">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                או בחר מגלריה
+              </button>
               <div id="about-info" class="text-xs text-green-600 font-semibold mb-1" style="display:none"></div>
               <input id="s-about-img-url" class="form-input text-xs" placeholder="או הדבק URL..." oninput="updatePreviewFromUrl(this,'aboutImgPreview',null)"/>
             </div>
@@ -1924,6 +1932,100 @@ Object.assign(window, {
 });
 </script>
 <!-- Global success toast -->
+<!-- Image Gallery Modal -->
+<div id="galleryModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);overflow-y:auto;" onclick="if(event.target===this)closeGalleryModal()">
+  <div style="max-width:860px;margin:40px auto;background:var(--card-bg,#fff);border-radius:16px;padding:24px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <h3 style="margin:0;font-size:18px;font-weight:700;">בחר תמונה מהגלריה</h3>
+      <button onclick="closeGalleryModal()" style="background:none;border:none;cursor:pointer;font-size:24px;color:var(--text-3);line-height:1;">&times;</button>
+    </div>
+    <div id="galleryGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;"></div>
+  </div>
+</div>
+<script>
+(function(){
+  const GALLERY_IMAGES = [
+    'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=1080&q=80',
+    'https://images.unsplash.com/photo-1534432182912-63863115e106?w=1080&q=80',
+    'https://images.unsplash.com/photo-1568254183919-78a4f43a2877?w=1080&q=80',
+    'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=1080&q=80',
+    'https://images.unsplash.com/photo-1517686469429-8bdb88b9f907?w=1080&q=80',
+    'https://images.unsplash.com/photo-1586444248902-2f64eddc13df?w=1080&q=80',
+    'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=1080&q=80',
+    'https://images.unsplash.com/photo-1550617931-e17a7b70dce2?w=1080&q=80',
+    'https://images.unsplash.com/photo-1608198093002-ad4e005484ec?w=1080&q=80',
+    'https://images.unsplash.com/photo-1587248720327-8eb72564be1e?w=1080&q=80',
+    'https://images.unsplash.com/photo-1559622214-f8a9850965bb?w=1080&q=80',
+    'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=1080&q=80',
+    'https://images.unsplash.com/photo-1558030006-450675393462?w=1080&q=80',
+    'https://images.unsplash.com/photo-1432139555190-58524dae6a55?w=1080&q=80',
+    'https://images.unsplash.com/photo-1603360946369-dc9bb6258143?w=1080&q=80',
+    'https://images.unsplash.com/photo-1615361200141-f45040f367be?w=1080&q=80',
+    'https://images.unsplash.com/photo-1529042410759-befb1204b468?w=1080&q=80',
+    'https://images.unsplash.com/photo-1574484284002-952d92456975?w=1080&q=80',
+    'https://images.unsplash.com/photo-1543339308-43e59d6b73a6?w=1080&q=80',
+    'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=1080&q=80',
+    'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=1080&q=80',
+    'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1080&q=80',
+    'https://images.unsplash.com/photo-1497534446932-c925b458314e?w=1080&q=80',
+    'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1080&q=80',
+    'https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=1080&q=80',
+    'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?w=1080&q=80',
+    'https://images.unsplash.com/photo-1470124182917-cc6e71b22ecc?w=1080&q=80',
+    'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=1080&q=80',
+    'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1080&q=80',
+    'https://images.unsplash.com/photo-1493770348161-369560ae357d?w=1080&q=80',
+    'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=1080&q=80',
+    'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=1080&q=80',
+    'https://images.unsplash.com/photo-1519915028121-7d3463d20b13?w=1080&q=80',
+    'https://images.unsplash.com/photo-1562440499-64c9a111f713?w=1080&q=80',
+    'https://images.unsplash.com/photo-1486427944299-d1955d23e34d?w=1080&q=80',
+    'https://images.unsplash.com/photo-1530648672449-81f6c723e2f1?w=1080&q=80',
+    'https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=1080&q=80',
+    'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=1080&q=80',
+    'https://images.unsplash.com/photo-1587314168485-3236d6710814?w=1080&q=80',
+    'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=1080&q=80',
+    'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=1080&q=80',
+    'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1080&q=80',
+    'https://images.unsplash.com/photo-1424847651672-bf20a4b0982b?w=1080&q=80',
+    'https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=1080&q=80',
+    'https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=1080&q=80',
+    'https://images.unsplash.com/photo-1505935428862-770b6f24f629?w=1080&q=80',
+    'https://images.unsplash.com/photo-1516100882582-96c3a05fe590?w=1080&q=80'
+  ];
+  let _galleryInputId, _galleryPreviewId;
+  const grid = document.getElementById('galleryGrid');
+  GALLERY_IMAGES.forEach(url => {
+    const thumb = url.replace('w=1080','w=300').replace('q=80','q=60');
+    const img = document.createElement('img');
+    img.src = thumb;
+    img.loading = 'lazy';
+    img.style.cssText = 'width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;border:2px solid transparent;';
+    img.onmouseenter = () => { img.style.transform='scale(1.05)'; img.style.boxShadow='0 4px 16px rgba(0,0,0,0.2)'; };
+    img.onmouseleave = () => { img.style.transform=''; img.style.boxShadow=''; };
+    img.onclick = () => {
+      const input = document.getElementById(_galleryInputId);
+      input.value = url;
+      input.dispatchEvent(new Event('input'));
+      const preview = document.getElementById(_galleryPreviewId);
+      preview.innerHTML = '<img src="'+url+'" style="width:100%;height:100%;object-fit:cover;">';
+      closeGalleryModal();
+    };
+    grid.appendChild(img);
+  });
+  window.openGalleryModal = function(inputId, previewId) {
+    _galleryInputId = inputId;
+    _galleryPreviewId = previewId;
+    document.getElementById('galleryModal').style.display = '';
+    document.body.style.overflow = 'hidden';
+  };
+  window.closeGalleryModal = function() {
+    document.getElementById('galleryModal').style.display = 'none';
+    document.body.style.overflow = '';
+  };
+})();
+</script>
+
 <div id="globalSuccessToast" style="display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#15803d;color:white;padding:12px 24px;border-radius:12px;font-size:14px;font-weight:600;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,0.15);white-space:nowrap;animation:slideUp 0.2s ease;">✓ נשמר בהצלחה!</div>
 
 </body>
