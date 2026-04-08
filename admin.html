@@ -233,235 +233,311 @@ input:checked + .slider:before { transform:translateX(-20px); }
   <div id="section-business" style="display:none">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
       <h2 style="font-size:17px;font-weight:700;color:var(--text);">פרטי העסק</h2>
-      <div style="display:flex;gap:8px;" id="businessHeaderBtns">
-        <button onclick="startEditBusiness()" id="businessEditBtn" class="btn-outline" style="font-size:13px;padding:8px 16px;">
-          <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke-width="2"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2"/></svg>
-          ערוך
-        </button>
-        <button onclick="saveSettings()" id="businessSaveBtn" class="btn-primary" style="display:none;font-size:13px;padding:8px 16px;">שמור</button>
-        <button onclick="cancelEditBusiness()" id="businessCancelBtn" class="btn-outline" style="display:none;font-size:13px;padding:8px 16px;">בטל</button>
-      </div>
     </div>
     <div id="saveSuccess" style="display:none;margin-bottom:14px;padding:12px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:var(--radius-sm);text-align:center;font-size:14px;color:#15803d;font-weight:600;">✓ נשמר בהצלחה!</div>
     <div id="businessFieldsWrap" style="display:flex;flex-direction:column;gap:12px;">
 
       <!-- VIEW MODE -->
-      <div id="businessViewMode" class="card" style="padding:16px;">
-        <div style="display:flex;flex-direction:column;gap:12px;">
-          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px;">
-            <span style="font-size:13px;font-weight:600;color:var(--text-3);">שם העסק</span>
-            <span id="view-business-name" style="font-size:13px;font-weight:600;color:var(--text);">—</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px;">
-            <span style="font-size:13px;font-weight:600;color:var(--text-3);">תיאור קצר</span>
-            <span id="view-tagline" style="font-size:13px;color:var(--text);text-align:left;max-width:60%;">—</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px;">
-            <span style="font-size:13px;font-weight:600;color:var(--text-3);">שם איש קשר</span>
-            <span id="view-contact-name" style="font-size:13px;color:var(--text);">—</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px;">
-            <span style="font-size:13px;font-weight:600;color:var(--text-3);">וואטסאפ</span>
-            <span id="view-whatsapp" style="font-size:13px;color:var(--text);direction:ltr;">—</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px;">
-            <span style="font-size:13px;font-weight:600;color:var(--text-3);">טלפון</span>
-            <span id="view-phone" style="font-size:13px;color:var(--text);direction:ltr;">—</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px;">
-            <span style="font-size:13px;font-weight:600;color:var(--text-3);">אזור איסוף</span>
-            <span id="view-area" style="font-size:13px;color:var(--text);">—</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px;">
-            <span style="font-size:13px;font-weight:600;color:var(--text-3);">שעות פעילות</span>
-            <span id="view-hours" style="font-size:13px;color:var(--text);text-align:left;max-width:60%;">—</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px;">
-            <span style="font-size:13px;font-weight:600;color:var(--text-3);">לוגו</span>
-            <span id="view-logo" style="font-size:13px;color:var(--text);">—</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px;">
-            <span style="font-size:13px;font-weight:600;color:var(--text-3);">תמונת רקע לראש הדף</span>
-            <span id="view-hero-bg" style="font-size:13px;color:var(--text);">—</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px;">
-            <span style="font-size:13px;font-weight:600;color:var(--text-3);">תמונת אודות</span>
-            <span id="view-about-img" style="font-size:13px;color:var(--text);">—</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px;">
-            <span style="font-size:13px;font-weight:600;color:var(--text-3);">אודות</span>
-            <span id="view-about" style="font-size:13px;color:var(--text);text-align:left;max-width:60%;white-space:pre-line;">—</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;">
-            <span style="font-size:13px;font-weight:600;color:var(--text-3);">תקנון</span>
-            <span id="view-terms" style="font-size:13px;color:var(--text);text-align:left;max-width:60%;white-space:pre-line;">—</span>
-          </div>
-        </div>
-      </div>
+      <div id="businessViewMode" style="display:flex;flex-direction:column;gap:12px;">
 
-      <!-- EDIT MODE (hidden by default) -->
-      <div id="businessEditMode" style="display:none;flex-direction:column;gap:12px;">
-
-      <div class="card" style="padding:16px;display:flex;flex-direction:column;gap:14px;">
-        <div>
-          <label class="form-label">שם העסק <span style="color:#ef4444">*</span></label>
-          <input id="s-business-name" class="form-input" placeholder="שם העסק יופיע ככותרת בתפריט הציבורי"/>
-          <p id="s-name-err" class="text-xs text-red-500 mt-1" style="display:none">⚠️ שם העסק הוא שדה חובה</p>
-        </div>
-        <div>
-          <label class="form-label">תיאור קצר</label>
-          <input id="s-tagline" class="form-input" placeholder="לדוגמא: מאפים טריים בעבודת יד | הזמנה מראש בלבד"/>
-          <span class="form-hint warning">💡 יופיע מתחת לשם העסק בתפריט</span>
-        </div>
-      </div>
-
-      <div class="card" style="padding:16px;display:flex;flex-direction:column;gap:14px;">
-        <div>
-          <label class="form-label">שם איש קשר <span style="font-size:12px;font-weight:400;color:var(--text-3)">(ישמש בתבנית הודעות וואטסאפ)</span></label>
-          <input id="s-contact-name" class="form-input" placeholder="לדוגמא: יעל"/>
-        </div>
-        <div>
-          <label class="form-label">מספר וואטסאפ לקבלת הזמנות <span style="color:#ef4444">*</span></label>
-          <input id="s-whatsapp" class="form-input" type="tel" placeholder="05X-XXXXXXX" dir="ltr" style="text-align:right" oninput="formatWhatsapp(this)"/>
-          <p id="whatsapp-preview" class="text-xs mt-1" style="display:none"></p>
-          <p id="s-wa-err" class="text-xs text-red-500 mt-1" style="display:none">⚠️ מספר וואטסאפ הוא שדה חובה — בלעדיו לא ניתן לקבל הזמנות</p>
-        </div>
-      </div>
-
-      <div class="card" style="padding:16px;display:flex;flex-direction:column;gap:14px;">
-        <div>
-          <label class="form-label">טלפון העסק <span style="font-size:12px;font-weight:400;color:var(--text-3)">(יוצג בתפריט)</span></label>
-          <input id="s-phone" class="form-input" type="tel" placeholder="050-0000000" dir="ltr" style="text-align:right" oninput="this.value=this.value.replace(/[^0-9-]/g,'')"/>
-        </div>
-        <div>
-          <label class="form-label">אזור איסוף</label>
-          <input id="s-area" class="form-input" placeholder="לדוגמא: גוש דן, רמת גן"/>
-        </div>
-        <div>
-        <label class="form-label" style="margin-bottom:4px;">שעות פעילות</label>
-        <div style="display:flex;align-items:center;justify-content:space-between;margin:8px 0 4px;">
-          <label style="font-size:13px;color:var(--text-2);">אפשר הזמנה מהיום להיום</label>
-          <label class="switch">
-            <input type="checkbox" id="s-allow-same-day"/>
-            <span class="slider"></span>
-          </label>
-        </div>
-        <span class="form-hint warning">💡 אם תאפשר הזמנה מהיום להיום, הלקוח יוכל לבחור את היום הנוכחי כמועד איסוף — רק אם טרם הגיע שעת הסגירה</span>
-        <div class="mt-3">
-          <p class="text-xs font-semibold text-gray-500 mb-2" style="margin-top:10px;">בחר ימי פעילות:</p>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;" id="dayBtns">
-            <button type="button" onclick="toggleDay(0,this)" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">א'</button>
-            <button type="button" onclick="toggleDay(1,this)" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">ב'</button>
-            <button type="button" onclick="toggleDay(2,this)" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">ג'</button>
-            <button type="button" onclick="toggleDay(3,this)" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">ד'</button>
-            <button type="button" onclick="toggleDay(4,this)" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">ה'</button>
-            <button type="button" onclick="toggleDay(5,this)" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">ו'</button>
-            <button type="button" onclick="toggleDay(6,this)" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">ש'</button>
+        <!-- מלבן 1: פרטי העסק -->
+        <div id="sectionBasicsView" class="card" style="padding:16px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">פרטי העסק</h3>
+            <button type="button" id="basicsEditBtn" onclick="startEditBasics()" class="btn-outline" style="font-size:12px;padding:6px 12px;">ערוך</button>
           </div>
-          <div id="defaultHoursRow" class="bg-gray-50 rounded-xl p-3 mb-2" style="display:none">
-            <p class="text-xs font-semibold text-gray-500 mb-2">שעות לכל הימים שנבחרו:</p>
-            <div class="flex items-center gap-3 flex-wrap" style="direction:ltr">
-              <div class="flex items-center gap-1.5">
-                <input type="time" id="default-open" class="form-input" style="width:130px;direction:ltr" oninput="handleDefaultTimeInput('open',this)"/>
-                <span class="text-xs text-gray-400" style="direction:rtl">פתיחה</span>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px;">
+              <span style="font-size:13px;font-weight:600;color:var(--text-3);">שם העסק</span>
+              <span id="view-business-name" style="font-size:13px;font-weight:600;color:var(--text);">—</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px;">
+              <span style="font-size:13px;font-weight:600;color:var(--text-3);">תיאור קצר</span>
+              <span id="view-tagline" style="font-size:13px;color:var(--text);text-align:left;max-width:60%;">—</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;">
+              <span style="font-size:13px;font-weight:600;color:var(--text-3);">שם איש קשר</span>
+              <span id="view-contact-name" style="font-size:13px;color:var(--text);">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- מלבן 1: פרטי העסק — עריכה -->
+        <div id="sectionBasicsEdit" class="card" style="display:none;padding:16px;flex-direction:column;gap:14px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">פרטי העסק</h3>
+            <div style="display:flex;gap:6px;">
+              <button type="button" id="basicsSaveBtn" onclick="saveBasics()" class="btn-primary" style="font-size:12px;padding:6px 12px;">שמור</button>
+              <button type="button" id="basicsCancelBtn" onclick="cancelEditBasics()" class="btn-outline" style="font-size:12px;padding:6px 12px;">בטל</button>
+            </div>
+          </div>
+          <div>
+            <label class="form-label">שם העסק <span style="color:#ef4444">*</span></label>
+            <input id="s-business-name" class="form-input" placeholder="שם העסק יופיע ככותרת בתפריט הציבורי"/>
+            <p id="s-name-err" class="text-xs text-red-500 mt-1" style="display:none">⚠️ שם העסק הוא שדה חובה</p>
+          </div>
+          <div>
+            <label class="form-label">תיאור קצר</label>
+            <input id="s-tagline" class="form-input" placeholder="לדוגמא: מאפים טריים בעבודת יד | הזמנה מראש בלבד"/>
+            <span class="form-hint warning">💡 יופיע מתחת לשם העסק בתפריט</span>
+          </div>
+          <div>
+            <label class="form-label">שם איש קשר <span style="font-size:12px;font-weight:400;color:var(--text-3)">(ישמש בתבנית הודעות וואטסאפ)</span></label>
+            <input id="s-contact-name" class="form-input" placeholder="לדוגמא: יעל"/>
+          </div>
+        </div>
+
+        <!-- מלבן 2: יצירת קשר -->
+        <div id="sectionContactView" class="card" style="padding:16px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">יצירת קשר</h3>
+            <button type="button" id="contactEditBtn" onclick="startEditContact()" class="btn-outline" style="font-size:12px;padding:6px 12px;">ערוך</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px;">
+              <span style="font-size:13px;font-weight:600;color:var(--text-3);">וואטסאפ</span>
+              <span id="view-whatsapp" style="font-size:13px;color:var(--text);direction:ltr;">—</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px;">
+              <span style="font-size:13px;font-weight:600;color:var(--text-3);">טלפון</span>
+              <span id="view-phone" style="font-size:13px;color:var(--text);direction:ltr;">—</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;">
+              <span style="font-size:13px;font-weight:600;color:var(--text-3);">אזור איסוף</span>
+              <span id="view-area" style="font-size:13px;color:var(--text);">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- מלבן 2: יצירת קשר — עריכה -->
+        <div id="sectionContactEdit" class="card" style="display:none;padding:16px;flex-direction:column;gap:14px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">יצירת קשר</h3>
+            <div style="display:flex;gap:6px;">
+              <button type="button" id="contactSaveBtn" onclick="saveContact()" class="btn-primary" style="font-size:12px;padding:6px 12px;">שמור</button>
+              <button type="button" id="contactCancelBtn" onclick="cancelEditContact()" class="btn-outline" style="font-size:12px;padding:6px 12px;">בטל</button>
+            </div>
+          </div>
+          <div>
+            <label class="form-label">מספר וואטסאפ לקבלת הזמנות <span style="color:#ef4444">*</span></label>
+            <input id="s-whatsapp" class="form-input" type="tel" placeholder="05X-XXXXXXX" dir="ltr" style="text-align:right" oninput="formatWhatsapp(this)"/>
+            <p id="whatsapp-preview" class="text-xs mt-1" style="display:none"></p>
+            <p id="s-wa-err" class="text-xs text-red-500 mt-1" style="display:none">⚠️ מספר וואטסאפ הוא שדה חובה — בלעדיו לא ניתן לקבל הזמנות</p>
+          </div>
+          <div>
+            <label class="form-label">טלפון העסק <span style="font-size:12px;font-weight:400;color:var(--text-3)">(יוצג בתפריט)</span></label>
+            <input id="s-phone" class="form-input" type="tel" placeholder="050-0000000" dir="ltr" style="text-align:right" oninput="this.value=this.value.replace(/[^0-9-]/g,'')"/>
+          </div>
+          <div>
+            <label class="form-label">אזור איסוף</label>
+            <input id="s-area" class="form-input" placeholder="לדוגמא: גוש דן, רמת גן"/>
+          </div>
+        </div>
+
+        <!-- מלבן 3: שעות פעילות -->
+        <div id="sectionHoursView" class="card" style="padding:16px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">שעות פעילות</h3>
+            <button type="button" id="hoursEditBtn" onclick="startEditHours()" class="btn-outline" style="font-size:12px;padding:6px 12px;">ערוך</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="display:flex;justify-content:space-between;">
+              <span style="font-size:13px;font-weight:600;color:var(--text-3);">שעות פעילות</span>
+              <span id="view-hours" style="font-size:13px;color:var(--text);text-align:left;max-width:60%;">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- מלבן 3: שעות פעילות — עריכה -->
+        <div id="sectionHoursEdit" class="card" style="display:none;padding:16px;flex-direction:column;gap:14px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">שעות פעילות</h3>
+            <div style="display:flex;gap:6px;">
+              <button type="button" id="hoursSaveBtn" onclick="saveHours()" class="btn-primary" style="font-size:12px;padding:6px 12px;">שמור</button>
+              <button type="button" id="hoursCancelBtn" onclick="cancelEditHours()" class="btn-outline" style="font-size:12px;padding:6px 12px;">בטל</button>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <label style="font-size:13px;color:var(--text-2);">אפשר הזמנה מהיום להיום</label>
+            <label class="switch">
+              <input type="checkbox" id="s-allow-same-day"/>
+              <span class="slider"></span>
+            </label>
+          </div>
+          <span class="form-hint warning">💡 אם תאפשר הזמנה מהיום להיום, הלקוח יוכל לבחור את היום הנוכחי כמועד איסוף — רק אם טרם הגיע שעת הסגירה</span>
+          <div>
+            <label class="form-label" style="margin-bottom:4px;">שעות פעילות</label>
+            <div class="mt-3">
+              <p class="text-xs font-semibold text-gray-500 mb-2" style="margin-top:10px;">בחר ימי פעילות:</p>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;" id="dayBtns">
+                <button type="button" onclick="toggleDay(0,this)" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">א'</button>
+                <button type="button" onclick="toggleDay(1,this)" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">ב'</button>
+                <button type="button" onclick="toggleDay(2,this)" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">ג'</button>
+                <button type="button" onclick="toggleDay(3,this)" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">ד'</button>
+                <button type="button" onclick="toggleDay(4,this)" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">ה'</button>
+                <button type="button" onclick="toggleDay(5,this)" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">ו'</button>
+                <button type="button" onclick="toggleDay(6,this)" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">ש'</button>
               </div>
-              <span class="text-gray-300">—</span>
-              <div class="flex items-center gap-1.5">
-                <input type="time" id="default-close" class="form-input" style="width:130px;direction:ltr" oninput="handleDefaultTimeInput('close',this)"/>
-                <span class="text-xs text-gray-400" style="direction:rtl">סגירה</span>
+              <div id="defaultHoursRow" class="bg-gray-50 rounded-xl p-3 mb-2" style="display:none">
+                <p class="text-xs font-semibold text-gray-500 mb-2">שעות לכל הימים שנבחרו:</p>
+                <div class="flex items-center gap-3 flex-wrap" style="direction:ltr">
+                  <div class="flex items-center gap-1.5">
+                    <input type="time" id="default-open" class="form-input" style="width:130px;direction:ltr" oninput="handleDefaultTimeInput('open',this)"/>
+                    <span class="text-xs text-gray-400" style="direction:rtl">פתיחה</span>
+                  </div>
+                  <span class="text-gray-300">—</span>
+                  <div class="flex items-center gap-1.5">
+                    <input type="time" id="default-close" class="form-input" style="width:130px;direction:ltr" oninput="handleDefaultTimeInput('close',this)"/>
+                    <span class="text-xs text-gray-400" style="direction:rtl">סגירה</span>
+                  </div>
+                </div>
+              </div>
+              <div id="hoursPerDay" class="space-y-2"></div>
+              <div id="hoursPreview" class="mt-3 p-3 bg-amber-50 border border-amber-100 rounded-xl" style="display:none">
+                <p class="text-xs font-semibold text-amber-700 mb-1">תצוגה מקדימה:</p>
+                <p id="hoursPreviewText" class="text-sm text-amber-900 font-medium leading-relaxed whitespace-pre-line" style="direction:rtl"></p>
               </div>
             </div>
           </div>
-          <div id="hoursPerDay" class="space-y-2"></div>
-          <div id="hoursPreview" class="mt-3 p-3 bg-amber-50 border border-amber-100 rounded-xl" style="display:none">
-            <p class="text-xs font-semibold text-amber-700 mb-1">תצוגה מקדימה:</p>
-            <p id="hoursPreviewText" class="text-sm text-amber-900 font-medium leading-relaxed whitespace-pre-line" style="direction:rtl"></p>
-          </div>
         </div>
-        </div>
-      </div>
 
-      <div class="card" style="padding:16px;display:flex;flex-direction:column;gap:14px;">
-        <div>
-          <label class="form-label">לוגו <span style="font-size:11px;font-weight:400;color:var(--text-3)">עד 500KB — נדחסת אוטומטית</span></label>
-          <span class="form-hint warning">💡 תפריט עם לוגו נראה הרבה יותר מקצועי</span>
-          <div class="flex items-center gap-3 mt-2">
-            <div id="logoPreview" class="w-16 h-16 rounded-xl overflow-hidden bg-amber-50 flex items-center justify-center text-2xl border border-amber-100 flex-shrink-0">🥐</div>
-            <div class="flex-1">
-              <label class="btn-outline cursor-pointer mb-1" style="display:inline-flex;font-size:13px;padding:7px 12px;">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                העלה תמונה
-                <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(this,'logoPreview','s-logo-url','logo-info',500)"/>
-              </label>
-              <div id="logo-info" class="text-xs text-green-600 font-semibold mb-1" style="display:none"></div>
-              <input id="s-logo-url" class="form-input text-xs" placeholder="או הדבק URL..." oninput="updatePreviewFromUrl(this,'logoPreview','🥐')"/>
+        <!-- מלבן 4: תמונות -->
+        <div id="sectionImagesView" class="card" style="padding:16px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">תמונות</h3>
+            <button type="button" id="imagesEditBtn" onclick="startEditImages()" class="btn-outline" style="font-size:12px;padding:6px 12px;">ערוך</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px;">
+              <span style="font-size:13px;font-weight:600;color:var(--text-3);">לוגו</span>
+              <span id="view-logo" style="font-size:13px;color:var(--text);">—</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px;">
+              <span style="font-size:13px;font-weight:600;color:var(--text-3);">תמונת רקע לראש הדף</span>
+              <span id="view-hero-bg" style="font-size:13px;color:var(--text);">—</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;">
+              <span style="font-size:13px;font-weight:600;color:var(--text-3);">תמונת אודות</span>
+              <span id="view-about-img" style="font-size:13px;color:var(--text);">—</span>
             </div>
           </div>
         </div>
-        <div>
-          <label class="form-label">תמונת רקע לראש הדף (Hero Background) <span style="font-size:11px;font-weight:400;color:var(--text-3)">עד 1MB — נדחסת אוטומטית</span></label>
-          <div class="flex items-center gap-3 mt-2">
-            <div id="heroBgPreview" class="w-16 h-16 rounded-xl overflow-hidden bg-gray-50 flex items-center justify-center border border-gray-100 flex-shrink-0">
-              <svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+
+        <!-- מלבן 4: תמונות — עריכה -->
+        <div id="sectionImagesEdit" class="card" style="display:none;padding:16px;flex-direction:column;gap:14px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">תמונות</h3>
+            <div style="display:flex;gap:6px;">
+              <button type="button" id="imagesSaveBtn" onclick="saveImages()" class="btn-primary" style="font-size:12px;padding:6px 12px;">שמור</button>
+              <button type="button" id="imagesCancelBtn" onclick="cancelEditImages()" class="btn-outline" style="font-size:12px;padding:6px 12px;">בטל</button>
             </div>
-            <div class="flex-1">
-              <label class="btn-outline cursor-pointer mb-1" style="display:inline-flex;font-size:13px;padding:7px 12px;">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                העלה תמונה
-                <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(this,'heroBgPreview','s-hero-bg-url','hero-bg-info',1024)"/>
-              </label>
-              <button type="button" class="btn-outline mb-1" style="display:inline-flex;font-size:13px;padding:7px 12px;margin-right:6px;" onclick="openGalleryModal('s-hero-bg-url','heroBgPreview')">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                או בחר מגלריה
-              </button>
-              <div id="hero-bg-info" class="text-xs text-green-600 font-semibold mb-1" style="display:none"></div>
-              <input id="s-hero-bg-url" class="form-input text-xs" placeholder="או הדבק URL..." oninput="updatePreviewFromUrl(this,'heroBgPreview',null)"/>
+          </div>
+          <div>
+            <label class="form-label">לוגו <span style="font-size:11px;font-weight:400;color:var(--text-3)">עד 500KB — נדחסת אוטומטית</span></label>
+            <span class="form-hint warning">💡 תפריט עם לוגו נראה הרבה יותר מקצועי</span>
+            <div class="flex items-center gap-3 mt-2">
+              <div id="logoPreview" class="w-16 h-16 rounded-xl overflow-hidden bg-amber-50 flex items-center justify-center text-2xl border border-amber-100 flex-shrink-0">🥐</div>
+              <div class="flex-1">
+                <label class="btn-outline cursor-pointer mb-1" style="display:inline-flex;font-size:13px;padding:7px 12px;">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  העלה תמונה
+                  <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(this,'logoPreview','s-logo-url','logo-info',500)"/>
+                </label>
+                <div id="logo-info" class="text-xs text-green-600 font-semibold mb-1" style="display:none"></div>
+                <input id="s-logo-url" class="form-input text-xs" placeholder="או הדבק URL..." oninput="updatePreviewFromUrl(this,'logoPreview','🥐')"/>
+              </div>
+            </div>
+          </div>
+          <div>
+            <label class="form-label">תמונת רקע לראש הדף (Hero Background) <span style="font-size:11px;font-weight:400;color:var(--text-3)">עד 1MB — נדחסת אוטומטית</span></label>
+            <div class="flex items-center gap-3 mt-2">
+              <div id="heroBgPreview" class="w-16 h-16 rounded-xl overflow-hidden bg-gray-50 flex items-center justify-center border border-gray-100 flex-shrink-0">
+                <svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              </div>
+              <div class="flex-1">
+                <label class="btn-outline cursor-pointer mb-1" style="display:inline-flex;font-size:13px;padding:7px 12px;">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  העלה תמונה
+                  <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(this,'heroBgPreview','s-hero-bg-url','hero-bg-info',1024)"/>
+                </label>
+                <button type="button" class="btn-outline mb-1" style="display:inline-flex;font-size:13px;padding:7px 12px;margin-right:6px;" onclick="openGalleryModal('s-hero-bg-url','heroBgPreview')">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                  או בחר מגלריה
+                </button>
+                <div id="hero-bg-info" class="text-xs text-green-600 font-semibold mb-1" style="display:none"></div>
+                <input id="s-hero-bg-url" class="form-input text-xs" placeholder="או הדבק URL..." oninput="updatePreviewFromUrl(this,'heroBgPreview',null)"/>
+              </div>
+            </div>
+          </div>
+          <div>
+            <label class="form-label">תמונה לעמוד אודות <span style="font-size:11px;font-weight:400;color:var(--text-3)">עד 1MB — נדחסת אוטומטית</span></label>
+            <div class="flex items-center gap-3 mt-2">
+              <div id="aboutImgPreview" class="w-16 h-16 rounded-xl overflow-hidden bg-gray-50 flex items-center justify-center border border-gray-100 flex-shrink-0">
+                <svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              </div>
+              <div class="flex-1">
+                <label class="btn-outline cursor-pointer mb-1" style="display:inline-flex;font-size:13px;padding:7px 12px;">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  העלה תמונה
+                  <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(this,'aboutImgPreview','s-about-img-url','about-info',1024)"/>
+                </label>
+                <button type="button" class="btn-outline mb-1" style="display:inline-flex;font-size:13px;padding:7px 12px;margin-right:6px;" onclick="openGalleryModal('s-about-img-url','aboutImgPreview')">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                  או בחר מגלריה
+                </button>
+                <div id="about-info" class="text-xs text-green-600 font-semibold mb-1" style="display:none"></div>
+                <input id="s-about-img-url" class="form-input text-xs" placeholder="או הדבק URL..." oninput="updatePreviewFromUrl(this,'aboutImgPreview',null)"/>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="card" style="padding:16px;display:flex;flex-direction:column;gap:14px;">
-        <div>
-          <label class="form-label">תמונה לעמוד אודות <span style="font-size:11px;font-weight:400;color:var(--text-3)">עד 1MB — נדחסת אוטומטית</span></label>
-          <div class="flex items-center gap-3 mt-2">
-            <div id="aboutImgPreview" class="w-16 h-16 rounded-xl overflow-hidden bg-gray-50 flex items-center justify-center border border-gray-100 flex-shrink-0">
-              <svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <!-- מלבן 5: תוכן -->
+        <div id="sectionContentView" class="card" style="padding:16px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">תוכן</h3>
+            <button type="button" id="contentEditBtn" onclick="startEditContent()" class="btn-outline" style="font-size:12px;padding:6px 12px;">ערוך</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px;">
+              <span style="font-size:13px;font-weight:600;color:var(--text-3);">אודות</span>
+              <span id="view-about" style="font-size:13px;color:var(--text);text-align:left;max-width:60%;white-space:pre-line;">—</span>
             </div>
-            <div class="flex-1">
-              <label class="btn-outline cursor-pointer mb-1" style="display:inline-flex;font-size:13px;padding:7px 12px;">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                העלה תמונה
-                <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(this,'aboutImgPreview','s-about-img-url','about-info',1024)"/>
-              </label>
-              <button type="button" class="btn-outline mb-1" style="display:inline-flex;font-size:13px;padding:7px 12px;margin-right:6px;" onclick="openGalleryModal('s-about-img-url','aboutImgPreview')">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                או בחר מגלריה
-              </button>
-              <div id="about-info" class="text-xs text-green-600 font-semibold mb-1" style="display:none"></div>
-              <input id="s-about-img-url" class="form-input text-xs" placeholder="או הדבק URL..." oninput="updatePreviewFromUrl(this,'aboutImgPreview',null)"/>
+            <div style="display:flex;justify-content:space-between;">
+              <span style="font-size:13px;font-weight:600;color:var(--text-3);">תקנון</span>
+              <span id="view-terms" style="font-size:13px;color:var(--text);text-align:left;max-width:60%;white-space:pre-line;">—</span>
             </div>
           </div>
         </div>
-        <div>
-          <label class="form-label">טקסט אודות</label>
-          <textarea id="s-about" class="form-textarea" rows="2" style="overflow:hidden;resize:none;" placeholder="הכנס כאן את טקסט אודות..." oninput="autoResizeTextarea(this)"></textarea>
-          <button type="button" onclick="loadSampleAbout()" class="btn-outline" style="margin-top:6px;padding:5px 12px;font-size:12px;">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-left:4px;"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
-            טען טקסט לדוגמא
-          </button>
+
+        <!-- מלבן 5: תוכן — עריכה -->
+        <div id="sectionContentEdit" class="card" style="display:none;padding:16px;flex-direction:column;gap:14px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">תוכן</h3>
+            <div style="display:flex;gap:6px;">
+              <button type="button" id="contentSaveBtn" onclick="saveContent()" class="btn-primary" style="font-size:12px;padding:6px 12px;">שמור</button>
+              <button type="button" id="contentCancelBtn" onclick="cancelEditContent()" class="btn-outline" style="font-size:12px;padding:6px 12px;">בטל</button>
+            </div>
+          </div>
+          <div>
+            <label class="form-label">טקסט אודות</label>
+            <textarea id="s-about" class="form-textarea" rows="2" style="overflow:hidden;resize:none;" placeholder="הכנס כאן את טקסט אודות..." oninput="autoResizeTextarea(this)"></textarea>
+            <button type="button" onclick="loadSampleAbout()" class="btn-outline" style="margin-top:6px;padding:5px 12px;font-size:12px;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-left:4px;"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+              טען טקסט לדוגמא
+            </button>
+          </div>
+          <div>
+            <label class="form-label">תקנון <span style="font-size:12px;font-weight:400;color:var(--text-3)">(אם ריק — הלינק לא יופיע בתפריט)</span></label>
+            <textarea id="s-terms" class="form-textarea" rows="4" placeholder="הכנס כאן את תקנון העסק..."></textarea>
+            <button type="button" onclick="loadSampleTerms()" class="btn-outline" style="margin-top:6px;padding:5px 12px;font-size:12px;">טען תקנון לדוגמא</button>
+          </div>
         </div>
+
       </div>
 
-      <div class="card" style="padding:16px;display:flex;flex-direction:column;gap:14px;">
-        <div>
-          <label class="form-label">תקנון <span style="font-size:12px;font-weight:400;color:var(--text-3)">(אם ריק — הלינק לא יופיע בתפריט)</span></label>
-          <textarea id="s-terms" class="form-textarea" rows="4" placeholder="הכנס כאן את תקנון העסק..."></textarea>
-          <button type="button" onclick="loadSampleTerms()" class="btn-outline" style="margin-top:6px;padding:5px 12px;font-size:12px;">טען תקנון לדוגמא</button>
-        </div>
-      </div>
-
-      </div><!-- end businessEditMode -->
+      <!-- EDIT MODE wrapper (legacy, empty — kept for old JS refs) -->
+      <div id="businessEditMode" style="display:contents;"></div>
     </div>
   </div>
 
@@ -677,6 +753,7 @@ let currentSlug='';
 let activeDays = {};
 let dragSrcId=null, dragSrcType=null;
 let currentUser = null;
+let currentSettings = null;
 let supabaseReady = false;
 
 // ===== SESSION CHECK =====
@@ -715,6 +792,7 @@ async function loadDataFromSupabase() {
       const s = settingsRes.data;
       currentSlug = s.slug || '';
       applySettingsToForm(s);
+      currentSettings = JSON.parse(JSON.stringify(s));
       // Cache to localStorage
       localStorage.setItem('tafrit_settings', JSON.stringify(s));
       if (s.slug) localStorage.setItem('tafrit_slug', s.slug);
@@ -768,7 +846,7 @@ function applySettingsToForm(s) {
   if (s.banner_text) document.getElementById('s-banner').value = s.banner_text;
   if (s.banner_active) document.getElementById('s-banner-active').checked = true;
   if (s.active_days && Object.keys(s.active_days).length) {
-    const raw = s.active_days;
+    const raw = JSON.parse(JSON.stringify(s.active_days));
     if (raw._overrides) { dayOverrides = raw._overrides; delete raw._overrides; }
     if (raw._defaults) { defaultHours = raw._defaults; delete raw._defaults; }
     activeDays = raw;
@@ -1091,6 +1169,9 @@ async function handleImageUpload(input,previewId,urlFieldId,infoId,maxKB){
 }
 
 function updatePreviewFromUrl(input,previewId,fallback){
+  if (pendingImageBlobs[input.id]) {
+    delete pendingImageBlobs[input.id];
+  }
   const url=input.value.trim(),el=document.getElementById(previewId);
   if(!url){el.innerHTML=fallback||'<svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>';return;}
   el.innerHTML=`<img src="${url}" class="w-full h-full object-cover" alt="" onerror="this.parentElement.innerHTML='❌'"/>`;
@@ -1207,6 +1288,10 @@ async function syncSettingsToLocalStorage() {
         .update(data)
         .eq('user_id', currentUser.id);
       if (error) console.warn('Settings sync to Supabase failed', error);
+      else {
+        currentSettings = data;
+        localStorage.setItem('tafrit_settings', JSON.stringify(currentSettings));
+      }
     } catch(e) { console.warn('Settings sync to Supabase failed', e); }
   }
 }
@@ -1472,7 +1557,7 @@ function loadFromLocalStorage() {
   } catch(e) {}
   try {
     const s = JSON.parse(localStorage.getItem('tafrit_settings'));
-    if (s) applySettingsToForm(s);
+    if (s) { applySettingsToForm(s); currentSettings = JSON.parse(JSON.stringify(s)); }
   } catch(e) {}
 }
 
@@ -1644,141 +1729,6 @@ async function saveSlug() {
 }
 
 // ===== BUSINESS EDIT MODE =====
-let _businessBackup = {};
-function startEditBusiness() {
-  document.getElementById('businessEditBtn').style.display = 'none';
-  document.getElementById('businessSaveBtn').style.display = 'inline-flex';
-  document.getElementById('businessCancelBtn').style.display = 'inline-flex';
-  document.getElementById('businessViewMode').style.display = 'none';
-  document.getElementById('businessEditMode').style.display = 'flex';
-  // Save backup
-  _businessBackup = {
-    name: document.getElementById('s-business-name').value,
-    tagline: document.getElementById('s-tagline').value,
-    whatsapp: document.getElementById('s-whatsapp').value,
-    phone: document.getElementById('s-phone').value,
-    area: document.getElementById('s-area').value,
-    about: document.getElementById('s-about').value,
-    logoUrl: document.getElementById('s-logo-url').value,
-    heroUrl: document.getElementById('s-hero-bg-url').value,
-    contactName: document.getElementById('s-contact-name').value,
-    aboutUrl: document.getElementById('s-about-img-url').value,
-    terms: document.getElementById('s-terms').value,
-    allowSameDay: document.getElementById('s-allow-same-day').checked,
-    activeDaysCopy: JSON.parse(JSON.stringify(activeDays)),
-    dayOverridesCopy: JSON.parse(JSON.stringify(dayOverrides)),
-    defaultHoursCopy: JSON.parse(JSON.stringify(defaultHours)),
-  };
-  autoResizeTextarea(document.getElementById('s-about'));
-}
-function cancelEditBusiness() {
-  // Discard any pending image blobs
-  delete pendingImageBlobs['s-logo-url'];
-  delete pendingImageBlobs['s-hero-bg-url'];
-  delete pendingImageBlobs['s-about-img-url'];
-  document.getElementById('businessEditBtn').style.display = 'inline-flex';
-  document.getElementById('businessSaveBtn').style.display = 'none';
-  document.getElementById('businessCancelBtn').style.display = 'none';
-  document.getElementById('businessViewMode').style.display = 'block';
-  document.getElementById('businessEditMode').style.display = 'none';
-  // Restore backup
-  if (_businessBackup && Object.keys(_businessBackup).length) {
-    document.getElementById('s-business-name').value = _businessBackup.name || '';
-    document.getElementById('s-tagline').value = _businessBackup.tagline || '';
-    document.getElementById('s-whatsapp').value = _businessBackup.whatsapp || '';
-    document.getElementById('s-phone').value = _businessBackup.phone || '';
-    document.getElementById('s-area').value = _businessBackup.area || '';
-    document.getElementById('s-about').value = _businessBackup.about || '';
-    document.getElementById('s-logo-url').value = _businessBackup.logoUrl || '';
-    document.getElementById('s-hero-bg-url').value = _businessBackup.heroUrl || '';
-    document.getElementById('s-contact-name').value = _businessBackup.contactName || '';
-    document.getElementById('s-about-img-url').value = _businessBackup.aboutUrl || '';
-    document.getElementById('s-terms').value = _businessBackup.terms || '';
-    document.getElementById('s-allow-same-day').checked = !!_businessBackup.allowSameDay;
-    if (_businessBackup.activeDaysCopy) {
-      activeDays = _businessBackup.activeDaysCopy;
-      dayOverrides = _businessBackup.dayOverridesCopy;
-      defaultHours = _businessBackup.defaultHoursCopy;
-      // Reset day buttons
-      document.querySelectorAll('.day-btn').forEach((btn,i) => {
-        if (activeDays[i]) { btn.style.background='var(--accent)';btn.style.borderColor='var(--accent)';btn.style.color='white'; }
-        else { btn.style.background='white';btn.style.borderColor='';btn.style.color=''; }
-      });
-    }
-    document.getElementById('whatsapp-preview').style.display = 'none';
-    document.getElementById('s-name-err').style.display = 'none';
-    document.getElementById('s-wa-err').style.display = 'none';
-  }
-}
-
-async function saveSettings() {
-  let valid = true;
-  const nameErr = document.getElementById('s-name-err');
-  const waErr = document.getElementById('s-wa-err');
-  const nameInput = document.getElementById('s-business-name');
-  const waInput = document.getElementById('s-whatsapp');
-  nameErr.style.display='none'; waErr.style.display='none';
-  nameInput.classList.remove('error'); waInput.classList.remove('error');
-  if (!nameInput.value.trim()) {
-    nameErr.style.display='block'; nameInput.classList.add('error');
-    nameInput.focus(); valid = false;
-  }
-  const waVal = waInput.value.trim(), waValid = waInput.dataset.valid;
-  if (!waVal) {
-    waErr.textContent = '⚠️ מספר וואטסאפ הוא שדה חובה — בלעדיו לא ניתן לקבל הזמנות';
-    waErr.style.display='block'; waInput.classList.add('error');
-    if (valid) waInput.focus(); valid = false;
-  } else if (waValid === 'false') {
-    waErr.textContent = '⚠️ מספר הוואטסאפ לא תקין — הכנס מספר ישראלי (05X-XXXXXXX)';
-    waErr.style.display='block'; waInput.classList.add('error');
-    if (valid) waInput.focus(); valid = false;
-  }
-  if (!valid) return;
-
-  // Upload any pending settings images before saving
-  const settingsImageFields = ['s-logo-url','s-hero-bg-url','s-about-img-url'];
-  const pendingUploads = settingsImageFields.filter(f => pendingImageBlobs[f]);
-  if (pendingUploads.length) {
-    document.getElementById('businessSaveBtn').disabled = true;
-    document.getElementById('businessSaveBtn').textContent = '⏳ מעלה תמונות...';
-    try {
-      await Promise.all(pendingUploads.map(f => flushPendingImage(f)));
-    } catch(err) {
-      console.error('Image upload failed:', err);
-      document.getElementById('businessSaveBtn').disabled = false;
-      document.getElementById('businessSaveBtn').textContent = 'שמור';
-      showSuccess('❌ העלאת תמונה נכשלה: ' + err.message);
-      return;
-    }
-    document.getElementById('businessSaveBtn').disabled = false;
-    document.getElementById('businessSaveBtn').textContent = 'שמור';
-  }
-
-  // Delete old images from Storage if fields were cleared
-  const backupUrls = {
-    's-logo-url': _businessBackup.logoUrl || '',
-    's-hero-bg-url': _businessBackup.heroUrl || '',
-    's-about-img-url': _businessBackup.aboutUrl || ''
-  };
-  for (const [fieldId, oldUrl] of Object.entries(backupUrls)) {
-    const newUrl = document.getElementById(fieldId).value.trim();
-    if (!newUrl && oldUrl) deleteOldImageFromStorage(oldUrl);
-  }
-
-  document.getElementById('businessEditBtn').style.display = 'inline-flex';
-  document.getElementById('businessSaveBtn').style.display = 'none';
-  document.getElementById('businessCancelBtn').style.display = 'none';
-  document.getElementById('businessViewMode').style.display = 'block';
-  document.getElementById('businessEditMode').style.display = 'none';
-  updateBusinessView();
-  syncSettingsToLocalStorage();
-  showSuccess('פרטי העסק נשמרו בהצלחה!');
-  const s = document.getElementById('saveSuccess');
-  s.style.display = 'block';
-  s.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  setTimeout(() => s.style.display = 'none', 3000);
-}
-
 function updateBusinessView() {
   document.getElementById('view-business-name').textContent = document.getElementById('s-business-name').value.trim() || '—';
   document.getElementById('view-tagline').textContent = document.getElementById('s-tagline').value.trim() || '—';
@@ -1931,15 +1881,312 @@ function initSubscription() {
   }
 }
 
+// ===== SECTION SAVE — shared helper =====
+async function upsertSettingsPartial(partialPayload) {
+  const { error } = await supabaseClient
+    .from('settings')
+    .update(partialPayload)
+    .eq('user_id', currentUser.id);
+  if (error) throw error;
+  currentSettings = { ...currentSettings, ...partialPayload };
+  localStorage.setItem('tafrit_settings', JSON.stringify(currentSettings));
+}
+
+// ===== SECTION EDIT/CANCEL — per-card (step 4, no save yet) =====
+function _showSectionEdit(card) {
+  document.getElementById('section' + card + 'View').style.display = 'none';
+  const edit = document.getElementById('section' + card + 'Edit');
+  edit.style.display = 'flex';
+  document.getElementById(card.toLowerCase() + 'EditBtn').style.display = 'none';
+  document.getElementById(card.toLowerCase() + 'SaveBtn').style.display = 'inline-flex';
+  document.getElementById(card.toLowerCase() + 'CancelBtn').style.display = 'inline-flex';
+}
+function _showSectionView(card) {
+  document.getElementById('section' + card + 'Edit').style.display = 'none';
+  document.getElementById('section' + card + 'View').style.display = 'block';
+  document.getElementById(card.toLowerCase() + 'EditBtn').style.display = 'inline-flex';
+  document.getElementById(card.toLowerCase() + 'SaveBtn').style.display = 'none';
+  document.getElementById(card.toLowerCase() + 'CancelBtn').style.display = 'none';
+}
+
+// ----- Basics -----
+function startEditBasics() { _showSectionEdit('Basics'); }
+function cancelEditBasics() {
+  const s = currentSettings || {};
+  document.getElementById('s-business-name').value = s.business_name || '';
+  document.getElementById('s-tagline').value = s.tagline || '';
+  document.getElementById('s-contact-name').value = s.contact_name || '';
+  document.getElementById('s-name-err').style.display = 'none';
+  document.getElementById('s-business-name').classList.remove('error');
+  _showSectionView('Basics');
+}
+
+// ----- Contact -----
+function startEditContact() { _showSectionEdit('Contact'); }
+function cancelEditContact() {
+  const s = currentSettings || {};
+  let wa = s.whatsapp || '';
+  if (wa.startsWith('972')) wa = '0' + wa.slice(3);
+  document.getElementById('s-whatsapp').value = wa;
+  document.getElementById('s-phone').value = s.phone || '';
+  document.getElementById('s-area').value = s.pickup_area || '';
+  document.getElementById('whatsapp-preview').style.display = 'none';
+  document.getElementById('s-wa-err').style.display = 'none';
+  document.getElementById('s-whatsapp').classList.remove('error');
+  _showSectionView('Contact');
+}
+
+// ----- Hours -----
+function startEditHours() {
+  const raw = JSON.parse(JSON.stringify(currentSettings && currentSettings.active_days || {}));
+  if (raw._overrides) { dayOverrides = raw._overrides; delete raw._overrides; }
+  if (raw._defaults) { defaultHours = raw._defaults; delete raw._defaults; }
+  activeDays = raw;
+  _showSectionEdit('Hours');
+}
+function cancelEditHours() {
+  // Reset allow_same_day from state
+  const _s0 = currentSettings || {};
+  document.getElementById('s-allow-same-day').checked = !!_s0.allow_same_day;
+  // Reset state
+  activeDays = {};
+  dayOverrides = {};
+  defaultHours = { open: '', close: '' };
+  // Reset day buttons to inactive
+  document.querySelectorAll('.day-btn').forEach(btn => {
+    btn.style.background = 'white';
+    btn.style.borderColor = '';
+    btn.style.color = '';
+  });
+  document.getElementById('defaultHoursRow').style.display = 'none';
+  const hoursPerDay = document.getElementById('hoursPerDay');
+  if (hoursPerDay) hoursPerDay.innerHTML = '';
+  document.getElementById('hoursPreview').style.display = 'none';
+  const defOpen = document.getElementById('default-open');
+  const defClose = document.getElementById('default-close');
+  if (defOpen) defOpen.value = '';
+  if (defClose) defClose.value = '';
+  // Reload from currentSettings.active_days
+  const s = currentSettings || {};
+  if (s.active_days && Object.keys(s.active_days).length) {
+    const raw = JSON.parse(JSON.stringify(s.active_days));
+    if (raw._overrides) { dayOverrides = raw._overrides; delete raw._overrides; }
+    if (raw._defaults) { defaultHours = raw._defaults; delete raw._defaults; }
+    activeDays = raw;
+    const btns = document.querySelectorAll('.day-btn');
+    Object.keys(activeDays).map(Number).forEach(idx => {
+      if (btns[idx]) {
+        btns[idx].style.background = 'var(--accent)';
+        btns[idx].style.borderColor = 'var(--accent)';
+        btns[idx].style.color = 'white';
+      }
+    });
+    document.getElementById('defaultHoursRow').style.display = 'block';
+    if (defOpen) defOpen.value = defaultHours.open || '';
+    if (defClose) defClose.value = defaultHours.close || '';
+    if (typeof renderHoursRows === 'function') renderHoursRows();
+    if (typeof updateHoursPreview === 'function') updateHoursPreview();
+  }
+  _showSectionView('Hours');
+}
+
+// ----- Images -----
+function startEditImages() { _showSectionEdit('Images'); }
+function cancelEditImages() {
+  // Discard pending blobs
+  delete pendingImageBlobs['s-logo-url'];
+  delete pendingImageBlobs['s-hero-bg-url'];
+  delete pendingImageBlobs['s-about-img-url'];
+  const s = currentSettings || {};
+  document.getElementById('s-logo-url').value = s.logo_url || '';
+  document.getElementById('s-hero-bg-url').value = s.hero_bg_url || '';
+  document.getElementById('s-about-img-url').value = s.about_image_url || '';
+  updatePreviewFromUrl(document.getElementById('s-logo-url'), 'logoPreview', '🥐');
+  updatePreviewFromUrl(document.getElementById('s-hero-bg-url'), 'heroBgPreview', null);
+  updatePreviewFromUrl(document.getElementById('s-about-img-url'), 'aboutImgPreview', null);
+  _showSectionView('Images');
+}
+
+// ----- Content -----
+function startEditContent() { _showSectionEdit('Content'); }
+function cancelEditContent() {
+  const s = currentSettings || {};
+  document.getElementById('s-about').value = s.about_text || '';
+  document.getElementById('s-terms').value = s.terms_text || '';
+  if (typeof autoResizeTextarea === 'function') autoResizeTextarea(document.getElementById('s-about'));
+  _showSectionView('Content');
+}
+
+// ===== SECTION SAVE — per-card =====
+async function saveBasics() {
+  const nameInput = document.getElementById('s-business-name');
+  const nameErr = document.getElementById('s-name-err');
+  nameErr.style.display = 'none';
+  nameInput.classList.remove('error');
+  if (!nameInput.value.trim()) {
+    nameErr.style.display = 'block';
+    nameInput.classList.add('error');
+    nameInput.focus();
+    return;
+  }
+  const payload = {
+    business_name: nameInput.value.trim(),
+    tagline: document.getElementById('s-tagline').value.trim(),
+    contact_name: document.getElementById('s-contact-name').value.trim()
+  };
+  try {
+    await upsertSettingsPartial(payload);
+  } catch(e) {
+    console.error('saveBasics failed', e);
+    showSuccess('❌ שמירה נכשלה: ' + (e.message || e));
+    return;
+  }
+  if (typeof updateBusinessView === 'function') updateBusinessView();
+  _showSectionView('Basics');
+  showSuccess('פרטי העסק נשמרו בהצלחה!');
+}
+
+async function saveContact() {
+  const waInput = document.getElementById('s-whatsapp');
+  const waErr = document.getElementById('s-wa-err');
+  waErr.style.display = 'none';
+  waInput.classList.remove('error');
+  const waVal = waInput.value.trim();
+  const waValid = waInput.dataset.valid;
+  if (!waVal) {
+    waErr.textContent = '⚠️ מספר וואטסאפ הוא שדה חובה — בלעדיו לא ניתן לקבל הזמנות';
+    waErr.style.display = 'block';
+    waInput.classList.add('error');
+    waInput.focus();
+    return;
+  }
+  if (waValid === 'false') {
+    waErr.textContent = '⚠️ מספר הוואטסאפ לא תקין — הכנס מספר ישראלי (05X-XXXXXXX)';
+    waErr.style.display = 'block';
+    waInput.classList.add('error');
+    waInput.focus();
+    return;
+  }
+  const waNormalized = (function(){ const r = waVal.replace(/\D/g,''); return r.startsWith('05') ? '972' + r.slice(1) : r; })();
+  const payload = {
+    whatsapp: waNormalized,
+    phone: document.getElementById('s-phone').value.trim(),
+    pickup_area: document.getElementById('s-area').value.trim()
+  };
+  try {
+    await upsertSettingsPartial(payload);
+  } catch(e) {
+    console.error('saveContact failed', e);
+    showSuccess('❌ שמירה נכשלה: ' + (e.message || e));
+    return;
+  }
+  if (typeof updateBusinessView === 'function') updateBusinessView();
+  _showSectionView('Contact');
+  showSuccess('פרטי יצירת קשר נשמרו בהצלחה!');
+}
+
+async function saveHours() {
+  const payload = {
+    allow_same_day: document.getElementById('s-allow-same-day').checked,
+    active_days: Object.assign(JSON.parse(JSON.stringify(activeDays)), {
+      _overrides: JSON.parse(JSON.stringify(dayOverrides)),
+      _defaults: JSON.parse(JSON.stringify(defaultHours))
+    })
+  };
+  try {
+    await upsertSettingsPartial(payload);
+  } catch(e) {
+    console.error('saveHours failed', e);
+    showSuccess('❌ שמירה נכשלה: ' + (e.message || e));
+    return;
+  }
+  if (typeof updateBusinessView === 'function') updateBusinessView();
+  _showSectionView('Hours');
+  showSuccess('שעות פעילות נשמרו בהצלחה!');
+}
+
+async function saveImages() {
+  // 1. Capture old URLs from state (before flush overwrites DOM)
+  const s = currentSettings || {};
+  const oldLogo = s.logo_url || '';
+  const oldHero = s.hero_bg_url || '';
+  const oldAbout = s.about_image_url || '';
+  // 2. Flush pending images to Storage
+  const saveBtn = document.getElementById('imagesSaveBtn');
+  const pendingFields = ['s-logo-url','s-hero-bg-url','s-about-img-url'].filter(f => pendingImageBlobs[f]);
+  if (pendingFields.length) {
+    saveBtn.disabled = true;
+    const origText = saveBtn.textContent;
+    saveBtn.textContent = '⏳ מעלה תמונות...';
+    try {
+      await Promise.all(pendingFields.map(f => flushPendingImage(f)));
+    } catch(err) {
+      console.error('Image upload failed:', err);
+      saveBtn.disabled = false;
+      saveBtn.textContent = origText;
+      showSuccess('❌ העלאת תמונה נכשלה: ' + err.message);
+      return;
+    }
+    saveBtn.disabled = false;
+    saveBtn.textContent = origText;
+  }
+  // 3. Build payload with new URLs
+  const newLogo = document.getElementById('s-logo-url').value.trim();
+  const newHero = document.getElementById('s-hero-bg-url').value.trim();
+  const newAbout = document.getElementById('s-about-img-url').value.trim();
+  const payload = {
+    logo_url: newLogo,
+    hero_bg_url: newHero,
+    about_image_url: newAbout
+  };
+  // 4. Upsert to Supabase
+  try {
+    await upsertSettingsPartial(payload);
+  } catch(e) {
+    console.error('saveImages failed', e);
+    showSuccess('❌ שמירה נכשלה: ' + (e.message || e));
+    return;
+  }
+  // 5. Delete old images from Storage if replaced or cleared
+  if (oldLogo && oldLogo !== newLogo && typeof deleteOldImageFromStorage === 'function') deleteOldImageFromStorage(oldLogo);
+  if (oldHero && oldHero !== newHero && typeof deleteOldImageFromStorage === 'function') deleteOldImageFromStorage(oldHero);
+  if (oldAbout && oldAbout !== newAbout && typeof deleteOldImageFromStorage === 'function') deleteOldImageFromStorage(oldAbout);
+  if (typeof updateBusinessView === 'function') updateBusinessView();
+  _showSectionView('Images');
+  showSuccess('התמונות נשמרו בהצלחה!');
+}
+
+async function saveContent() {
+  const payload = {
+    about_text: document.getElementById('s-about').value.trim(),
+    terms_text: document.getElementById('s-terms').value.trim()
+  };
+  try {
+    await upsertSettingsPartial(payload);
+  } catch(e) {
+    console.error('saveContent failed', e);
+    showSuccess('❌ שמירה נכשלה: ' + (e.message || e));
+    return;
+  }
+  if (typeof updateBusinessView === 'function') updateBusinessView();
+  _showSectionView('Content');
+  showSuccess('התוכן נשמר בהצלחה!');
+}
+
 // ===== Expose functions to window for onclick handlers =====
+Object.defineProperty(window, 'currentSettings', { get: () => currentSettings, configurable: true });
 Object.assign(window, {
+  startEditBasics, cancelEditBasics, saveBasics,
+  startEditContact, cancelEditContact, saveContact,
+  startEditHours, cancelEditHours, saveHours,
+  startEditImages, cancelEditImages, saveImages,
+  startEditContent, cancelEditContent, saveContent,
   switchTab, viewMenu, toggleLinkPopup, closeLinkPopup,
   openProductForm, closeProductForm, saveProduct, deleteProduct,
   renderProducts, renderCategories,
   startNewCategory, cancelNewCategory, saveNewCategory,
   startEditCategory, cancelEditCategory, saveEditCategory, deleteCategory,
   saveProductsOrder, saveCategoriesOrder,
-  startEditBusiness, cancelEditBusiness, saveSettings,
   startEditBanner, cancelEditBanner, saveBanner, updateBannerPreview,
   startEditSlug, cancelEditSlug, saveSlug, validateSlug, formatSlug,
   toggleDay, toggleCategory, selectDietary,
