@@ -131,7 +131,7 @@ input:checked + .slider:before { transform:translateX(-20px); }
       <span style="font-size:16px;font-weight:700;color:var(--text);">ניהול תפריט</span>
     </div>
     <div style="display:flex;align-items:center;gap:6px;position:relative;">
-      <button onclick="toggleLinkPopup()" id="linkBtn" class="btn-outline" style="padding:7px 12px;font-size:13px;gap:5px;">
+      <button onclick="shareSlugLink()" id="linkBtn" class="btn-outline" style="padding:7px 12px;font-size:13px;gap:5px;">
         <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" stroke-width="2" stroke-linecap="round"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" stroke-width="2" stroke-linecap="round"/></svg>
         שיתוף
       </button>
@@ -190,6 +190,11 @@ input:checked + .slider:before { transform:translateX(-20px); }
         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="20 6 9 13 4 9"/></svg>
         שמור סדר
       </button>
+    </div>
+    <div class="flex items-center gap-2 mb-3 flex-wrap">
+      <button onclick="setProductFilter('all')" id="prodFilter-all" class="btn-primary" style="padding:6px 14px;font-size:12px">הכל</button>
+      <button onclick="setProductFilter('active')" id="prodFilter-active" class="btn-outline" style="padding:6px 14px;font-size:12px">מוצגים</button>
+      <button onclick="setProductFilter('inactive')" id="prodFilter-inactive" class="btn-outline" style="padding:6px 14px;font-size:12px">מוסתרים</button>
     </div>
     <div id="productsList" class="flex flex-col gap-2"></div>
     <div id="productsEmpty" class="card p-12 text-center text-gray-400" style="display:none">
@@ -1363,10 +1368,23 @@ function saveCategoriesOrder(){
 }
 
 // ===== RENDER PRODUCTS =====
+let productStatusFilter='all';
+function setProductFilter(f){
+  productStatusFilter=f;
+  ['all','active','inactive'].forEach(k=>{
+    const b=document.getElementById('prodFilter-'+k);
+    if(!b)return;
+    b.className=(k===f?'btn-primary':'btn-outline');
+    b.style.padding='6px 14px';b.style.fontSize='12px';
+  });
+  renderProducts();
+}
 function renderProducts(){
   const list=document.getElementById('productsList'),empty=document.getElementById('productsEmpty');
   const search=document.getElementById('productSearch').value.trim().toLowerCase();
   let filtered=search?products.filter(p=>p.name.toLowerCase().includes(search)||(p.description||'').toLowerCase().includes(search)):products;
+  if(productStatusFilter==='active')filtered=filtered.filter(p=>p.is_active!==false);
+  else if(productStatusFilter==='inactive')filtered=filtered.filter(p=>p.is_active===false);
   document.getElementById('productCount').textContent=products.length;
   if(!products.length){list.innerHTML='';empty.innerHTML='<p class="text-lg text-gray-400">אין מוצרים עדיין</p><p class="text-sm text-gray-400 mt-1">הוסף את המוצר הראשון!</p>';empty.style.display='block';return;}
   if(!filtered.length){list.innerHTML='';empty.innerHTML='<p class="text-lg text-gray-400">לא נמצאו מוצרים</p>';empty.style.display='block';return;}
@@ -2183,7 +2201,7 @@ Object.assign(window, {
   startEditContent, cancelEditContent, saveContent,
   switchTab, viewMenu, toggleLinkPopup, closeLinkPopup,
   openProductForm, closeProductForm, saveProduct, deleteProduct,
-  renderProducts, renderCategories,
+  renderProducts, renderCategories, setProductFilter,
   startNewCategory, cancelNewCategory, saveNewCategory,
   startEditCategory, cancelEditCategory, saveEditCategory, deleteCategory,
   saveProductsOrder, saveCategoriesOrder,
@@ -2295,5 +2313,6 @@ Object.assign(window, {
 
 <div id="globalSuccessToast" style="display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#15803d;color:white;padding:12px 24px;border-radius:12px;font-size:14px;font-weight:600;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,0.15);white-space:nowrap;animation:slideUp 0.2s ease;">✓ נשמר בהצלחה!</div>
 
+<div style="text-align:center;padding:20px;font-size:13px;"><a href="terms.html">תנאי שימוש ומדיניות פרטיות</a></div>
 </body>
 </html>

@@ -133,8 +133,8 @@
           <label class="block text-sm font-label font-semibold text-on-surface-variant mr-1">סיסמה</label>
           <div class="relative">
             <input id="login-password" class="w-full bg-surface-container-highest border-none border-b-2 border-outline-variant/20 focus:ring-0 focus:border-primary-container rounded-t-md px-4 py-3 transition-colors text-on-surface" placeholder="••••••••" type="password" required/>
-            <button class="absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant hover:text-primary transition-colors" type="button">
-              <span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+            <button onclick="togglePassword('login-password', this)" class="absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant hover:text-primary transition-colors" type="button">
+              <span class="material-symbols-outlined">visibility</span>
             </button>
           </div>
         </div>
@@ -171,7 +171,18 @@
         </div>
         <div class="space-y-2">
           <label class="block text-sm font-label font-semibold text-on-surface-variant mr-1">סיסמה</label>
-          <input id="reg-password" class="w-full bg-surface-container-highest border-none border-b-2 border-outline-variant/20 focus:ring-0 focus:border-primary-container rounded-t-md px-4 py-3 transition-colors text-on-surface" placeholder="••••••••" type="password" required minlength="6"/>
+          <div class="relative">
+            <input id="reg-password" class="w-full bg-surface-container-highest border-none border-b-2 border-outline-variant/20 focus:ring-0 focus:border-primary-container rounded-t-md px-4 py-3 transition-colors text-on-surface" placeholder="••••••••" type="password" required minlength="6"/>
+            <button onclick="togglePassword('reg-password', this)" class="absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant hover:text-primary transition-colors" type="button">
+              <span class="material-symbols-outlined">visibility</span>
+            </button>
+          </div>
+        </div>
+        <div class="flex items-start gap-2 pt-1">
+          <input id="reg-terms" type="checkbox" class="mt-1 w-4 h-4 accent-primary"/>
+          <label for="reg-terms" class="text-xs text-on-surface-variant leading-relaxed">
+            קראתי ואני מסכים/ה ל<a href="terms.html" class="text-primary font-bold hover:underline">תנאי השימוש ומדיניות הפרטיות</a>
+          </label>
         </div>
         <p id="reg-msg" class="text-sm font-semibold text-center" style="display:none"></p>
         <div class="pt-2">
@@ -216,6 +227,19 @@
 
 <script type="module">
 import { supabase } from './supabase.js';
+
+// ===== TOGGLE PASSWORD VISIBILITY =====
+window.togglePassword = function(id, btn) {
+  const input = document.getElementById(id);
+  const icon = btn.querySelector('.material-symbols-outlined');
+  if (input.type === 'password') {
+    input.type = 'text';
+    icon.textContent = 'visibility_off';
+  } else {
+    input.type = 'password';
+    icon.textContent = 'visibility';
+  }
+};
 
 // ===== TOGGLE LOGIN / REGISTER =====
 window.toggleForm = function(state) {
@@ -270,13 +294,24 @@ document.getElementById('registerForm').addEventListener('submit', async functio
   const btn = document.getElementById('reg-btn');
 
   msgEl.style.display = 'none';
+
+  if (!document.getElementById('reg-terms').checked) {
+    msgEl.textContent = 'יש לאשר את תנאי השימוש ומדיניות הפרטיות';
+    msgEl.style.color = '#dc2626';
+    msgEl.style.display = 'block';
+    return;
+  }
+
   btn.disabled = true;
   btn.textContent = 'יוצר חשבון...';
 
   const { error } = await supabase.auth.signUp({
     email,
     password,
-    options: { data: { full_name: name } }
+    options: {
+      data: { full_name: name },
+      emailRedirectTo: 'https://mytafrit.co.il/login.html'
+    }
   });
 
   btn.disabled = false;
