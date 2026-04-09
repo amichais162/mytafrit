@@ -947,9 +947,10 @@ function formatSlug(input) {
 // ===== WHATSAPP =====
 function formatWhatsapp(input) {
   input.value = input.value.replace(/[^0-9-]/g, '');
-  const raw = input.value.replace(/\D/g,'');
+  let raw = input.value.replace(/\D/g,'');
+  if (raw.length > 10) { raw = raw.slice(0,10); input.value = raw; }
   const preview = document.getElementById('whatsapp-preview');
-  if (raw.startsWith('05') && raw.length >= 10) {
+  if (/^05\d{8}$/.test(raw)) {
     input.dataset.formatted = '972' + raw.slice(1);
     input.dataset.valid = 'true';
     preview.textContent = '✓ פורמט וואטסאפ: ' + input.dataset.formatted;
@@ -2070,7 +2071,7 @@ async function saveContact() {
   waErr.style.display = 'none';
   waInput.classList.remove('error');
   const waVal = waInput.value.trim();
-  const waValid = waInput.dataset.valid;
+  const waDigits = waVal.replace(/\D/g,'');
   if (!waVal) {
     waErr.textContent = '⚠️ מספר וואטסאפ הוא שדה חובה — בלעדיו לא ניתן לקבל הזמנות';
     waErr.style.display = 'block';
@@ -2078,14 +2079,14 @@ async function saveContact() {
     waInput.focus();
     return;
   }
-  if (waValid === 'false') {
+  if (!/^05\d{8}$/.test(waDigits)) {
     waErr.textContent = '⚠️ מספר הוואטסאפ לא תקין — הכנס מספר ישראלי (05X-XXXXXXX)';
     waErr.style.display = 'block';
     waInput.classList.add('error');
     waInput.focus();
     return;
   }
-  const waNormalized = (function(){ const r = waVal.replace(/\D/g,''); return r.startsWith('05') ? '972' + r.slice(1) : r; })();
+  const waNormalized = '972' + waDigits.slice(1);
   const payload = {
     whatsapp: waNormalized,
     phone: document.getElementById('s-phone').value.trim(),
