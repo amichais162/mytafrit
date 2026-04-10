@@ -1,489 +1,831 @@
 <!DOCTYPE html>
-
-<html class="scroll-smooth" dir="rtl" lang="he"><head>
+<html class="scroll-smooth" dir="rtl" lang="he">
+<head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Mytafrit - תפריט דיגיטלי לכל עסק מזון ביתי</title>
-<meta name="description" content="תפריט דיגיטלי מקצועי לעסקי מזון ביתיים, בשלנים ואופים. צרו תפריט יפה ושלחו הזמנות בוואטסאפ בקלות.">
-<meta name="keywords" content="תפריט דיגיטלי, מזון ביתי, קייטרינג, אופים, בשלנים, הזמנות וואטסאפ">
-<meta property="og:title" content="MyTafrit — תפריט דיגיטלי לעסק הביתי שלך">
-<meta property="og:description" content="הדרך הקלה והיפה ביותר למכור אוכל מבושל, מאפים או מארזים בוואטסאפ.">
-<meta property="og:url" content="https://mytafrit.co.il">
-<meta name="robots" content="index, follow">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Be+Vietnam+Pro:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            "colors": {
-                    "surface-container": "#f0ede9",
-                    "error": "#ba1a1a",
-                    "on-surface": "#1c1c19",
-                    "on-error": "#ffffff",
-                    "on-tertiary-container": "#ffc395",
-                    "on-surface-variant": "#55433a",
-                    "on-error-container": "#93000a",
-                    "tertiary-fixed": "#ffdcc3",
-                    "surface": "#fcf9f4",
-                    "on-primary-container": "#ffc2a5",
-                    "surface-container-lowest": "#ffffff",
-                    "surface-container-highest": "#e5e2dd",
-                    "on-primary": "#ffffff",
-                    "surface-container-high": "#ebe8e3",
-                    "primary": "#712c00",
-                    "error-container": "#ffdad6",
-                    "background": "#fcf9f4",
-                    "surface-variant": "#e5e2dd",
-                    "on-primary-fixed": "#341000",
-                    "surface-dim": "#dcdad5",
-                    "on-tertiary": "#ffffff",
-                    "inverse-on-surface": "#f3f0eb",
-                    "secondary-fixed-dim": "#ffb693",
-                    "inverse-primary": "#ffb693",
-                    "secondary": "#944a23",
-                    "primary-container": "#92400e",
-                    "primary-fixed": "#ffdbcb",
-                    "tertiary-container": "#884800",
-                    "secondary-fixed": "#ffdbcc",
-                    "surface-bright": "#fcf9f4",
-                    "on-secondary": "#ffffff",
-                    "surface-container-low": "#f6f3ee",
-                    "primary-fixed-dim": "#ffb693",
-                    "on-secondary-fixed-variant": "#76330d",
-                    "on-secondary-container": "#76340e",
-                    "secondary-container": "#fd9e70",
-                    "on-secondary-fixed": "#351000",
-                    "tertiary-fixed-dim": "#ffb77d",
-                    "outline": "#887269",
-                    "on-primary-fixed-variant": "#7a3000",
-                    "tertiary": "#663400",
-                    "outline-variant": "#dcc1b6",
-                    "inverse-surface": "#31302d",
-                    "on-tertiary-fixed-variant": "#6e3900",
-                    "surface-tint": "#9a4614",
-                    "on-tertiary-fixed": "#2f1500",
-                    "on-background": "#1c1c19"
-            },
-            "borderRadius": {
-                    "DEFAULT": "1rem",
-                    "lg": "2rem",
-                    "xl": "3rem",
-                    "full": "9999px"
-            },
-            "fontFamily": {
-                    "headline": ["Plus Jakarta Sans"],
-                    "body": ["Be Vietnam Pro"],
-                    "label": ["Be Vietnam Pro"]
-            },
-            "animation": {
-              "fade-in-up": "fadeInUp 0.8s ease-out forwards",
-              "fade-in": "fadeIn 1s ease-out forwards",
-              "float": "float 6s ease-in-out infinite",
-              "float-slow": "float 8s ease-in-out infinite",
-              "message-pop": "messagePop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards"
-            },
-            "keyframes": {
-              "fadeInUp": {
-                "0%": { opacity: "0", transform: "translateY(20px)" },
-                "100%": { opacity: "1", transform: "translateY(0)" }
-              },
-              "fadeIn": {
-                "0%": { opacity: "0" },
-                "100%": { opacity: "1" }
-              },
-              "float": {
-                "0%, 100%": { transform: "translateY(0)" },
-                "50%": { transform: "translateY(-15px)" }
-              },
-              "messagePop": {
-                "0%": { opacity: "0", transform: "scale(0.8) translateY(10px)" },
-                "100%": { opacity: "1", transform: "scale(1) translateY(0)" }
-              }
-            }
-          },
-        },
-      }
-    </script>
-<style>
-      .material-symbols-outlined {
-        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-      }
-      body {
-        font-family: 'Be Vietnam Pro', sans-serif;
-        background-color: #fcf9f4;
-        color: #1c1c19;
-      }
-      h1, h2, h3, .font-headline {
-        font-family: 'Plus Jakarta Sans', sans-serif;
-      }
-      .reveal {
-        opacity: 0;
-        transform: translateY(30px);
-        transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-        will-change: transform, opacity;
-      }
-      .reveal.active {
-        opacity: 1;
-        transform: translateY(0);
-      }
-      .reveal-group > * {
-        opacity: 0;
-        transform: translateY(20px);
-        transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-      }
-      .reveal-group.active > * {
-        opacity: 1;
-        transform: translateY(0);
-      }
-      .reveal-group.active > *:nth-child(1) { transition-delay: 0.1s; }
-      .reveal-group.active > *:nth-child(2) { transition-delay: 0.2s; }
-      .reveal-group.active > *:nth-child(3) { transition-delay: 0.3s; }
-      .reveal-group.active > *:nth-child(4) { transition-delay: 0.4s; }
-      .btn-hover-effect {
-        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      }
-      .btn-hover-effect:hover {
-        transform: scale(1.05);
-        box-shadow: 0 10px 25px -5px rgba(113, 44, 0, 0.3);
-      }
-      .btn-hover-effect:active {
-        transform: scale(0.98);
-      }
-      @keyframes bounce-subtle {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-10px); }
-      }
-      .animate-bounce-subtle {
-        animation: bounce-subtle 3s ease-in-out infinite;
-      }
-      html {
-        scroll-padding-top: 80px;
-      }
-      .message-bubble {
-        opacity: 0;
-        animation: messagePop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-      }
-    </style>
-</head>
-<body class="bg-background text-on-background overflow-x-hidden">
+<title>Mytafrit — תפריט דיגיטלי לעסק הביתי שלך</title>
+<meta name="description" content="תפריט דיגיטלי מקצועי לעסקי מזון ביתיים — מוכן תוך 5 דקות. הלקוחות מזמינים בלחיצה ואתם מקבלים הזמנה מסודרת ישר לוואטסאפ. 14 יום ניסיון חינם, בלי כרטיס אשראי."/>
+<meta name="keywords" content="תפריט דיגיטלי, מזון ביתי, קייטרינג, אופים, בשלנים, הזמנות וואטסאפ, עסק ביתי"/>
+<meta property="og:title" content="Mytafrit — תפריט דיגיטלי לעסק הביתי שלך"/>
+<meta property="og:description" content="תפריט מקצועי תוך 5 דקות. הלקוחות מזמינים בלחיצה — ואתם מקבלים הזמנה מסודרת ישר לוואטסאפ."/>
+<meta property="og:url" content="https://mytafrit.co.il"/>
+<meta property="og:type" content="website"/>
+<meta name="robots" content="index, follow"/>
+<link rel="canonical" href="https://mytafrit.co.il/"/>
 
-<!-- TopAppBar -->
-<nav class="fixed top-0 w-full z-50 bg-[#fcf9f4]/80 backdrop-blur-lg shadow-sm shadow-amber-900/5 animate-fade-in">
-<div class="flex flex-row-reverse justify-between items-center px-6 py-4 max-w-7xl mx-auto w-full">
-  <div class="flex items-center gap-3">
-    <span class="material-symbols-outlined text-3xl text-primary-container animate-float-slow" data-icon="restaurant">restaurant</span>
-    <span class="text-2xl font-extrabold text-[#92400e] tracking-tight">MyTafrit</span>
-  </div>
-  <div class="hidden md:flex flex-row-reverse gap-8 items-center text-stone-600">
-    <a class="text-[#92400e] font-bold transition-colors hover:text-amber-800" href="#">בית</a>
-    <a class="hover:text-amber-700 transition-colors" href="#how-it-works">איך זה עובד?</a>
-    <a class="hover:text-amber-700 transition-colors" href="#pricing">מחירים</a>
-    <a class="hover:text-amber-700 transition-colors" href="#contact">צרו קשר</a>
-  </div>
-  <div class="flex items-center gap-3">
-    <a href="login.html" class="bg-primary text-on-primary px-6 py-2.5 rounded-xl font-bold text-sm btn-hover-effect">
-      התחלה בחינם
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Be+Vietnam+Pro:wght@300;400;500;600&family=Heebo:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "surface": "#fcf9f4",
+          "surface-bright": "#fcf9f4",
+          "surface-container-lowest": "#ffffff",
+          "surface-container-low": "#f6f3ee",
+          "surface-container": "#f0ede9",
+          "surface-container-high": "#ebe8e3",
+          "background": "#fcf9f4",
+          "on-surface": "#1c1c19",
+          "on-surface-variant": "#55433a",
+          "primary": "#712c00",
+          "primary-container": "#92400e",
+          "primary-fixed": "#ffdbcb",
+          "on-primary": "#ffffff",
+          "secondary": "#944a23",
+          "secondary-container": "#fd9e70",
+          "outline": "#887269",
+          "outline-variant": "#dcc1b6",
+          "error": "#ba1a1a"
+        },
+        borderRadius: {
+          DEFAULT: "1rem",
+          lg: "2rem",
+          xl: "3rem",
+          full: "9999px"
+        },
+        fontFamily: {
+          headline: ["Plus Jakarta Sans", "Heebo", "sans-serif"],
+          body: ["Be Vietnam Pro", "Heebo", "sans-serif"]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+  body {
+    font-family: 'Be Vietnam Pro', 'Heebo', sans-serif;
+    background-color: #fcf9f4;
+    color: #1c1c19;
+  }
+  .font-headline {
+    font-family: 'Plus Jakarta Sans', 'Heebo', sans-serif;
+  }
+
+  /* Soft decorative glow for hero */
+  .hero-glow {
+    background: radial-gradient(60% 50% at 50% 0%, rgba(146, 64, 14, 0.08) 0%, rgba(252, 249, 244, 0) 70%);
+    pointer-events: none;
+  }
+
+  /* Subtle grain texture overlay — adds tactile warmth */
+  .grain::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0.44 0 0 0 0 0.26 0 0 0 0 0.23 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+
+  /* Phone mockup frame for desktop */
+  .phone-frame {
+    border-radius: 2.5rem;
+    padding: 0.5rem;
+    background: linear-gradient(145deg, #2a1a12, #1c1c19);
+    box-shadow:
+      0 40px 80px -20px rgba(85, 67, 58, 0.35),
+      0 20px 40px -15px rgba(113, 44, 0, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+  .phone-frame img {
+    border-radius: 2rem;
+    display: block;
+  }
+
+  /* Smooth entrance animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  .animate-fade-up {
+    animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .animate-fade-in {
+    animation: fadeIn 1.2s ease-out both;
+  }
+  .delay-1 { animation-delay: 0.12s; }
+  .delay-2 { animation-delay: 0.24s; }
+  .delay-3 { animation-delay: 0.36s; }
+  .delay-4 { animation-delay: 0.48s; }
+  .delay-5 { animation-delay: 0.60s; }
+
+  /* Dashed border for "wildcard" category */
+  .border-dashed-soft {
+    background-image:
+      repeating-linear-gradient(0deg, #dcc1b6, #dcc1b6 6px, transparent 6px, transparent 12px),
+      repeating-linear-gradient(90deg, #dcc1b6, #dcc1b6 6px, transparent 6px, transparent 12px),
+      repeating-linear-gradient(180deg, #dcc1b6, #dcc1b6 6px, transparent 6px, transparent 12px),
+      repeating-linear-gradient(270deg, #dcc1b6, #dcc1b6 6px, transparent 6px, transparent 12px);
+    background-size: 1.5px 100%, 100% 1.5px, 1.5px 100%, 100% 1.5px;
+    background-position: 0 0, 0 0, 100% 0, 0 100%;
+    background-repeat: no-repeat;
+  }
+
+  /* FAQ accordion */
+  details > summary {
+    list-style: none;
+    cursor: pointer;
+  }
+  details > summary::-webkit-details-marker { display: none; }
+  details[open] .faq-chevron {
+    transform: rotate(180deg);
+  }
+  .faq-chevron {
+    transition: transform 0.3s ease;
+  }
+  details[open] .faq-card {
+    border-color: #dcc1b6;
+  }
+
+  /* WhatsApp mockup specific styles */
+  .wa-bubble {
+    background: #dcf8c6;
+    border-radius: 12px;
+    border-top-right-radius: 2px;
+    position: relative;
+    box-shadow: 0 1px 0.5px rgba(0, 0, 0, 0.13);
+  }
+  .wa-bubble::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -8px;
+    width: 0;
+    height: 0;
+    border-top: 8px solid #dcf8c6;
+    border-right: 8px solid transparent;
+  }
+
+  /* Smooth scroll offset for anchored sections */
+  section[id] { scroll-margin-top: 80px; }
+
+  /* Navigation shadow on scroll */
+  .nav-scrolled {
+    background-color: rgba(252, 249, 244, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 1px 0 rgba(136, 114, 105, 0.08);
+  }
+
+  /* Step connector line - desktop only */
+  @media (min-width: 768px) {
+    .step-connector::after {
+      content: '';
+      position: absolute;
+      top: 2.5rem;
+      right: calc(50% + 2.5rem);
+      width: calc(100% - 5rem);
+      height: 2px;
+      background-image: linear-gradient(90deg, #dcc1b6 50%, transparent 50%);
+      background-size: 12px 2px;
+      background-repeat: repeat-x;
+      z-index: 0;
+    }
+  }
+</style>
+</head>
+
+<body class="bg-surface text-on-surface antialiased selection:bg-primary-fixed selection:text-primary">
+
+<!-- ============================================================ -->
+<!-- NAVIGATION                                                   -->
+<!-- ============================================================ -->
+<nav id="mainNav" class="fixed top-0 right-0 left-0 z-50 transition-all duration-300">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-between">
+    <a href="#" class="flex items-center gap-2 group">
+      <span class="material-symbols-outlined text-primary text-3xl transition-transform group-hover:-rotate-6">restaurant</span>
+      <span class="font-headline font-extrabold text-2xl text-primary tracking-tight">MyTafrit</span>
     </a>
-    <a href="login.html" class="text-primary font-bold text-sm px-4 py-2 hover:bg-primary/5 rounded-xl transition-colors">
-      התחבר
+    <a href="login.html" class="font-headline font-bold text-sm text-on-surface-variant hover:text-primary transition-colors px-4 py-2 rounded-full">
+      התחברות
     </a>
   </div>
-</div>
 </nav>
 
-<!-- Hero Section -->
-<header class="relative pt-32 pb-20 md:pt-48 md:pb-24 overflow-hidden">
-<div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 items-center gap-16">
-  <div class="relative z-10 text-right space-y-6">
-    <span class="inline-block px-4 py-1.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-bold text-sm animate-fade-in-up" style="animation-delay: 0.1s;">מיועד לבשלנים, אופים וקייטרינג ביתי</span>
-    <h1 class="text-5xl md:text-7xl font-extrabold text-primary leading-[1.1] animate-fade-in-up" style="animation-delay: 0.3s;">תפריט דיגיטלי מקצועי לעסק הביתי שלך</h1>
-    <p class="text-xl md:text-2xl text-on-surface-variant leading-relaxed max-w-xl animate-fade-in-up" style="animation-delay: 0.5s;">
-      הדרך הקלה והיפה ביותר למכור אוכל מבושל, מאפים או מארזים בוואטסאפ. בלי אפליקציות מסובכות, בלי עמלות מכירה. פשוט וטעים.
-    </p>
-    <div class="flex flex-col sm:flex-row-reverse gap-4 animate-fade-in-up" style="animation-delay: 0.7s;">
-      <a href="login.html" class="bg-gradient-to-r from-primary to-primary-container text-on-primary px-10 py-5 rounded-xl font-bold text-lg shadow-xl shadow-primary/20 btn-hover-effect text-center">
-        התחל תקופת ניסיון חינמית
-      </a>
-      <a href="#preview" class="bg-surface-container-highest text-on-surface-variant px-10 py-5 rounded-xl font-bold text-lg hover:bg-surface-container-high transition-colors active:scale-95 text-center">
-        צפה בדוגמה
-      </a>
-    </div>
-  </div>
-  <div class="relative animate-fade-in" style="animation-delay: 0.4s;">
-    <div class="absolute -top-20 -right-20 w-96 h-96 bg-primary-fixed-dim/30 blur-[100px] rounded-full animate-pulse"></div>
-    <!-- WhatsApp Message Animation -->
-    <div class="relative aspect-square rounded-3xl overflow-hidden border border-outline-variant/10 shadow-2xl p-8 flex flex-col justify-center space-y-6 bg-cover bg-center" style="background-color: #92400e;">
-      <div class="absolute inset-0 bg-black/30 z-0"></div>
-      <div class="message-bubble bg-white p-4 rounded-2xl rounded-tr-none shadow-sm max-w-[85%] self-start text-right border border-stone-100 relative z-10" style="animation-delay: 1s;">
-        <p class="text-sm md:text-base font-medium text-on-surface">שלום, אני רוצה להזמין מארז מקרונים ו-2 לחמי מחמצת</p>
-        <span class="text-[10px] text-stone-400 mt-1 block">10:42</span>
-      </div>
-      <div class="message-bubble bg-[#E7FFDB] p-4 rounded-2xl rounded-tl-none shadow-sm max-w-[85%] self-end text-right border border-green-100 relative z-10" style="animation-delay: 2s;">
-        <p class="text-sm md:text-base font-medium text-on-surface">היי, איזה כיף! הוספתי להזמנה. תרצו איסוף לשישי בצהריים?</p>
-        <span class="text-[10px] text-stone-400 mt-1 block">10:43</span>
-      </div>
-      <div class="message-bubble bg-white p-4 rounded-2xl rounded-tr-none shadow-sm max-w-[85%] self-start text-right border border-stone-100 relative z-10" style="animation-delay: 3.5s;">
-        <p class="text-sm md:text-base font-medium text-on-surface">היי, אפשר להזמין עוגת יומולדת לשלישי?</p>
-        <span class="text-[10px] text-stone-400 mt-1 block">14:15</span>
-      </div>
-      <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 text-primary/40 z-10">
-        <span class="material-symbols-outlined text-4xl" data-icon="phone_iphone">phone_iphone</span>
-      </div>
-    </div>
-    <!-- Notification Overlay -->
-    <div class="absolute -bottom-10 -left-10 bg-surface p-6 rounded-lg shadow-xl border border-outline-variant/20 max-w-xs animate-bounce-subtle z-20">
-      <div class="flex items-center gap-4 mb-2">
-        <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-          <svg class="w-6 h-6 text-[#25D366]" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.414 0 .004 5.412.001 12.049c0 2.123.554 4.197 1.607 6.037L0 24l6.105-1.602a11.834 11.834 0 005.94 1.597h.005c6.637 0 12.048-5.414 12.051-12.052a11.798 11.798 0 00-3.414-8.528"></path></svg>
+<!-- ============================================================ -->
+<!-- HERO                                                         -->
+<!-- ============================================================ -->
+<header class="relative overflow-hidden pt-28 pb-16 sm:pt-36 sm:pb-24">
+  <!-- Decorative glow -->
+  <div class="absolute inset-0 hero-glow"></div>
+
+  <div class="relative max-w-6xl mx-auto px-5 sm:px-8">
+    <div class="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+
+      <!-- Text column -->
+      <div class="text-center md:text-right order-2 md:order-1">
+        <!-- Small tag -->
+        <div class="inline-flex items-center gap-2 bg-primary-fixed text-primary px-4 py-1.5 rounded-full mb-6 animate-fade-up">
+          <span class="material-symbols-outlined text-base">storefront</span>
+          <span class="font-headline font-bold text-xs tracking-wide">לעסקי מזון ביתיים</span>
         </div>
-        <p class="font-bold text-sm">הזמנה חדשה בוואטסאפ!</p>
+
+        <!-- Headline -->
+        <h1 class="font-headline font-extrabold text-4xl sm:text-5xl lg:text-6xl leading-[1.1] text-on-surface mb-6 animate-fade-up delay-1">
+          לקוחות שואלים<br/>
+          <span class="relative inline-block">
+            <span class="relative z-10">"מה יש היום?"</span>
+            <span class="absolute inset-x-0 bottom-1 h-3 bg-secondary-container/40 -z-0 rounded-sm"></span>
+          </span><br/>
+          <span class="text-primary">ועכשיו יש להם תשובה</span>
+        </h1>
+
+        <!-- Subheadline -->
+        <p class="font-body text-base sm:text-lg text-on-surface-variant leading-relaxed mb-8 max-w-xl md:mr-0 mx-auto animate-fade-up delay-2">
+          תפריט דיגיטלי שנראה כמו שעיצב מעצב, מוכן תוך 5 דקות.
+          הלקוחות מזמינים בלחיצה — ואתם מקבלים הזמנה מסודרת ישר לוואטסאפ.
+        </p>
+
+        <!-- CTA -->
+        <div class="animate-fade-up delay-3">
+          <a href="login.html#register" class="inline-flex items-center justify-center gap-2 w-full sm:w-auto bg-primary-container bg-gradient-to-tr from-primary to-primary-container text-on-primary font-bold text-base px-8 py-4 rounded-xl shadow-lg shadow-primary-container/25 hover:shadow-xl hover:shadow-primary-container/35 transform hover:-translate-y-0.5 active:scale-95 transition-all duration-300 font-headline">
+            <span>התחלת ניסיון חינם ל-14 יום</span>
+            <span class="material-symbols-outlined text-xl rtl:rotate-180">arrow_back</span>
+          </a>
+
+          <!-- Reassurance row -->
+          <div class="flex flex-wrap items-center justify-center md:justify-start gap-x-4 gap-y-1 mt-4 text-xs font-body font-medium text-on-surface-variant">
+            <span class="flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm text-primary-container">check_circle</span>
+              בלי כרטיס אשראי
+            </span>
+            <span class="text-outline-variant">·</span>
+            <span class="flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm text-primary-container">check_circle</span>
+              ביטול בכל רגע
+            </span>
+          </div>
+        </div>
       </div>
-      <p class="text-xs text-on-surface-variant leading-tight">"היי, אני רוצה להזמין 3 מנות קוסקוס, סלט ירוק ומארז קרמשניט..."</p>
+
+      <!-- Phone mockup column -->
+      <div class="order-1 md:order-2 flex justify-center md:justify-start animate-fade-up delay-2">
+        <!-- Mobile: soft-framed screenshot. Desktop: full phone frame -->
+        <div class="relative max-w-[280px] sm:max-w-[320px] w-full">
+          <!-- Decorative floating elements -->
+          <div class="hidden md:block absolute -top-4 -right-6 bg-surface-container-lowest rounded-2xl px-4 py-3 shadow-xl shadow-primary-container/10 border border-outline-variant/30 z-20 animate-fade-up delay-4">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary-container text-2xl">bolt</span>
+              <div>
+                <p class="font-headline font-extrabold text-xs text-on-surface leading-tight">5 דקות</p>
+                <p class="font-body text-[10px] text-on-surface-variant">מההרשמה לפרסום</p>
+              </div>
+            </div>
+          </div>
+          <div class="hidden md:block absolute -bottom-2 -left-8 bg-surface-container-lowest rounded-2xl px-4 py-3 shadow-xl shadow-primary-container/10 border border-outline-variant/30 z-20 animate-fade-up delay-5">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[#25D366] text-2xl">check_circle</span>
+              <div>
+                <p class="font-headline font-extrabold text-xs text-on-surface leading-tight">הזמנה התקבלה</p>
+                <p class="font-body text-[10px] text-on-surface-variant">ישר לוואטסאפ</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mobile: just image with soft shadow -->
+          <div class="md:hidden rounded-3xl overflow-hidden shadow-2xl shadow-primary-container/20 border border-outline-variant/30">
+            <img src="menu-preview.png" alt="דוגמת תפריט דיגיטלי של Mytafrit — המאפייה הביתית שלי" class="w-full block" loading="eager"/>
+          </div>
+          <!-- Desktop: phone frame -->
+          <div class="hidden md:block phone-frame">
+            <img src="menu-preview.png" alt="דוגמת תפריט דיגיטלי של Mytafrit — המאפייה הביתית שלי" class="w-full" loading="eager"/>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
-</div>
 </header>
 
-<!-- Social Proof Section -->
-<div class="max-w-7xl mx-auto px-6 pb-12 animate-fade-in" style="animation-delay: 0.9s;">
-<div class="flex items-center justify-center gap-3 bg-surface-container-high/50 py-4 px-6 rounded-2xl w-fit mx-auto border border-outline-variant/20">
-  <div class="flex -space-x-2 space-x-reverse overflow-hidden">
-    <div class="inline-flex h-10 w-10 rounded-full ring-2 ring-surface items-center justify-center bg-[#d97706] text-white font-bold text-lg shadow-sm">נ</div>
-    <div class="inline-flex h-10 w-10 rounded-full ring-2 ring-surface items-center justify-center bg-[#c2410c] text-white font-bold text-lg shadow-sm">ר</div>
-    <div class="inline-flex h-10 w-10 rounded-full ring-2 ring-surface items-center justify-center bg-[#92400e] text-white font-bold text-lg shadow-sm">מ</div>
-    <div class="inline-flex h-10 w-10 rounded-full ring-2 ring-surface items-center justify-center bg-[#d97706] text-white font-bold text-lg shadow-sm">ש</div>
-  </div>
-  <p class="text-sm md:text-base font-bold text-on-surface-variant mr-2">
-    ⭐ מעל 200 עסקי מזון כבר משתמשים ב-Mytafrit
-  </p>
-</div>
-</div>
+<!-- ============================================================ -->
+<!-- SECTION 2: THE PROBLEM                                       -->
+<!-- ============================================================ -->
+<section class="bg-surface-container-low py-20 sm:py-28 relative overflow-hidden">
+  <div class="relative max-w-5xl mx-auto px-5 sm:px-8">
 
-<!-- Problem/Solution Section -->
-<section class="py-24 bg-surface-container-low reveal">
-<div class="max-w-4xl mx-auto px-6 text-center">
-  <h2 class="text-3xl md:text-5xl font-extrabold text-primary mb-12">מוכרים אוכל מהבית?</h2>
-  <p class="text-xl text-on-surface-variant leading-relaxed">
-    נמאס לכם לענות לאותן שאלות על תפריט השבת שוב ושוב? לשלוח תמונות בנפרד לכל לקוח? לרדוף אחרי פרטי הזמנה בתוך שיחה ארוכה ומתישה?
-    <br/><br/>
-    הגיע הזמן לעבור לשיטה מובנית שמתאימה לכל סוגי המזון - מתבשילים ביתיים ועד קינוחי גורמה. הלקוחות רואים תפריט ויזואלי מהמם, בוחרים מה שהם אוהבים, ושולחים לכם הודעה אחת מסודרת עם כל הפרטים.
-  </p>
-</div>
-</section>
-
-<!-- How it Works -->
-<section class="py-24" id="how-it-works">
-<div class="max-w-7xl mx-auto px-6">
-  <div class="text-center mb-20 reveal">
-    <h2 class="text-4xl font-bold text-primary">3 צעדים פשוטים ומתחילים למכור</h2>
-  </div>
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-12 reveal-group">
-    <div class="relative text-center group">
-      <div class="w-24 h-24 bg-surface-container-highest rounded-full flex items-center justify-center mx-auto mb-8 group-hover:bg-primary-fixed group-hover:scale-110 transition-all duration-500 overflow-hidden relative">
-
-        <span class="material-symbols-outlined text-4xl text-primary relative z-10" data-icon="person_add">person_add</span>
-      </div>
-      <h3 class="text-2xl font-bold mb-4">נרשמים</h3>
-      <p class="text-on-surface-variant">תהליך הרשמה מהיר של דקה אחת בלבד. בלי פרטי אשראי מראש.</p>
-      <div class="hidden md:block absolute top-12 -left-6 text-outline-variant animate-float-slow">
-        <span class="material-symbols-outlined text-4xl" data-icon="arrow_back">arrow_back</span>
-      </div>
-    </div>
-    <div class="relative text-center group">
-      <div class="w-24 h-24 bg-surface-container-highest rounded-full flex items-center justify-center mx-auto mb-8 group-hover:bg-primary-fixed group-hover:scale-110 transition-all duration-500 overflow-hidden relative">
-
-        <span class="material-symbols-outlined text-4xl text-primary relative z-10" data-icon="set_meal">set_meal</span>
-      </div>
-      <h3 class="text-2xl font-bold mb-4">מגדירים תפריט</h3>
-      <p class="text-on-surface-variant">מעלים תמונות של המנות שלכם, מוסיפים תיאור ומחיר. קל כמו להעלות פוסט לפייסבוק.</p>
-      <div class="hidden md:block absolute top-12 -left-6 text-outline-variant animate-float-slow" style="animation-delay: 2s;">
-        <span class="material-symbols-outlined text-4xl" data-icon="arrow_back">arrow_back</span>
-      </div>
-    </div>
-    <div class="text-center group">
-      <div class="w-24 h-24 bg-surface-container-highest rounded-full flex items-center justify-center mx-auto mb-8 group-hover:bg-primary-fixed group-hover:scale-110 transition-all duration-500 overflow-hidden relative">
-
-        <span class="material-symbols-outlined text-4xl text-primary relative z-10" data-icon="celebration">celebration</span>
-      </div>
-      <h3 class="text-2xl font-bold mb-4">מתחילים לקבל הזמנות</h3>
-      <p class="text-on-surface-variant">משתפים את הקישור בוואטסאפ ובאינסטגרם, ומחכים להזמנה הראשונה שתגיע מסודרת.</p>
-    </div>
-  </div>
-</div>
-</section>
-
-<!-- Benefits Bento Grid -->
-<section class="py-24 bg-surface-container-high overflow-hidden">
-<div class="max-w-7xl mx-auto px-6">
-  <div class="grid grid-cols-1 md:grid-cols-4 gap-6 reveal-group">
-    <div class="md:col-span-2 bg-surface p-10 rounded-lg shadow-sm border border-outline-variant/10 flex flex-col justify-between hover:shadow-md transition-shadow">
-      <div>
-        <span class="material-symbols-outlined text-5xl text-primary mb-6 animate-float" data-icon="home">home</span>
-        <h3 class="text-3xl font-bold text-primary mb-4">מתאים לכל בשלן ביתי</h3>
-        <p class="text-on-surface-variant text-lg">בין אם אתם מכינים חלות, קייטרינג בשרי, אוכל טבעוני או קינוחים אישיים - התפריט שלכם יראה מיליון דולר.</p>
-      </div>
-    </div>
-    <div class="bg-primary text-on-primary p-10 rounded-lg shadow-lg flex flex-col justify-between hover:-translate-y-1 transition-transform">
-      <span class="material-symbols-outlined text-5xl mb-6 opacity-80" data-icon="percent">percent</span>
-      <div>
-        <h3 class="text-2xl font-bold mb-2">ללא עמלות</h3>
-        <p class="opacity-90">כל הכסף נשאר אצלכם. אנחנו לא לוקחים אחוזים מהמכירות. תשלום חודשי קבוע וזהו.</p>
-      </div>
-    </div>
-    <div class="bg-tertiary-container text-on-tertiary-container p-10 rounded-lg shadow-sm flex flex-col justify-between hover:-translate-y-1 transition-transform">
-      <span class="material-symbols-outlined text-5xl mb-6" data-icon="bolt" style="font-variation-settings: 'FILL' 1;">bolt</span>
-      <div>
-        <h3 class="text-2xl font-bold mb-2">קל ומהיר</h3>
-        <p class="opacity-90">הקמה של תפריט מלא בפחות מ-10 דקות עבודה. אין צורך בידע טכני.</p>
-      </div>
-    </div>
-    <div class="md:col-span-4 bg-surface-container-highest p-10 rounded-lg flex flex-col md:flex-row items-center gap-12 hover:shadow-xl transition-all duration-500">
-      <div class="flex-1 text-right">
-        <span class="material-symbols-outlined text-5xl text-primary mb-6 animate-float-slow" data-icon="receipt_long">receipt_long</span>
-        <h3 class="text-3xl font-bold text-primary mb-4">הזמנות ישירות לוואטסאפ</h3>
-        <p class="text-on-surface-variant text-lg">קבלו את כל פרטי ההזמנה, כולל מנות נבחרות, שדרוגים, וזמן איסוף, בהודעה אחת מרוכזת ומסודרת.</p>
-      </div>
-      <div class="w-full md:w-1/3 aspect-video bg-white rounded-lg shadow-inner flex items-center justify-center p-4">
-        <div class="w-full bg-[#E7FFDB] p-4 rounded-lg shadow-sm transform hover:scale-105 transition-transform">
-          <p class="text-[10px] text-stone-400 mb-1">14:20 PM</p>
-          <p class="text-xs text-stone-800">שלום! אשמח להזמין מהתפריט שלך:<br/>• 2 חריימה דג אמנון<br/>• 1 קובה סלק (קילו)<br/>• 1 עוגת תפוחים ביתית<br/><br/>זמן איסוף מבוקש: יום שישי ב-12:00<br/>סה"כ לתשלום: 185 ₪</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-</section>
-
-<!-- Preview Section -->
-<section class="py-24 overflow-hidden" id="preview">
-<div class="max-w-7xl mx-auto px-6">
-  <div class="flex flex-col md:flex-row-reverse items-center gap-16">
-    <div class="flex-1 text-right reveal">
-      <h2 class="text-4xl md:text-5xl font-bold text-primary mb-8">איך זה נראה אצל הלקוח?</h2>
-      <p class="text-xl text-on-surface-variant mb-10">
-        התפריט שלכם מעוצב בצורה נקייה ומזמינה, המדגישה את איכות האוכל שלכם. חוויית קנייה חלקה שגורמת ללקוחות להזמין יותר וליהנות מהתהליך.
+    <!-- Section header -->
+    <div class="text-center max-w-2xl mx-auto mb-14">
+      <h2 class="font-headline font-extrabold text-3xl sm:text-4xl lg:text-5xl text-on-surface mb-6 leading-tight">
+        נשמע מוכר?
+      </h2>
+      <p class="font-body text-base sm:text-lg text-on-surface-variant leading-relaxed">
+        לקוחה שואלת "מה יש היום?", ובתגובה נשלחות תמונות ורשימה מבולגנת בוואטסאפ.
+        היא כותבת "אחשוב ואחזור" — ולא חוזרת.
       </p>
-      <ul class="space-y-4 reveal-group">
-        <li class="flex items-center gap-3 flex-row-reverse">
-          <span class="material-symbols-outlined text-green-600" data-icon="check_circle">check_circle</span>
-          <span>תמונות גדולות ומגרות של המנות</span>
-        </li>
-        <li class="flex items-center gap-3 flex-row-reverse">
-          <span class="material-symbols-outlined text-green-600" data-icon="check_circle">check_circle</span>
-          <span>חלוקה לקטגוריות (עיקריות, תוספות, קינוחים)</span>
-        </li>
-        <li class="flex items-center gap-3 flex-row-reverse">
-          <span class="material-symbols-outlined text-green-600" data-icon="check_circle">check_circle</span>
-          <span>מותאם מושלם לטלפונים ניידים</span>
-        </li>
-      </ul>
+      <p class="font-headline font-extrabold text-lg sm:text-xl text-primary mt-4 leading-snug">
+        לא כי היא לא רצתה להזמין.<br class="sm:hidden"/>
+        כי לא היה לה מה לראות.
+      </p>
     </div>
-    <div class="flex-1 relative reveal" style="transition-delay: 0.3s;">
-      <div class="max-w-[320px] mx-auto bg-stone-900 rounded-[3rem] p-3 shadow-2xl border-8 border-stone-800 transform hover:scale-[1.02] transition-transform duration-700">
-        <div class="bg-surface h-[600px] rounded-[2.5rem] overflow-hidden relative flex flex-col">
-          <img alt="Mobile App Preview" class="w-full h-full object-cover" src="menu-preview.png"/>
+
+    <!-- Three pain cards -->
+    <div class="grid md:grid-cols-3 gap-4 sm:gap-6">
+
+      <!-- Card 1 -->
+      <div class="bg-surface-container-lowest rounded-lg p-6 sm:p-7 border border-outline-variant/40 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+        <div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center mb-4">
+          <span class="material-symbols-outlined text-primary text-2xl">photo_library</span>
         </div>
+        <h3 class="font-headline font-extrabold text-lg text-on-surface mb-2">תפריט בתמונה אחת</h3>
+        <p class="font-body text-sm text-on-surface-variant leading-relaxed">
+          מנסים לדחוס הכל לסטורי או לתמונה אחת — ויוצא עמוס, קטן, ולא קריא.
+        </p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="bg-surface-container-lowest rounded-lg p-6 sm:p-7 border border-outline-variant/40 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+        <div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center mb-4">
+          <span class="material-symbols-outlined text-primary text-2xl">sentiment_dissatisfied</span>
+        </div>
+        <h3 class="font-headline font-extrabold text-lg text-on-surface mb-2">"אחשוב ואחזור"</h3>
+        <p class="font-body text-sm text-on-surface-variant leading-relaxed">
+          לקוחות מתעניינים אבל לא מזמינים, כי אין להם איך להתרשם ממה שיש.
+        </p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="bg-surface-container-lowest rounded-lg p-6 sm:p-7 border border-outline-variant/40 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+        <div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center mb-4">
+          <span class="material-symbols-outlined text-primary text-2xl">sync_problem</span>
+        </div>
+        <h3 class="font-headline font-extrabold text-lg text-on-surface mb-2">כל עדכון זה כאב ראש</h3>
+        <p class="font-body text-sm text-on-surface-variant leading-relaxed">
+          מחיר השתנה? מוצר חדש? צריך לערוך תמונה ולשלוח לכולם מחדש.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: HOW IT WORKS                                      -->
+<!-- ============================================================ -->
+<section id="how" class="bg-surface py-20 sm:py-28 relative overflow-hidden">
+  <div class="relative max-w-5xl mx-auto px-5 sm:px-8">
+
+    <div class="text-center max-w-2xl mx-auto mb-16">
+      <h2 class="font-headline font-extrabold text-3xl sm:text-4xl lg:text-5xl text-on-surface mb-4 leading-tight">
+        תפריט מקצועי תוך 5 דקות.
+        <span class="text-primary">זהו.</span>
+      </h2>
+      <p class="font-body text-base sm:text-lg text-on-surface-variant leading-relaxed">
+        שלושה שלבים פשוטים. בלי תוכנות, בלי ידע טכני, בלי כאב ראש.
+      </p>
+    </div>
+
+    <!-- Steps grid -->
+    <div class="grid md:grid-cols-3 gap-8 md:gap-6 relative">
+
+      <!-- Step 1 -->
+      <div class="relative text-center step-connector md:px-4">
+        <div class="relative z-10 inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-primary to-primary-container text-on-primary font-headline font-extrabold text-3xl shadow-lg shadow-primary-container/25 mb-5">
+          1
+        </div>
+        <div class="flex items-center justify-center gap-2 mb-2">
+          <span class="material-symbols-outlined text-primary-container text-xl">person_add</span>
+          <h3 class="font-headline font-extrabold text-xl text-on-surface">יוצרים חשבון</h3>
+        </div>
+        <p class="font-body text-sm sm:text-base text-on-surface-variant leading-relaxed max-w-xs mx-auto">
+          הרשמה מהירה במייל. בלי כרטיס אשראי, בלי טפסים ארוכים.
+        </p>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="relative text-center step-connector md:px-4">
+        <div class="relative z-10 inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-primary to-primary-container text-on-primary font-headline font-extrabold text-3xl shadow-lg shadow-primary-container/25 mb-5">
+          2
+        </div>
+        <div class="flex items-center justify-center gap-2 mb-2">
+          <span class="material-symbols-outlined text-primary-container text-xl">add_photo_alternate</span>
+          <h3 class="font-headline font-extrabold text-xl text-on-surface">מוסיפים מוצרים</h3>
+        </div>
+        <p class="font-body text-sm sm:text-base text-on-surface-variant leading-relaxed max-w-xs mx-auto">
+          תמונה, שם, מחיר, תיאור קצר. מארגנים בקטגוריות — מאפים, עוגות, מנות חמות.
+        </p>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="relative text-center md:px-4">
+        <div class="relative z-10 inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-primary to-primary-container text-on-primary font-headline font-extrabold text-3xl shadow-lg shadow-primary-container/25 mb-5">
+          3
+        </div>
+        <div class="flex items-center justify-center gap-2 mb-2">
+          <span class="material-symbols-outlined text-primary-container text-xl">share</span>
+          <h3 class="font-headline font-extrabold text-xl text-on-surface">משתפים את הלינק</h3>
+        </div>
+        <p class="font-body text-sm sm:text-base text-on-surface-variant leading-relaxed max-w-xs mx-auto">
+          מקבלים לינק אישי לשיתוף בוואטסאפ, אינסטגרם, או כ-QR להדפסה.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: FOR EVERY BUSINESS                                -->
+<!-- ============================================================ -->
+<section class="bg-surface-container py-20 sm:py-28 relative overflow-hidden">
+  <div class="relative max-w-5xl mx-auto px-5 sm:px-8">
+
+    <div class="text-center max-w-2xl mx-auto mb-14">
+      <h2 class="font-headline font-extrabold text-3xl sm:text-4xl lg:text-5xl text-on-surface mb-4 leading-tight">
+        מתאים לכל עסק מזון ביתי
+      </h2>
+      <p class="font-body text-base sm:text-lg text-on-surface-variant leading-relaxed">
+        לא משנה מה מבשלים, אופים או מכינים — Mytafrit מתעצב מחדש סביב העסק שלכם.
+      </p>
+    </div>
+
+    <!-- Category grid -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 max-w-4xl mx-auto">
+
+      <div class="bg-surface-container-lowest rounded-lg p-5 sm:p-6 border border-outline-variant/40 hover:border-primary-container/50 hover:shadow-md transition-all duration-300 text-center group">
+        <div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+          <span class="material-symbols-outlined text-primary text-2xl">bakery_dining</span>
+        </div>
+        <h3 class="font-headline font-bold text-sm sm:text-base text-on-surface">מאפיות ביתיות</h3>
+      </div>
+
+      <div class="bg-surface-container-lowest rounded-lg p-5 sm:p-6 border border-outline-variant/40 hover:border-primary-container/50 hover:shadow-md transition-all duration-300 text-center group">
+        <div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+          <span class="material-symbols-outlined text-primary text-2xl">cake</span>
+        </div>
+        <h3 class="font-headline font-bold text-sm sm:text-base text-on-surface">עוגות מעוצבות</h3>
+      </div>
+
+      <div class="bg-surface-container-lowest rounded-lg p-5 sm:p-6 border border-outline-variant/40 hover:border-primary-container/50 hover:shadow-md transition-all duration-300 text-center group">
+        <div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+          <span class="material-symbols-outlined text-primary text-2xl">restaurant</span>
+        </div>
+        <h3 class="font-headline font-bold text-sm sm:text-base text-on-surface">ארוחות שבת</h3>
+      </div>
+
+      <div class="bg-surface-container-lowest rounded-lg p-5 sm:p-6 border border-outline-variant/40 hover:border-primary-container/50 hover:shadow-md transition-all duration-300 text-center group">
+        <div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+          <span class="material-symbols-outlined text-primary text-2xl">ac_unit</span>
+        </div>
+        <h3 class="font-headline font-bold text-sm sm:text-base text-on-surface">מנות קפואות</h3>
+      </div>
+
+      <div class="bg-surface-container-lowest rounded-lg p-5 sm:p-6 border border-outline-variant/40 hover:border-primary-container/50 hover:shadow-md transition-all duration-300 text-center group">
+        <div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+          <span class="material-symbols-outlined text-primary text-2xl">celebration</span>
+        </div>
+        <h3 class="font-headline font-bold text-sm sm:text-base text-on-surface">קייטרינג ביתי</h3>
+      </div>
+
+      <div class="bg-surface-container-lowest rounded-lg p-5 sm:p-6 border border-outline-variant/40 hover:border-primary-container/50 hover:shadow-md transition-all duration-300 text-center group">
+        <div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+          <span class="material-symbols-outlined text-primary text-2xl">icecream</span>
+        </div>
+        <h3 class="font-headline font-bold text-sm sm:text-base text-on-surface">קינוחים אישיים</h3>
+      </div>
+
+      <div class="bg-surface-container-lowest rounded-lg p-5 sm:p-6 border border-outline-variant/40 hover:border-primary-container/50 hover:shadow-md transition-all duration-300 text-center group">
+        <div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+          <span class="material-symbols-outlined text-primary text-2xl">lunch_dining</span>
+        </div>
+        <h3 class="font-headline font-bold text-sm sm:text-base text-on-surface">ארוחות חמות</h3>
+      </div>
+
+      <!-- Wildcard card -->
+      <div class="rounded-lg p-5 sm:p-6 border-2 border-dashed border-primary-container/40 hover:border-primary-container transition-all duration-300 text-center group bg-surface-container-lowest/40">
+        <div class="w-12 h-12 rounded-full bg-primary-fixed/60 flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+          <span class="material-symbols-outlined text-primary text-2xl">auto_awesome</span>
+        </div>
+        <h3 class="font-headline font-bold text-sm sm:text-base text-primary">וכל עסק אחר</h3>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: ORDERING SYSTEM (the big reveal)                  -->
+<!-- ============================================================ -->
+<section id="features" class="bg-surface py-20 sm:py-28 relative overflow-hidden">
+  <div class="relative max-w-6xl mx-auto px-5 sm:px-8">
+
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <div class="inline-flex items-center gap-2 bg-primary-fixed text-primary px-4 py-1.5 rounded-full mb-5">
+        <span class="material-symbols-outlined text-base">auto_awesome</span>
+        <span class="font-headline font-bold text-xs tracking-wide">מעבר לתפריט</span>
+      </div>
+      <h2 class="font-headline font-extrabold text-3xl sm:text-4xl lg:text-5xl text-on-surface mb-5 leading-tight">
+        לא רק תפריט —<br class="sm:hidden"/>
+        <span class="text-primary">מערכת הזמנות מלאה</span>
+      </h2>
+      <p class="font-body text-base sm:text-lg text-on-surface-variant leading-relaxed">
+        הלקוחות מוסיפים לסל, בוחרים מועד איסוף, ולוחצים.
+        אתם מקבלים הודעת וואטסאפ מסודרת עם הכל — השם, המוצרים, הכמויות, הסכום והתאריך.
+      </p>
+    </div>
+
+    <!-- WhatsApp message mockup -->
+    <div class="max-w-md mx-auto mb-16">
+      <div class="bg-[#e5ddd5] rounded-[2rem] p-4 sm:p-5 shadow-2xl shadow-primary-container/15 relative overflow-hidden">
+        <!-- WhatsApp-like pattern background -->
+        <div class="absolute inset-0 opacity-[0.04]" style="background-image: radial-gradient(circle at 1px 1px, #000 1px, transparent 0); background-size: 16px 16px;"></div>
+
+        <!-- Header -->
+        <div class="relative bg-[#075e54] -mx-4 sm:-mx-5 -mt-4 sm:-mt-5 px-4 py-3 mb-4 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-white">person</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-white font-bold text-sm truncate">רותי — לקוחה חדשה</p>
+            <p class="text-white/70 text-[11px]">מקוון</p>
+          </div>
+          <span class="material-symbols-outlined text-white/80 text-xl">videocam</span>
+          <span class="material-symbols-outlined text-white/80 text-xl">call</span>
+        </div>
+
+        <!-- Message bubble -->
+        <div class="relative wa-bubble p-3.5 mr-2 text-right">
+          <p class="font-body text-[13px] sm:text-sm text-[#1c1c19] leading-relaxed whitespace-pre-line">היי דנה,
+אשמח להזמין:
+
+1. בבקה שוקולד עשירה ×2
+2. קרואסון חמאה קלאסי ×3
+3. עוגת גבינה ×1
+
+סה"כ: ₪186
+לאיסוף בתאריך: יום שישי, 17/4
+
+מחכה לאישור הזמנה, תודה 🙏</p>
+          <div class="flex items-center justify-end gap-1 mt-2">
+            <span class="text-[10px] text-[#667781]">14:32</span>
+            <span class="material-symbols-outlined text-[#53bdeb] text-sm" style="font-variation-settings: 'FILL' 1;">done_all</span>
+          </div>
+        </div>
+
+        <!-- Footer caption -->
+        <p class="relative text-center text-[11px] text-on-surface-variant/70 mt-4 font-medium">
+          דוגמה להודעה שמגיעה אליכם אוטומטית
+        </p>
       </div>
     </div>
+
+    <!-- Feature grid -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-5 max-w-4xl mx-auto">
+
+      <div class="bg-surface-container-low rounded-lg p-5 sm:p-6 border border-outline-variant/30">
+        <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-primary to-primary-container flex items-center justify-center mb-3 shadow-md shadow-primary-container/20">
+          <span class="material-symbols-outlined text-on-primary text-xl">bolt</span>
+        </div>
+        <h3 class="font-headline font-extrabold text-sm sm:text-base text-on-surface mb-1 leading-tight">הזמנה ב-3 קליקים</h3>
+        <p class="font-body text-xs sm:text-[13px] text-on-surface-variant leading-relaxed">
+          בלי טפסים, בלי הרשמה ללקוח
+        </p>
+      </div>
+
+      <div class="bg-surface-container-low rounded-lg p-5 sm:p-6 border border-outline-variant/30">
+        <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-primary to-primary-container flex items-center justify-center mb-3 shadow-md shadow-primary-container/20">
+          <span class="material-symbols-outlined text-on-primary text-xl">event</span>
+        </div>
+        <h3 class="font-headline font-extrabold text-sm sm:text-base text-on-surface mb-1 leading-tight">בחירת מועד איסוף</h3>
+        <p class="font-body text-xs sm:text-[13px] text-on-surface-variant leading-relaxed">
+          הלקוח בוחר תאריך נוח, אתם מקבלים מוכן
+        </p>
+      </div>
+
+      <div class="bg-surface-container-low rounded-lg p-5 sm:p-6 border border-outline-variant/30">
+        <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-primary to-primary-container flex items-center justify-center mb-3 shadow-md shadow-primary-container/20">
+          <span class="material-symbols-outlined text-on-primary text-xl">search</span>
+        </div>
+        <h3 class="font-headline font-extrabold text-sm sm:text-base text-on-surface mb-1 leading-tight">חיפוש ותגיות</h3>
+        <p class="font-body text-xs sm:text-[13px] text-on-surface-variant leading-relaxed">
+          "חדש", "נמכר ביותר", "פרווה" וחיפוש חי
+        </p>
+      </div>
+
+      <div class="bg-surface-container-low rounded-lg p-5 sm:p-6 border border-outline-variant/30">
+        <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-primary to-primary-container flex items-center justify-center mb-3 shadow-md shadow-primary-container/20">
+          <span class="material-symbols-outlined text-on-primary text-xl">sync</span>
+        </div>
+        <h3 class="font-headline font-extrabold text-sm sm:text-base text-on-surface mb-1 leading-tight">עדכון מיידי</h3>
+        <p class="font-body text-xs sm:text-[13px] text-on-surface-variant leading-relaxed">
+          משנים מחיר, הלקוחות רואים מיד
+        </p>
+      </div>
+
+    </div>
   </div>
-</div>
 </section>
 
-<!-- Pricing Section -->
-<section class="py-24 bg-surface-container-lowest" id="pricing">
-<div class="max-w-3xl mx-auto px-6 text-center">
-  <div class="reveal">
-    <h2 class="text-4xl font-bold text-primary mb-4">מחיר פשוט, בלי הפתעות</h2>
-    <p class="text-on-surface-variant mb-12">התחילו עוד היום בחינם, שלמו רק כשתראו שזה עובד לעסק שלכם.</p>
+<!-- ============================================================ -->
+<!-- SECTION 6: FAQ                                               -->
+<!-- ============================================================ -->
+<section id="faq" class="bg-surface-container-low py-20 sm:py-28 relative overflow-hidden">
+  <div class="relative max-w-3xl mx-auto px-5 sm:px-8">
+
+    <div class="text-center mb-14">
+      <h2 class="font-headline font-extrabold text-3xl sm:text-4xl lg:text-5xl text-on-surface mb-4 leading-tight">
+        שאלות נפוצות
+      </h2>
+      <p class="font-body text-base text-on-surface-variant leading-relaxed">
+        כל מה שחשוב לדעת לפני שמתחילים.
+      </p>
+    </div>
+
+    <div class="space-y-3">
+
+      <!-- Q1 — open by default -->
+      <details open class="faq-card bg-surface-container-lowest rounded-lg border border-outline-variant/40 overflow-hidden transition-colors">
+        <summary class="flex items-center justify-between gap-4 p-5 sm:p-6">
+          <h3 class="font-headline font-extrabold text-base sm:text-lg text-on-surface">כמה זה עולה?</h3>
+          <span class="material-symbols-outlined text-primary-container faq-chevron flex-shrink-0">expand_more</span>
+        </summary>
+        <div class="px-5 sm:px-6 pb-5 sm:pb-6 -mt-1">
+          <p class="font-body text-sm sm:text-base text-on-surface-variant leading-relaxed">
+            14 יום ניסיון חינם, ללא צורך בכרטיס אשראי. אחרי תקופת הניסיון — 59 ₪ לחודש. מבטלים בכל רגע, בלי התחייבות.
+          </p>
+        </div>
+      </details>
+
+      <!-- Q2 -->
+      <details class="faq-card bg-surface-container-lowest rounded-lg border border-outline-variant/40 overflow-hidden transition-colors">
+        <summary class="flex items-center justify-between gap-4 p-5 sm:p-6">
+          <h3 class="font-headline font-extrabold text-base sm:text-lg text-on-surface">אני לא מבינה בטכנולוגיה. אצליח להשתמש בזה?</h3>
+          <span class="material-symbols-outlined text-primary-container faq-chevron flex-shrink-0">expand_more</span>
+        </summary>
+        <div class="px-5 sm:px-6 pb-5 sm:pb-6 -mt-1">
+          <p class="font-body text-sm sm:text-base text-on-surface-variant leading-relaxed">
+            בהחלט. המערכת בנויה כך שכל מי שיודע לשלוח הודעה בוואטסאפ מסתדר תוך חמש דקות. מוסיפים מוצר = מעלים תמונה, כותבים שם ומחיר. זהו.
+          </p>
+        </div>
+      </details>
+
+      <!-- Q3 -->
+      <details class="faq-card bg-surface-container-lowest rounded-lg border border-outline-variant/40 overflow-hidden transition-colors">
+        <summary class="flex items-center justify-between gap-4 p-5 sm:p-6">
+          <h3 class="font-headline font-extrabold text-base sm:text-lg text-on-surface">הלקוחות שלי יצטרכו להוריד אפליקציה?</h3>
+          <span class="material-symbols-outlined text-primary-container faq-chevron flex-shrink-0">expand_more</span>
+        </summary>
+        <div class="px-5 sm:px-6 pb-5 sm:pb-6 -mt-1">
+          <p class="font-body text-sm sm:text-base text-on-surface-variant leading-relaxed">
+            לא. הלקוחות לוחצים על הלינק שלכם — וזהו. התפריט נפתח ישר בדפדפן שלהם, בלי הרשמה, בלי הורדה, בלי כלום.
+          </p>
+        </div>
+      </details>
+
+      <!-- Q4 -->
+      <details class="faq-card bg-surface-container-lowest rounded-lg border border-outline-variant/40 overflow-hidden transition-colors">
+        <summary class="flex items-center justify-between gap-4 p-5 sm:p-6">
+          <h3 class="font-headline font-extrabold text-base sm:text-lg text-on-surface">איך אני מקבלת את ההזמנות?</h3>
+          <span class="material-symbols-outlined text-primary-container faq-chevron flex-shrink-0">expand_more</span>
+        </summary>
+        <div class="px-5 sm:px-6 pb-5 sm:pb-6 -mt-1">
+          <p class="font-body text-sm sm:text-base text-on-surface-variant leading-relaxed">
+            ישר לוואטסאפ שלכם. כשלקוח מסיים להזמין, נשלחת אליכם הודעה מסודרת עם כל הפרטים — שם, מוצרים, כמויות, סכום ותאריך איסוף. אתם רק מאשרים.
+          </p>
+        </div>
+      </details>
+
+      <!-- Q5 -->
+      <details class="faq-card bg-surface-container-lowest rounded-lg border border-outline-variant/40 overflow-hidden transition-colors">
+        <summary class="flex items-center justify-between gap-4 p-5 sm:p-6">
+          <h3 class="font-headline font-extrabold text-base sm:text-lg text-on-surface">אפשר לעדכן מחירים ומוצרים מתי שרוצים?</h3>
+          <span class="material-symbols-outlined text-primary-container faq-chevron flex-shrink-0">expand_more</span>
+        </summary>
+        <div class="px-5 sm:px-6 pb-5 sm:pb-6 -mt-1">
+          <p class="font-body text-sm sm:text-base text-on-surface-variant leading-relaxed">
+            כמובן. כל שינוי מופיע מיד אצל הלקוחות, באותו לינק. אין צורך לשלוח שום דבר מחדש.
+          </p>
+        </div>
+      </details>
+
+      <!-- Q6 -->
+      <details class="faq-card bg-surface-container-lowest rounded-lg border border-outline-variant/40 overflow-hidden transition-colors">
+        <summary class="flex items-center justify-between gap-4 p-5 sm:p-6">
+          <h3 class="font-headline font-extrabold text-base sm:text-lg text-on-surface">מה אם יש לי שאלה או צריכה עזרה?</h3>
+          <span class="material-symbols-outlined text-primary-container faq-chevron flex-shrink-0">expand_more</span>
+        </summary>
+        <div class="px-5 sm:px-6 pb-5 sm:pb-6 -mt-1">
+          <p class="font-body text-sm sm:text-base text-on-surface-variant leading-relaxed">
+            אנחנו כאן. אפשר לפנות אלינו דרך וואטסאפ בכל שלב — גם בתקופת הניסיון — ונעזור בכל מה שצריך.
+          </p>
+        </div>
+      </details>
+
+    </div>
   </div>
-  <div class="bg-surface p-12 rounded-lg shadow-xl border-t-8 border-primary relative reveal" style="transition-delay: 0.2s;">
-    <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-secondary text-on-secondary px-6 py-2 rounded-full font-bold animate-bounce-subtle">
-      הכי פופולרי
-    </div>
-    <h3 class="text-2xl font-bold mb-2">מנוי "ביתי מקצועי"</h3>
-    <div class="flex items-center justify-center gap-2 mb-6">
-      <span class="text-5xl font-extrabold text-primary">₪99</span>
-      <span class="text-on-surface-variant">/ לחודש</span>
-    </div>
-    <ul class="space-y-4 mb-10 text-right inline-block">
-      <li class="flex items-center gap-3 flex-row-reverse transform hover:translate-x-1 transition-transform">
-        <span class="material-symbols-outlined text-primary" data-icon="check">check</span>
-        <span>תפריט דיגיטלי מלא ללא הגבלת מנות או קטגוריות</span>
-      </li>
-      <li class="flex items-center gap-3 flex-row-reverse transform hover:translate-x-1 transition-transform">
-        <span class="material-symbols-outlined text-primary" data-icon="check">check</span>
-        <span>14 ימי ניסיון חינם (ללא צורך באשראי)</span>
-      </li>
-      <li class="flex items-center gap-3 flex-row-reverse transform hover:translate-x-1 transition-transform">
-        <span class="material-symbols-outlined text-primary" data-icon="check">check</span>
-        <span>תמיכה אישית בוואטסאפ להקמה ראשונית</span>
-      </li>
-      <li class="flex items-center gap-3 flex-row-reverse transform hover:translate-x-1 transition-transform">
-        <span class="material-symbols-outlined text-primary" data-icon="check">check</span>
-        <span>עדכון מחירים ומנות בזמן אמת</span>
-      </li>
-    </ul>
-    <a href="login.html" class="block w-full bg-primary text-on-primary py-5 rounded-xl font-bold text-xl btn-hover-effect text-center">
-      אני רוצה להתחיל עכשיו
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: FINAL CTA                                         -->
+<!-- ============================================================ -->
+<section class="relative overflow-hidden py-24 sm:py-32">
+  <!-- Warm gradient background -->
+  <div class="absolute inset-0 bg-gradient-to-br from-primary-fixed/40 via-surface to-secondary-container/20"></div>
+  <div class="absolute inset-0" style="background: radial-gradient(ellipse at center top, rgba(146, 64, 14, 0.08) 0%, transparent 60%);"></div>
+
+  <div class="relative max-w-2xl mx-auto px-5 sm:px-8 text-center">
+
+    <h2 class="font-headline font-extrabold text-4xl sm:text-5xl lg:text-6xl text-on-surface mb-5 leading-[1.1]">
+      מוכנים להתחיל?
+    </h2>
+    <p class="font-body text-base sm:text-lg text-on-surface-variant leading-relaxed mb-10 max-w-lg mx-auto">
+      תפריט מקצועי, הזמנות מסודרות, לקוחות מרוצים — תוך 5 דקות.
+    </p>
+
+    <!-- Big CTA -->
+    <a href="login.html#register" class="inline-flex items-center justify-center gap-2 w-full sm:w-auto bg-primary-container bg-gradient-to-tr from-primary to-primary-container text-on-primary font-bold text-lg px-10 py-5 rounded-xl shadow-2xl shadow-primary-container/30 hover:shadow-primary-container/50 transform hover:-translate-y-0.5 active:scale-95 transition-all duration-300 font-headline">
+      <span>התחלת ניסיון חינם ל-14 יום</span>
+      <span class="material-symbols-outlined text-2xl rtl:rotate-180">arrow_back</span>
     </a>
+
+    <!-- Trust bar -->
+    <div class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 mt-8 text-xs sm:text-sm font-body font-medium text-on-surface-variant">
+      <span class="flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-base text-primary-container">verified</span>
+        בלי כרטיס אשראי
+      </span>
+      <span class="text-outline-variant">·</span>
+      <span class="flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-base text-primary-container">close</span>
+        ביטול בכל רגע
+      </span>
+      <span class="text-outline-variant">·</span>
+      <span class="flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-base text-primary-container">support_agent</span>
+        תמיכה בעברית
+      </span>
+    </div>
+
   </div>
-</div>
 </section>
 
-<!-- Contact Section -->
-<section class="py-24 bg-surface-container-low relative overflow-hidden" id="contact">
-<div class="max-w-3xl mx-auto px-6 text-center reveal">
-  <h2 class="text-4xl font-bold text-primary mb-6">צרו קשר</h2>
-  <p class="text-xl text-on-surface-variant leading-relaxed mb-6">
-    לשאלות, בקשות או כל דבר אחר — אנחנו כאן בשבילכם.
-  </p>
-  <a href="mailto:support@mytafrit.co.il" class="text-2xl font-bold text-primary hover:text-primary-container transition-colors">
-    support@mytafrit.co.il
-  </a>
-</div>
-</section>
+<!-- ============================================================ -->
+<!-- FOOTER                                                       -->
+<!-- ============================================================ -->
+<footer class="bg-surface-container py-10 border-t border-outline-variant/30">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-6">
 
-<!-- Footer -->
-<footer class="bg-stone-100 reveal">
-<div class="flex flex-col md:flex-row-reverse justify-between items-center px-8 py-12 gap-6 w-full text-center md:text-right max-w-7xl mx-auto">
-  <div class="flex items-center gap-3 group cursor-pointer">
-    <span class="material-symbols-outlined text-2xl text-primary group-hover:rotate-12 transition-transform" data-icon="restaurant">restaurant</span>
-    <span class="text-xl font-bold text-amber-900">MyTafrit</span>
+      <!-- Logo -->
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-primary text-2xl">restaurant</span>
+        <span class="font-headline font-extrabold text-lg text-primary">MyTafrit</span>
+      </div>
+
+      <!-- Links -->
+      <nav class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm font-body font-medium text-on-surface-variant">
+        <a href="terms.html" class="hover:text-primary transition-colors">תנאי שימוש</a>
+        <a href="login.html" class="hover:text-primary transition-colors">התחברות</a>
+        <a href="login.html#register" class="hover:text-primary transition-colors">הרשמה</a>
+      </nav>
+
+      <!-- Copyright -->
+      <p class="text-xs font-body text-on-surface-variant/70">
+        © 2026 MyTafrit · כל הזכויות שמורות
+      </p>
+
+    </div>
   </div>
-  <div class="flex flex-col md:flex-row-reverse gap-8 font-['Be_Vietnam_Pro'] text-sm">
-    <a class="text-stone-500 hover:text-amber-700 transition-colors" href="terms.html">תנאי שימוש ומדיניות פרטיות</a>
-  </div>
-  <p class="text-stone-500 text-sm leading-relaxed">
-    © 2025 Mytafrit. All rights reserved.
-  </p>
-</div>
 </footer>
 
+<!-- ============================================================ -->
+<!-- SCRIPTS                                                      -->
+<!-- ============================================================ -->
 <script>
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('active');
-            }
+  // Navigation shadow on scroll
+  const nav = document.getElementById('mainNav');
+  const onScroll = () => {
+    if (window.scrollY > 20) {
+      nav.classList.add('nav-scrolled');
+    } else {
+      nav.classList.remove('nav-scrolled');
+    }
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Close other details when one opens (accordion behavior)
+  const allDetails = document.querySelectorAll('details.faq-card');
+  allDetails.forEach(d => {
+    d.addEventListener('toggle', () => {
+      if (d.open) {
+        allDetails.forEach(other => {
+          if (other !== d) other.open = false;
         });
-    }, observerOptions);
-    document.querySelectorAll('.reveal, .reveal-group').forEach(el => observer.observe(el));
-    window.addEventListener('scroll', () => {
-        const nav = document.querySelector('nav');
-        if (window.scrollY > 50) {
-            nav.classList.add('shadow-md');
-            nav.classList.remove('shadow-sm');
-        } else {
-            nav.classList.add('shadow-sm');
-            nav.classList.remove('shadow-md');
-        }
+      }
     });
+  });
 </script>
-</body></html>
+
+</body>
+</html>
