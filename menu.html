@@ -3,90 +3,24 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta id="metaDescription" name="description" content="תפריט דיגיטלי להזמנה ישירה בוואטסאפ">
 <title>התפריט שלי</title>
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://uskwkqibrjmeocildgay.supabase.co">
+<!-- PWA Meta Tags -->
+<link id="manifestLink" rel="manifest" href="">
+<meta name="theme-color" content="#92400e">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link id="appleTouchIcon" rel="apple-touch-icon" href="">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase-js.min.js"></script>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&family=Be+Vietnam+Pro:wght@300;400;500;700&family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&family=Be+Vietnam+Pro:wght@400;500;700&family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-tailwind.config = {
-  darkMode: "class",
-  theme: {
-    extend: {
-      colors: {
-        "surface": "#fcf9f4",
-        "on-secondary": "#ffffff",
-        "on-secondary-fixed-variant": "#76330d",
-        "on-surface": "#1c1c19",
-        "error-container": "#ffdad6",
-        "surface-variant": "#e5e2dd",
-        "surface-bright": "#fcf9f4",
-        "secondary-fixed-dim": "#ffb693",
-        "tertiary": "#663400",
-        "on-primary-fixed-variant": "#7a3000",
-        "on-primary-fixed": "#341000",
-        "on-background": "#1c1c19",
-        "primary-fixed": "#ffdbcb",
-        "surface-container-low": "#f6f3ee",
-        "on-error": "#ffffff",
-        "on-primary-container": "#ffc2a5",
-        "on-secondary-container": "#76340e",
-        "primary-fixed-dim": "#ffb693",
-        "on-error-container": "#93000a",
-        "surface-container-high": "#ebe8e3",
-        "surface-container": "#f0ede9",
-        "primary-container": "#92400e",
-        "tertiary-fixed-dim": "#ffb77d",
-        "inverse-primary": "#ffb693",
-        "surface-container-highest": "#e5e2dd",
-        "surface-dim": "#dcdad5",
-        "on-tertiary-fixed": "#2f1500",
-        "primary": "#712c00",
-        "inverse-surface": "#31302d",
-        "on-tertiary": "#ffffff",
-        "tertiary-fixed": "#ffdcc3",
-        "outline-variant": "#dcc1b6",
-        "error": "#ba1a1a",
-        "outline": "#887269",
-        "secondary-container": "#fd9e70",
-        "on-primary": "#ffffff",
-        "on-tertiary-fixed-variant": "#6e3900",
-        "surface-tint": "#9a4614",
-        "secondary": "#944a23",
-        "secondary-fixed": "#ffdbcc",
-        "surface-container-lowest": "#ffffff",
-        "on-tertiary-container": "#ffc395",
-        "on-secondary-fixed": "#351000",
-        "background": "#fcf9f4",
-        "tertiary-container": "#884800",
-        "inverse-on-surface": "#f3f0eb",
-        "on-surface-variant": "#55433a"
-      },
-      borderRadius: {
-        "DEFAULT": "1rem",
-        "lg": "2rem",
-        "xl": "3rem",
-        "full": "9999px"
-      }
-    }
-  }
-}
-</script>
-<style>
-.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-body { font-family: 'Heebo', 'Be Vietnam Pro', sans-serif; background-color: #fcf9f4; min-height: 100dvh; }
-h1, h2, h3, .font-headline { font-family: 'Plus Jakarta Sans', 'Heebo', sans-serif; }
-.no-scrollbar::-webkit-scrollbar { display: none; }
-.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-.hero-text-shadow { text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
-.glass-nav { background: rgba(252,249,244,0.8); backdrop-filter: blur(16px); }
-.custom-scrollbar::-webkit-scrollbar { width: 4px; }
-.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-.custom-scrollbar::-webkit-scrollbar-thumb { background: #e5e2dd; border-radius: 10px; }
-.modal-content::-webkit-scrollbar { width: 4px; }
-.modal-content::-webkit-scrollbar-track { background: transparent; }
-.modal-content::-webkit-scrollbar-thumb { background: #dcc1b6; border-radius: 10px; }
-</style>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body class="text-on-surface selection:bg-primary-fixed">
 
@@ -101,31 +35,37 @@ h1, h2, h3, .font-headline { font-family: 'Plus Jakarta Sans', 'Heebo', sans-ser
 <div id="menuContent">
 
 <!-- Top Banner -->
-<div class="bg-[#92400e] text-white text-center py-2 text-sm font-medium tracking-wide relative z-10" id="topBanner" style="display:none;"></div>
+<div class="bg-primary-container text-white text-center py-2 text-sm font-medium tracking-wide relative z-10" id="topBanner" style="display:none;"></div>
 
 <!-- Header Section with Hero Background -->
 <header class="relative overflow-hidden">
   <div class="absolute inset-0 z-0">
-    <img id="heroBgImg" class="w-full h-full object-cover" src="" alt=""/>
-    <div class="absolute inset-0 bg-black/40 backdrop-blur-[1px]"></div>
+    <img id="heroBgImg" class="w-full h-full object-cover" src="" alt="" role="presentation" loading="eager" fetchpriority="high"/>
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-[2px]"></div>
   </div>
   <div class="relative z-10 px-6 pt-4 pb-8 flex flex-col items-center">
-    <div class="w-full flex justify-end">
-      <button onclick="openAbout()" class="bg-white/20 backdrop-blur-md p-2.5 rounded-full hover:bg-white/30 transition-colors flex items-center gap-2 group shadow-sm">
+    <div class="w-full flex justify-end gap-2">
+      <button onclick="shareMenu()" class="bg-white/20 backdrop-blur-md p-2.5 rounded-full hover:bg-white/30 transition-colors shadow-sm" aria-label="שתף תפריט">
+        <span class="material-symbols-outlined text-white text-xl" aria-hidden="true">share</span>
+      </button>
+      <button onclick="openAbout()" aria-label="קצת עלינו" class="bg-white/20 backdrop-blur-md p-2.5 rounded-full hover:bg-white/30 transition-colors flex items-center gap-2 group shadow-sm">
         <span class="text-white font-bold text-xs hidden md:inline">קצת עלינו !</span>
-        <span class="material-symbols-outlined text-white text-xl" style="font-variation-settings: 'FILL' 1;">help</span>
+        <span class="material-symbols-outlined text-white text-xl" aria-hidden="true" style="font-variation-settings: 'FILL' 1;">info</span>
       </button>
     </div>
     <div class="w-full flex flex-col items-center mb-6 -mt-8">
-      <div class="w-28 h-28 rounded-full bg-white shadow-2xl flex items-center justify-center border-4 border-white/30 mb-4 overflow-hidden transform hover:scale-105 transition-transform">
-        <img id="logoImg" class="w-full h-full object-cover" src="" alt="לוגו"/>
+      <div class="w-28 h-28 rounded-full shadow-2xl flex items-center justify-center mb-4 overflow-hidden transform hover:scale-105 transition-transform">
+        <img id="logoImg" class="w-full h-full object-contain" src="" alt="" loading="eager" fetchpriority="high"/>
       </div>
       <h1 id="bizName" class="font-headline font-black text-3xl text-white hero-text-shadow">התפריט שלי</h1>
       <p id="bizTagline" class="text-white/90 text-base mt-2 font-medium hero-text-shadow"></p>
     </div>
     <div class="w-full max-w-lg relative">
-      <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-outline">search</span>
-      <input id="searchInput" oninput="filterProducts()" class="w-full bg-white/95 backdrop-blur-sm border-none rounded-xl py-4 pr-12 pl-4 focus:ring-2 focus:ring-primary-container text-on-surface placeholder:text-outline transition-all shadow-xl" placeholder="חיפוש מוצר..." type="text"/>
+      <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-outline pointer-events-none z-10">search</span>
+      <input id="searchInput" oninput="debouncedSearch()" class="w-full text-base bg-white/95 backdrop-blur-sm border-none rounded-xl py-4 pr-12 pl-12 focus:ring-2 focus:ring-primary-container text-on-surface placeholder:text-outline transition-all shadow-xl" placeholder="חיפוש מוצר..." type="text"/>
+      <button id="clearSearchBtn" onclick="clearSearch()" class="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest items-center justify-center transition-all hidden" aria-label="נקה חיפוש">
+        <span class="material-symbols-outlined text-[18px]">close</span>
+      </button>
     </div>
   </div>
 </header>
@@ -134,29 +74,106 @@ h1, h2, h3, .font-headline { font-family: 'Plus Jakarta Sans', 'Heebo', sans-ser
 <nav class="flex gap-3 overflow-x-auto px-6 py-4 no-scrollbar" id="categoriesNav"></nav>
 
 <!-- Product Grid -->
-<main class="px-6 pb-32">
-  <div class="grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-8" id="productsGrid"></div>
+<main class="px-6">
+  <div id="productsSkeleton" class="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-8">
+    <div class="bg-surface-container-low rounded-xl overflow-hidden flex flex-col animate-pulse">
+      <div class="aspect-[4/5] bg-surface-container-high"></div>
+      <div class="p-4 flex flex-col flex-1">
+        <div class="h-4 bg-surface-container-high rounded w-3/4 mb-2"></div>
+        <div class="h-3 bg-surface-container-high rounded w-full mb-1"></div>
+        <div class="h-3 bg-surface-container-high rounded w-1/2 mb-4"></div>
+        <div class="mt-auto pt-4 flex items-center justify-between">
+          <div class="h-6 bg-surface-container-high rounded w-14"></div>
+          <div class="h-6 bg-surface-container-high rounded-full w-6"></div>
+        </div>
+      </div>
+    </div>
+    <div class="bg-surface-container-low rounded-xl overflow-hidden flex flex-col animate-pulse">
+      <div class="aspect-[4/5] bg-surface-container-high"></div>
+      <div class="p-4 flex flex-col flex-1">
+        <div class="h-4 bg-surface-container-high rounded w-3/4 mb-2"></div>
+        <div class="h-3 bg-surface-container-high rounded w-full mb-1"></div>
+        <div class="h-3 bg-surface-container-high rounded w-1/2 mb-4"></div>
+        <div class="mt-auto pt-4 flex items-center justify-between">
+          <div class="h-6 bg-surface-container-high rounded w-14"></div>
+          <div class="h-6 bg-surface-container-high rounded-full w-6"></div>
+        </div>
+      </div>
+    </div>
+    <div class="bg-surface-container-low rounded-xl overflow-hidden flex flex-col animate-pulse">
+      <div class="aspect-[4/5] bg-surface-container-high"></div>
+      <div class="p-4 flex flex-col flex-1">
+        <div class="h-4 bg-surface-container-high rounded w-3/4 mb-2"></div>
+        <div class="h-3 bg-surface-container-high rounded w-full mb-1"></div>
+        <div class="h-3 bg-surface-container-high rounded w-1/2 mb-4"></div>
+        <div class="mt-auto pt-4 flex items-center justify-between">
+          <div class="h-6 bg-surface-container-high rounded w-14"></div>
+          <div class="h-6 bg-surface-container-high rounded-full w-6"></div>
+        </div>
+      </div>
+    </div>
+    <div class="bg-surface-container-low rounded-xl overflow-hidden flex flex-col animate-pulse">
+      <div class="aspect-[4/5] bg-surface-container-high"></div>
+      <div class="p-4 flex flex-col flex-1">
+        <div class="h-4 bg-surface-container-high rounded w-3/4 mb-2"></div>
+        <div class="h-3 bg-surface-container-high rounded w-full mb-1"></div>
+        <div class="h-3 bg-surface-container-high rounded w-1/2 mb-4"></div>
+        <div class="mt-auto pt-4 flex items-center justify-between">
+          <div class="h-6 bg-surface-container-high rounded w-14"></div>
+          <div class="h-6 bg-surface-container-high rounded-full w-6"></div>
+        </div>
+      </div>
+    </div>
+    <div class="bg-surface-container-low rounded-xl overflow-hidden flex flex-col animate-pulse">
+      <div class="aspect-[4/5] bg-surface-container-high"></div>
+      <div class="p-4 flex flex-col flex-1">
+        <div class="h-4 bg-surface-container-high rounded w-3/4 mb-2"></div>
+        <div class="h-3 bg-surface-container-high rounded w-full mb-1"></div>
+        <div class="h-3 bg-surface-container-high rounded w-1/2 mb-4"></div>
+        <div class="mt-auto pt-4 flex items-center justify-between">
+          <div class="h-6 bg-surface-container-high rounded w-14"></div>
+          <div class="h-6 bg-surface-container-high rounded-full w-6"></div>
+        </div>
+      </div>
+    </div>
+    <div class="bg-surface-container-low rounded-xl overflow-hidden flex flex-col animate-pulse">
+      <div class="aspect-[4/5] bg-surface-container-high"></div>
+      <div class="p-4 flex flex-col flex-1">
+        <div class="h-4 bg-surface-container-high rounded w-3/4 mb-2"></div>
+        <div class="h-3 bg-surface-container-high rounded w-full mb-1"></div>
+        <div class="h-3 bg-surface-container-high rounded w-1/2 mb-4"></div>
+        <div class="mt-auto pt-4 flex items-center justify-between">
+          <div class="h-6 bg-surface-container-high rounded w-14"></div>
+          <div class="h-6 bg-surface-container-high rounded-full w-6"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-8" id="productsGrid"></div>
   <div id="emptyState" class="hidden text-center py-16 text-on-surface-variant">
     <p class="text-lg font-semibold">לא נמצאו מוצרים</p>
     <p class="text-sm mt-1">נסה לחפש מונח אחר</p>
   </div>
+  <!-- Testimonials Section -->
+  <section id="testimonialsSection" class="hidden mt-16 mb-12">
+    <div class="text-center mb-8">
+      <h2 class="font-headline font-extrabold text-2xl text-on-surface mb-2">לקוחות מספרים</h2>
+      <div class="w-12 h-1 bg-primary-container/40 rounded-full mx-auto"></div>
+    </div>
+    <div id="testimonialsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+  </section>
 </main>
 
 <!-- Floating Action Buttons -->
-<div class="fixed bottom-8 left-0 right-0 flex justify-between px-8 pointer-events-none z-20">
-  <button id="cartFab" onclick="openCart()" class="pointer-events-auto bg-[#92400e] text-white rounded-full w-16 h-16 flex items-center justify-center shadow-xl shadow-[#55433a]/30 scale-110 active:scale-95 transition-all relative opacity-0 pointer-events-none" style="transition:opacity 0.2s;">
-    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">shopping_cart</span>
+<div class="fixed bottom-[calc(2rem+env(safe-area-inset-bottom))] left-0 right-0 flex justify-between px-8 pointer-events-none z-20">
+  <button id="cartFab" onclick="openCart()" aria-label="פתח סל קניות" class="pointer-events-auto bg-primary-container text-white rounded-full w-16 h-16 flex items-center justify-center shadow-xl shadow-on-surface-variant/30 scale-110 active:scale-95 transition-all relative opacity-0 pointer-events-none" style="transition:opacity 0.2s;">
+    <span class="material-symbols-outlined" aria-hidden="true" style="font-variation-settings: 'FILL' 1;">shopping_cart</span>
     <span id="cartBadge" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold hidden">0</span>
   </button>
-  <button onclick="openWhatsApp()" class="pointer-events-auto bg-[#25D366] text-white rounded-full w-16 h-16 flex items-center justify-center shadow-xl shadow-green-900/20 scale-110 active:scale-95 transition-all">
-    <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+  <button onclick="openWhatsApp()" aria-label="פתח וואטסאפ" class="pointer-events-auto bg-[#25D366] text-white rounded-full w-16 h-16 flex items-center justify-center shadow-xl shadow-green-900/20 scale-110 active:scale-95 transition-all">
+    <svg class="w-8 h-8 fill-current" aria-hidden="true" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
   </button>
 </div>
-
-<!-- Mytafrit Promo -->
-<a href="index.html" class="block w-full mt-12 py-3 px-6 text-center text-stone-400 text-sm hover:text-stone-200 transition-colors bg-stone-900">
-  גם אתם רוצים תפריט כזה? <span class="font-semibold text-stone-300">התחילו בחינם ←</span>
-</a>
 
 <!-- Footer -->
 <footer class="bg-stone-900 text-stone-100 w-full py-10 px-8 border-t border-stone-800 flex flex-col items-center text-center space-y-8">
@@ -179,60 +196,53 @@ h1, h2, h3, .font-headline { font-family: 'Plus Jakarta Sans', 'Heebo', sans-ser
       </a>
     </div>
   </div>
-  <div class="flex flex-col items-center gap-4">
-    <div class="flex gap-4 text-xs text-stone-400">
-      <a href="terms.html" class="hover:text-white transition-colors cursor-pointer">תנאי שימוש ומדיניות פרטיות</a>
-      <button id="termsLink" class="hover:text-white transition-colors cursor-pointer" onclick="toggleTermsModal(true)" style="display:none">תקנון</button>
+  <div class="flex flex-col items-center gap-3">
+    <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs">
+      <a href="terms.html" target="_blank" rel="noopener noreferrer" class="text-stone-400 hover:text-white transition-colors cursor-pointer">תנאי שימוש ומדיניות פרטיות</a>
+      <button id="termsLink" class="text-stone-400 hover:text-white transition-colors cursor-pointer" onclick="toggleTermsModal(true)" style="display:none">תקנון</button>
+      <a href="https://mytafrit.co.il" target="_blank" rel="noopener noreferrer" class="text-white hover:opacity-80 transition-opacity">
+        תפריט זה נבנה על ידי <span class="font-semibold underline">MyTafrit</span>
+      </a>
     </div>
-    <p class="text-stone-500 text-[10px]">© 2025 Mytafrit. All rights reserved.</p>
   </div>
 </footer>
 
 <!-- ===== PRODUCT MODAL ===== -->
-<div id="productModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/50 backdrop-blur-sm" onclick="closeProductModal(event)">
-  <div class="relative w-full bg-surface rounded-xl overflow-hidden shadow-xl border border-outline-variant/10 max-w-lg" onclick="event.stopPropagation()">
-    <button onclick="closeProductModal()" class="absolute top-4 left-4 z-20 bg-surface/80 hover:bg-surface text-on-surface-variant p-2 rounded-full transition-all shadow-sm backdrop-blur-md">
-      <span class="material-symbols-outlined">close</span>
+<div id="productModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/50 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="modalName" onclick="closeProductModal(event)">
+  <div class="relative w-full bg-surface rounded-xl overflow-hidden shadow-xl border border-outline-variant/10 max-w-lg max-h-[90dvh] flex flex-col" onclick="event.stopPropagation()">
+    <button onclick="closeProductModal()" aria-label="סגור" class="absolute top-4 left-4 z-20 bg-surface/80 hover:bg-surface text-on-surface-variant p-2 rounded-full transition-all shadow-sm backdrop-blur-md">
+      <span class="material-symbols-outlined" aria-hidden="true">close</span>
     </button>
-    <div class="relative h-[250px] w-full overflow-hidden sm:h-[300px]">
+    <button id="modalFavoriteBtn" onclick="toggleModalFavorite()" class="absolute top-4 left-16 z-20 w-10 h-10 flex items-center justify-center bg-surface/80 hover:bg-surface backdrop-blur-md rounded-full shadow-md active:scale-90 transition-all" aria-label="הוסף למועדפים" aria-pressed="false">
+      <span class="material-symbols-outlined text-[22px] text-on-surface-variant">favorite_border</span>
+    </button>
+    <div class="relative h-[250px] w-full overflow-hidden sm:h-[300px] flex-shrink-0">
       <div class="absolute top-4 right-4 flex flex-col gap-2 z-20" id="modalTopBadges"></div>
       <img id="modalImg" class="w-full h-full object-cover" src="" alt=""/>
       <div class="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent opacity-60"></div>
       <div class="absolute bottom-4 left-4 z-20" id="modalBottomBadge"></div>
     </div>
-    <div class="px-8 pt-4 pb-0">
+    <div class="px-8 pt-4 pb-0 overflow-y-auto flex-1">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-baseline gap-2 mb-4">
         <h1 id="modalName" class="font-headline font-bold text-3xl text-primary tracking-tight"></h1>
         <span id="modalPrice" class="font-headline font-extrabold text-2xl text-secondary"></span>
       </div>
-      <p id="modalDesc" class="text-on-surface-variant text-lg leading-relaxed max-w-prose mb-4"></p>
+      <p id="modalDesc" class="text-on-surface-variant text-base leading-relaxed max-w-prose mb-4"></p>
       <p id="modalAllergens" class="text-on-surface-variant/80 text-sm mb-6 hidden"></p>
       <div class="flex flex-col">
         <div class="flex items-center justify-between bg-surface-container-low p-2 rounded-full border border-outline-variant/20 w-fit min-w-[160px] mx-auto mb-6">
-          <button onclick="changeQty(1)" class="w-10 h-10 flex items-center justify-center bg-surface-container-highest rounded-full text-primary hover:bg-primary hover:text-on-primary transition-all">
-            <span class="material-symbols-outlined">add</span>
+          <button onclick="changeQty(1)" aria-label="הגדל כמות" class="w-10 h-10 flex items-center justify-center bg-surface-container-highest rounded-full text-primary hover:bg-primary hover:text-on-primary transition-all">
+            <span class="material-symbols-outlined" aria-hidden="true">add</span>
           </button>
-          <span id="modalQty" class="text-xl font-bold px-6 text-on-surface">1</span>
-          <button onclick="changeQty(-1)" class="w-10 h-10 flex items-center justify-center bg-surface-container-highest rounded-full text-primary hover:bg-primary hover:text-on-primary transition-all">
-            <span class="material-symbols-outlined">remove</span>
+          <input id="modalQty" type="number" min="1" value="1" aria-label="כמות" class="text-xl font-bold px-2 text-on-surface bg-transparent border-none w-16 text-center focus:outline-none focus:ring-2 focus:ring-primary rounded" oninput="onModalQtyInput(this)"/>
+          <button id="modalQtyMinus" onclick="changeQty(-1)" aria-label="הקטן כמות" class="w-10 h-10 flex items-center justify-center bg-surface-container-highest rounded-full text-primary hover:bg-primary hover:text-on-primary transition-all disabled:opacity-30 disabled:cursor-not-allowed" disabled>
+            <span class="material-symbols-outlined" aria-hidden="true">remove</span>
           </button>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <button onclick="addToCartFromModal()" class="flex items-center justify-center gap-2 py-4 px-8 bg-gradient-to-r from-primary to-primary-container text-on-primary rounded-xl font-bold text-lg shadow-lg active:scale-95 transition-transform">
+        <button onclick="addToCartFromModal()" class="w-full flex items-center justify-center gap-2 py-4 px-8 bg-gradient-to-r from-primary to-primary-container text-on-primary rounded-xl font-bold text-lg shadow-lg active:scale-95 transition-transform">
             <span class="material-symbols-outlined">shopping_basket</span>
             <span>הוסף לסל</span>
           </button>
-          <button onclick="openDateModal('quick')" class="flex items-center justify-center gap-2 py-4 px-8 border-2 border-[#25D366] text-[#128C7E] bg-white hover:bg-green-50 rounded-xl font-bold text-lg transition-all">
-            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-            <span>הזמנה מהירה</span>
-          </button>
-        </div>
-        <div class="text-center mt-3 mb-4">
-          <p class="text-xs text-on-surface-variant/70 flex items-center justify-center gap-1">
-            <span class="material-symbols-outlined text-[14px]">schedule</span>
-            זמן מענה ממוצע: עד 10 דקות
-          </p>
-        </div>
       </div>
     </div>
   </div>
@@ -240,29 +250,29 @@ h1, h2, h3, .font-headline { font-family: 'Plus Jakarta Sans', 'Heebo', sans-ser
 
 <!-- ===== CART DRAWER ===== -->
 <div id="cartOverlay" class="hidden fixed inset-0 bg-on-surface/30 z-40 backdrop-blur-[4px]" onclick="closeCart()"></div>
-<div id="cartDrawer" class="hidden fixed bottom-0 right-0 left-0 md:left-auto md:right-0 w-full md:w-[420px] max-h-[85vh] z-50 flex flex-col">
+<div id="cartDrawer" class="hidden fixed bottom-0 right-0 left-0 md:left-auto md:right-0 w-full md:w-[420px] max-h-[85dvh] z-50 flex flex-col" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
   <div class="w-full flex justify-center py-3 flex-shrink-0">
     <div class="w-12 h-1.5 bg-white/40 rounded-full"></div>
   </div>
-  <aside class="w-full h-full bg-[#fcf9f4] shadow-2xl rounded-t-3xl overflow-hidden flex flex-col text-right">
+  <aside class="w-full h-full bg-surface shadow-2xl rounded-t-3xl overflow-hidden flex flex-col text-right">
     <header class="p-6 pb-2 flex items-center justify-between flex-shrink-0">
       <div class="flex items-center gap-3">
-        <span class="material-symbols-outlined text-[#92400e] text-3xl">shopping_basket</span>
-        <h1 class="text-[#92400e] font-bold text-2xl font-headline">ההזמנה שלי</h1>
+        <span class="material-symbols-outlined text-primary-container text-3xl" aria-hidden="true">shopping_basket</span>
+        <h1 id="cartTitle" class="text-primary-container font-bold text-2xl font-headline">ההזמנה שלי</h1>
       </div>
-      <button onclick="closeCart()" class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high transition-colors">
-        <span class="material-symbols-outlined">close</span>
+      <button onclick="closeCart()" aria-label="סגור סל" class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high transition-colors">
+        <span class="material-symbols-outlined" aria-hidden="true">close</span>
       </button>
     </header>
     <div id="cartItemsList" class="flex-1 overflow-y-auto px-6 space-y-6 py-6 custom-scrollbar min-h-0"></div>
     <footer class="p-6 bg-surface-container-lowest border-t border-surface-variant flex-shrink-0" id="cartFooter" style="display:none;">
       <div class="mb-6">
-        <div class="flex justify-between items-center text-xl font-bold text-[#92400e] font-headline">
+        <div class="flex justify-between items-center text-xl font-bold text-primary-container font-headline">
           <span>סה״כ לתשלום</span>
           <span id="cartTotal">₪0</span>
         </div>
       </div>
-      <button onclick="openDateModal('cart')" class="w-full h-16 bg-[#25D366] hover:bg-[#20bd5c] text-white rounded-xl flex items-center justify-center gap-3 shadow-xl transition-all active:scale-95">
+      <button onclick="openDateModal()" class="w-full h-16 bg-[#25D366] hover:bg-[#20bd5c] text-white rounded-xl flex items-center justify-center gap-3 shadow-xl transition-all active:scale-95">
         <svg class="w-7 h-7 fill-current" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
         <span class="text-lg font-bold">שלח הזמנה בוואטסאפ</span>
       </button>
@@ -274,43 +284,87 @@ h1, h2, h3, .font-headline { font-family: 'Plus Jakarta Sans', 'Heebo', sans-ser
   </aside>
 </div>
 
-<!-- ===== DATE MODAL ===== -->
-<div id="dateModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-6 bg-on-surface/50 backdrop-blur-sm">
-  <div class="bg-surface w-full max-w-[360px] rounded-3xl shadow-2xl overflow-hidden p-6 text-right border border-outline-variant/20">
-    <div class="flex items-center justify-between mb-6">
+<!-- ===== ORDER CONFIRMATION MODAL ===== -->
+<div id="dateModal" class="hidden fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-6 bg-on-surface/50 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+  <div class="bg-surface w-full sm:max-w-md sm:rounded-3xl rounded-t-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90dvh] border border-outline-variant/20">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-surface-variant flex-shrink-0">
       <div class="flex items-center gap-2">
-        <span class="material-symbols-outlined text-[#92400e]">calendar_month</span>
-        <h4 class="font-bold text-[#92400e] text-lg">מתי תרצו לאסוף?</h4>
+        <span class="material-symbols-outlined text-primary-container" aria-hidden="true">receipt_long</span>
+        <h4 id="confirmTitle" class="font-bold text-primary-container text-lg font-headline">סיום הזמנה</h4>
       </div>
-      <button onclick="closeDateModal()" class="text-on-surface-variant hover:bg-surface-container-low p-1 rounded-full transition-colors">
-        <span class="material-symbols-outlined">close</span>
+      <button onclick="closeDateModal()" class="text-on-surface-variant hover:bg-surface-container-low p-1 rounded-full transition-colors" aria-label="סגור">
+        <span class="material-symbols-outlined" aria-hidden="true">close</span>
       </button>
     </div>
-    <div class="grid grid-cols-5 gap-2 w-full mb-4" id="dateChipsContainer"></div>
-    <button onclick="toggleCustomDate()" class="w-full text-center text-sm text-[#92400e] font-bold py-3 border-t border-surface-variant hover:bg-surface-container-low transition-colors rounded-xl">
-      בחירת תאריך אחר
-    </button>
-    <input type="date" id="customDateInput" class="hidden w-full mt-3 p-3 border border-outline-variant rounded-xl text-sm" onchange="selectCustomDate(this.value)"/>
-    <div class="mt-6">
-      <button onclick="confirmAndSend()" class="w-full py-4 bg-[#92400e] text-white rounded-xl font-bold shadow-lg active:scale-[0.98] transition-transform">
-        אישור והמשך לוואטסאפ
+    <div class="flex-1 overflow-y-auto custom-scrollbar px-6 py-5">
+      <div class="mb-6">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="material-symbols-outlined text-primary-container text-[20px]">calendar_month</span>
+          <h5 class="font-bold text-on-surface text-sm">מתי תרצו לאסוף?</h5>
+        </div>
+        <div class="grid grid-cols-5 gap-2 w-full mb-3" id="dateChipsContainer"></div>
+        <button onclick="toggleCustomDate()" class="w-full text-center text-xs text-primary-container font-bold py-2 hover:bg-surface-container-low transition-colors rounded-xl">
+          בחירת תאריך אחר
+        </button>
+        <input type="date" id="customDateInput" class="hidden w-full mt-2 p-3 border border-outline-variant rounded-xl text-base" onchange="selectCustomDate(this.value)"/>
+      </div>
+      <div class="border-t border-surface-variant my-4"></div>
+      <div class="mb-2">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="material-symbols-outlined text-primary-container text-[20px]">person</span>
+          <h5 class="font-bold text-on-surface text-sm">פרטי ההזמנה</h5>
+        </div>
+        <input id="cartCustomerName" type="text" placeholder="השם שלך (אופציונלי)" class="w-full bg-surface-container-low border border-outline-variant/30 rounded-xl px-4 py-3 text-base text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary-container transition-all mb-3" oninput="onCustomerNameInput(this)"/>
+        <button id="cartNoteToggle" onclick="toggleCartNote()" aria-label="הוסף הערה להזמנה" class="flex items-center gap-2 text-sm font-semibold text-on-surface-variant hover:text-primary-container transition-colors">
+          <span class="material-symbols-outlined text-[18px]" aria-hidden="true">add</span>
+          <span>הוסף הערה</span>
+        </button>
+        <div id="cartNoteWrapper" class="hidden mt-3">
+          <textarea id="cartNote" rows="2" placeholder="הערה על ההזמנה (למשל: בלי בצל)..." class="w-full bg-surface-container-low border border-outline-variant/30 rounded-xl px-4 py-3 text-base text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary-container transition-all resize-none" oninput="onCartNoteInput(this)"></textarea>
+        </div>
+      </div>
+      <div class="border-t border-surface-variant my-4"></div>
+      <div>
+        <div class="flex items-center gap-2 mb-3">
+          <span class="material-symbols-outlined text-primary-container text-[20px]">shopping_basket</span>
+          <h5 class="font-bold text-on-surface text-sm">סיכום ההזמנה</h5>
+        </div>
+        <div id="confirmItemsList" class="space-y-2 mb-4"></div>
+      </div>
+    </div>
+    <div class="flex-shrink-0 border-t border-surface-variant bg-surface-container-lowest px-6 py-4">
+      <div class="flex justify-between items-center mb-3">
+        <span class="text-sm text-on-surface-variant font-bold">סה"כ לתשלום</span>
+        <span class="text-xl font-black text-primary-container font-headline" id="confirmTotal">₪0</span>
+      </div>
+      <button onclick="confirmAndSend()" class="w-full h-14 bg-[#25D366] hover:bg-[#20bd5c] text-white rounded-xl flex items-center justify-center gap-2 shadow-lg transition-all active:scale-[0.98]">
+        <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        <span class="font-bold">שלח הזמנה בוואטסאפ</span>
       </button>
+      <button onclick="backToCart()" class="w-full text-center text-xs text-on-surface-variant font-semibold py-2 mt-2 hover:text-primary-container transition-colors">
+        חזור לעריכת ההזמנה
+      </button>
+      <div class="flex items-center justify-center gap-1 mt-2">
+        <span class="material-symbols-outlined text-[14px] text-on-surface-variant/70" aria-hidden="true">lock</span>
+        <p class="text-[10px] text-on-surface-variant/70 text-center">הזמנה ישירה לבעל העסק בוואטסאפ</p>
+      </div>
+      <p class="text-[10px] text-on-surface-variant/70 text-center mt-1">התשלום יתבצע בעת האיסוף</p>
     </div>
   </div>
 </div>
 
 <!-- ===== ABOUT MODAL ===== -->
-<div id="aboutModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4" onclick="closeAbout(event)">
-  <div class="bg-surface w-[92%] mx-[4%] max-w-lg max-h-[90vh] rounded-[16px] overflow-hidden flex flex-col relative shadow-2xl" onclick="event.stopPropagation()">
-    <button onclick="closeAbout()" class="absolute top-6 left-6 z-50 w-10 h-10 rounded-full bg-black/30 hover:bg-black/50 text-white flex items-center justify-center transition-colors shadow-lg backdrop-blur-md">
-      <span class="material-symbols-outlined">close</span>
+<div id="aboutModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="aboutTitle" onclick="closeAbout(event)">
+  <div class="bg-surface w-[92%] mx-[4%] max-w-lg max-h-[90dvh] rounded-[16px] overflow-hidden flex flex-col relative shadow-2xl" onclick="event.stopPropagation()">
+    <button onclick="closeAbout()" aria-label="סגור" class="absolute top-6 left-6 z-50 w-10 h-10 rounded-full bg-black/30 hover:bg-black/50 text-white flex items-center justify-center transition-colors shadow-lg backdrop-blur-md">
+      <span class="material-symbols-outlined" aria-hidden="true">close</span>
     </button>
     <div class="modal-content overflow-y-auto flex-1">
       <section class="relative w-full h-[200px] overflow-hidden">
-        <img id="aboutImg" class="w-full h-full object-cover" src="" alt="אודות"/>
+        <img id="aboutImg" class="w-full h-full object-cover" src="" alt="" loading="lazy"/>
         <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
         <div class="absolute bottom-6 right-8">
-          <h1 class="text-white text-3xl font-extrabold tracking-tight">קצת עלינו</h1>
+          <h1 id="aboutTitle" class="text-white text-3xl font-extrabold tracking-tight">קצת עלינו</h1>
         </div>
       </section>
       <div class="p-8 pb-16">
@@ -356,14 +410,20 @@ h1, h2, h3, .font-headline { font-family: 'Plus Jakarta Sans', 'Heebo', sans-ser
 
 </div><!-- end menuContent -->
 
+<!-- ===== TOAST ===== -->
+<div id="toast" class="fixed bottom-[calc(7rem+env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 bg-on-surface text-surface px-5 py-3 rounded-full shadow-2xl z-[200] flex items-center gap-2 opacity-0 pointer-events-none transition-all duration-300" style="transform: translate(-50%, 20px);">
+  <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+  <span id="toastText" class="font-bold text-sm">נוסף לסל</span>
+</div>
+
 <!-- ===== TERMS MODAL ===== -->
-<div class="fixed inset-0 z-[100] hidden items-center justify-center p-4" id="termsModal">
+<div class="fixed inset-0 z-[100] hidden items-center justify-center p-4" id="termsModal" role="dialog" aria-modal="true" aria-labelledby="termsTitle">
   <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="toggleTermsModal(false)"></div>
-  <div class="bg-surface relative w-full max-w-lg max-h-[80vh] overflow-hidden rounded-2xl shadow-2xl flex flex-col">
+  <div class="bg-surface relative w-full max-w-lg max-h-[80dvh] overflow-hidden rounded-2xl shadow-2xl flex flex-col">
     <div class="px-6 py-4 border-b border-surface-variant flex items-center justify-between">
-      <h2 class="font-headline font-bold text-lg">תקנון</h2>
-      <button class="p-1 hover:bg-surface-variant rounded-full transition-colors" onclick="toggleTermsModal(false)">
-        <span class="material-symbols-outlined">close</span>
+      <h2 id="termsTitle" class="font-headline font-bold text-lg">תקנון</h2>
+      <button class="p-1 hover:bg-surface-variant rounded-full transition-colors" onclick="toggleTermsModal(false)" aria-label="סגור">
+        <span class="material-symbols-outlined" aria-hidden="true">close</span>
       </button>
     </div>
     <div id="termsModalBody" class="p-6 overflow-y-auto no-scrollbar space-y-4 text-on-surface-variant text-sm leading-relaxed whitespace-pre-line">
@@ -388,7 +448,140 @@ let activeCategory = null;
 let currentProduct = null;
 let currentQty = 1;
 let selectedDate = null;
-let dateModalMode = 'cart'; // 'cart' or 'quick'
+let currentSlug = null;
+let customerName = '';
+let orderNote = '';
+let initCalled = false;
+let favorites = new Set();
+
+// ===== FAVORITES =====
+function getFavoritesKey() {
+  return 'mytafrit_favorites_' + (currentSlug || 'preview');
+}
+
+function loadFavorites() {
+  try {
+    const raw = localStorage.getItem(getFavoritesKey());
+    if (!raw) return;
+    const arr = JSON.parse(raw);
+    if (Array.isArray(arr)) favorites = new Set(arr);
+  } catch(e) { console.warn('Failed to load favorites', e); }
+}
+
+function saveFavorites() {
+  try {
+    localStorage.setItem(getFavoritesKey(), JSON.stringify([...favorites]));
+  } catch(e) { console.warn('Failed to save favorites', e); }
+}
+
+function isFavorite(productId) {
+  return favorites.has(String(productId));
+}
+
+function toggleFavorite(productId) {
+  const id = String(productId);
+  if (favorites.has(id)) favorites.delete(id);
+  else favorites.add(id);
+  saveFavorites();
+
+  // Refresh the virtual "favorites" category and the chip strip
+  updateFavoritesCategory();
+  renderCategories();
+  updateHeartIcons();
+
+  // If user was viewing "favorites" and removed the last one — fall back to "All"
+  if (activeCategory === '__favorites__' && favorites.size === 0) {
+    activeCategory = null;
+    renderCategories();
+    renderProducts();
+  }
+}
+
+function updateHeartIcons() {
+  document.querySelectorAll('[data-heart-product]').forEach(btn => {
+    const id = btn.getAttribute('data-heart-product');
+    const isFav = isFavorite(id);
+    const icon = btn.querySelector('.material-symbols-outlined');
+    if (icon) {
+      icon.textContent = isFav ? 'favorite' : 'favorite_border';
+      icon.style.fontVariationSettings = isFav ? "'FILL' 1" : "'FILL' 0";
+      icon.className = `material-symbols-outlined text-[20px] ${isFav ? 'text-red-500' : 'text-on-surface-variant'}`;
+    }
+    btn.setAttribute('aria-label', isFav ? 'הסר ממועדפים' : 'הוסף למועדפים');
+    btn.setAttribute('aria-pressed', isFav ? 'true' : 'false');
+  });
+}
+
+function updateFavoritesCategory() {
+  CATEGORIES = CATEGORIES.filter(c => c.id !== '__favorites__');
+  if (favorites.size > 0) {
+    const allIdx = CATEGORIES.findIndex(c => c.id === null);
+    const insertAt = allIdx >= 0 ? allIdx + 1 : 0;
+    CATEGORIES.splice(insertAt, 0, { id: '__favorites__', name: '❤️ המועדפים שלי' });
+  }
+}
+
+function toggleModalFavorite() {
+  if (!currentProduct) return;
+  toggleFavorite(currentProduct.id);
+  updateModalFavoriteIcon();
+}
+
+function updateModalFavoriteIcon() {
+  if (!currentProduct) return;
+  const btn = document.getElementById('modalFavoriteBtn');
+  if (!btn) return;
+  const isFav = isFavorite(currentProduct.id);
+  const icon = btn.querySelector('.material-symbols-outlined');
+  icon.textContent = isFav ? 'favorite' : 'favorite_border';
+  icon.style.fontVariationSettings = isFav ? "'FILL' 1" : "'FILL' 0";
+  icon.className = `material-symbols-outlined text-[22px] ${isFav ? 'text-red-500' : 'text-on-surface-variant'}`;
+  btn.setAttribute('aria-label', isFav ? 'הסר ממועדפים' : 'הוסף למועדפים');
+  btn.setAttribute('aria-pressed', isFav ? 'true' : 'false');
+}
+
+// ===== CACHE (stale-while-revalidate) =====
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+const CACHE_KEY_PREFIX = 'mytafrit_cache_';
+
+function getCacheKey(slug) {
+  return CACHE_KEY_PREFIX + (slug || 'preview');
+}
+
+function loadFromCache(slug) {
+  try {
+    const raw = localStorage.getItem(getCacheKey(slug));
+    if (!raw) return null;
+    const data = JSON.parse(raw);
+    if (!data.savedAt) return null;
+    const age = Date.now() - data.savedAt;
+    return {
+      settings: data.settings,
+      categories: data.categories,
+      products: data.products,
+      isFresh: age < CACHE_TTL,
+      age: age
+    };
+  } catch(e) { return null; }
+}
+
+function saveToCache(slug, settings, categories, products) {
+  try {
+    const data = { settings, categories, products, savedAt: Date.now() };
+    localStorage.setItem(getCacheKey(slug), JSON.stringify(data));
+  } catch(e) { console.warn('Cache save failed', e); }
+}
+
+function applyCachedPayload(settings, realCats, products) {
+  SETTINGS = settings || {};
+  PRODUCTS = Array.isArray(products) ? products : [];
+  const hasBestsellers = PRODUCTS.some(p => p.is_bestseller && !p.is_sold_out);
+  CATEGORIES = [{id: null, name: 'הכל'}];
+  if (hasBestsellers) {
+    CATEGORIES.push({id: '__popular__', name: '⭐ פופולריים'});
+  }
+  CATEGORIES = CATEGORIES.concat(Array.isArray(realCats) ? realCats : []);
+}
 
 // ===== SLUG EXTRACTION =====
 function getSlugFromURL() {
@@ -409,9 +602,10 @@ function showError(title, msg) {
   if (msg) document.getElementById('menuErrorMsg').textContent = msg;
 }
 
-// ===== LOAD DATA =====
+// ===== LOAD DATA (stale-while-revalidate) =====
 async function loadData() {
   const slug = getSlugFromURL();
+  currentSlug = slug;
 
   // No slug — try localStorage fallback (for admin preview)
   if (!slug) {
@@ -420,8 +614,20 @@ async function loadData() {
     return;
   }
 
+  // Phase 1: render from cache immediately (if any)
+  const cached = loadFromCache(slug);
+  let renderedFromCache = false;
+  if (cached && cached.settings) {
+    applyCachedPayload(cached.settings, cached.categories, cached.products);
+    init();
+    renderedFromCache = true;
+  }
+
+  // Phase 1b: fresh cache — skip the network fetch entirely
+  if (cached && cached.isFresh) return;
+
+  // Phase 2: fetch from Supabase and refresh
   try {
-    // 1. Fetch settings by slug (public RLS policy)
     const { data: settingsData, error: settingsErr } = await supabaseClient
       .from('settings')
       .select('*')
@@ -429,34 +635,31 @@ async function loadData() {
       .single();
 
     if (settingsErr || !settingsData) {
-      // Fallback to localStorage
-      if (loadFromLocalStorage()) { init(); return; }
-      showError('תפריט לא נמצא', 'הלינק שגוי או שהתפריט לא קיים עדיין.');
+      if (!renderedFromCache) {
+        if (loadFromLocalStorage()) { init(); return; }
+        showError('תפריט לא נמצא', 'הלינק שגוי או שהתפריט לא קיים עדיין.');
+      }
       return;
     }
 
-    SETTINGS = settingsData;
     const userId = settingsData.user_id;
-
-    // 2. Fetch categories and active products in parallel
     const [catsRes, prodsRes] = await Promise.all([
       supabaseClient.from('categories').select('*').eq('user_id', userId).order('sort_order'),
       supabaseClient.from('products').select('*').eq('user_id', userId).eq('is_active', true).order('sort_order'),
     ]);
 
-    if (catsRes.data && catsRes.data.length) {
-      CATEGORIES = [{id: null, name: 'הכל'}, ...catsRes.data];
-    }
+    const realCats = (catsRes.data && catsRes.data.length) ? catsRes.data : [];
+    const freshProducts = prodsRes.data || [];
 
-    if (prodsRes.data) {
-      PRODUCTS = prodsRes.data;
-    }
-
+    applyCachedPayload(settingsData, realCats, freshProducts);
+    saveToCache(slug, settingsData, realCats, freshProducts);
     init();
   } catch(e) {
-    console.warn('Supabase load failed, falling back to localStorage', e);
-    if (loadFromLocalStorage()) { init(); return; }
-    showError('שגיאה בטעינת התפריט', 'נסה שוב מאוחר יותר.');
+    console.warn('Supabase load failed', e);
+    if (!renderedFromCache) {
+      if (loadFromLocalStorage()) { init(); return; }
+      showError('שגיאה בטעינת התפריט', 'נסה שוב מאוחר יותר.');
+    }
   }
 }
 
@@ -466,15 +669,67 @@ function loadFromLocalStorage() {
     if (!s || !s.business_name) return false;
     SETTINGS = s;
     const cats = JSON.parse(localStorage.getItem('tafrit_categories'));
-    if (cats && cats.length) CATEGORIES = [{id: null, name: 'הכל'}, ...cats];
+    const realCats = (cats && cats.length) ? cats : [];
     const prods = JSON.parse(localStorage.getItem('tafrit_products'));
     if (prods) PRODUCTS = prods.filter(p => p.is_active !== false);
+    const hasBestsellers = PRODUCTS.some(p => p.is_bestseller && !p.is_sold_out);
+    CATEGORIES = [{id: null, name: 'הכל'}];
+    if (hasBestsellers) {
+      CATEGORIES.push({id: '__popular__', name: '⭐ פופולריים'});
+    }
+    CATEGORIES = CATEGORIES.concat(realCats);
     return true;
   } catch(e) { return false; }
 }
 
 // Start loading
 loadData();
+
+// ===== CART PERSISTENCE =====
+function getCartKey() {
+  return 'mytafrit_cart_' + (currentSlug || 'preview');
+}
+
+function saveCart() {
+  const key = getCartKey();
+  if (!cart.length && !customerName && !orderNote) {
+    localStorage.removeItem(key);
+    return;
+  }
+  const data = {
+    items: cart,
+    customerName: customerName,
+    orderNote: orderNote,
+    wasOpen: !document.getElementById('cartDrawer').classList.contains('hidden'),
+    savedAt: Date.now()
+  };
+  localStorage.setItem(key, JSON.stringify(data));
+}
+
+function loadCart() {
+  const key = getCartKey();
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    if (Date.now() - data.savedAt > 24 * 60 * 60 * 1000) { localStorage.removeItem(key); return; }
+    cart = data.items || [];
+    customerName = data.customerName || '';
+    orderNote = data.orderNote || '';
+    const nameInput = document.getElementById('cartCustomerName');
+    if (nameInput) nameInput.value = customerName;
+    const noteInput = document.getElementById('cartNote');
+    if (noteInput && orderNote) {
+      noteInput.value = orderNote;
+      document.getElementById('cartNoteWrapper').classList.remove('hidden');
+      const _nt = document.getElementById('cartNoteToggle');
+      _nt.innerHTML = '<span class="material-symbols-outlined text-[18px]" aria-hidden="true">remove</span><span>סגור הערה</span>';
+      _nt.setAttribute('aria-label', 'סגור הערה');
+    }
+    updateCartUI();
+    if (data.wasOpen && cart.length) openCart();
+  } catch(e) { console.warn('Failed to load cart from localStorage', e); }
+}
 
 // ===== BADGE HELPERS =====
 function getDietaryBadge(type) {
@@ -499,12 +754,23 @@ function init() {
   }
   document.getElementById('bizName').textContent = SETTINGS.business_name || 'התפריט שלי';
   document.getElementById('bizTagline').textContent = SETTINGS.tagline || '';
+
+  // Dynamic <title> and meta description
+  const bizName = SETTINGS.business_name || 'התפריט שלי';
+  const tagline = SETTINGS.tagline || '';
+  document.title = tagline ? `${bizName} - ${tagline}` : bizName;
+  const descMeta = document.getElementById('metaDescription');
+  if (descMeta) {
+    const description = tagline || `תפריט דיגיטלי של ${bizName} - הזמנה ישירה בוואטסאפ`;
+    descMeta.setAttribute('content', description);
+  }
   if (SETTINGS.logo_url) document.getElementById('logoImg').src = SETTINGS.logo_url;
+  document.getElementById('logoImg').alt = SETTINGS.business_name ? '' : 'לוגו';
   if (SETTINGS.hero_bg_url) {
     document.getElementById('heroBgImg').src = SETTINGS.hero_bg_url;
   } else {
     document.getElementById('heroBgImg').style.display = 'none';
-    document.getElementById('heroBgImg').parentElement.style.backgroundColor = '#1c1917';
+    document.getElementById('heroBgImg').parentElement.style.background = 'linear-gradient(135deg, #92400e 0%, #712c00 50%, #55433a 100%)';
   }
 
   // Footer
@@ -523,8 +789,9 @@ function init() {
     document.getElementById('aboutImg').src = SETTINGS.about_image_url;
   } else {
     document.getElementById('aboutImg').style.display = 'none';
-    document.getElementById('aboutImg').parentElement.style.backgroundColor = '#1c1917';
+    document.getElementById('aboutImg').parentElement.style.background = 'linear-gradient(135deg, #92400e 0%, #712c00 50%, #55433a 100%)';
   }
+  document.getElementById('aboutImg').alt = 'תמונה של ' + (SETTINGS.business_name || 'העסק');
   if (SETTINGS.pickup_area) {
     document.getElementById('aboutLocationLink').href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(SETTINGS.pickup_area);
   }
@@ -537,16 +804,36 @@ function init() {
     document.getElementById('termsModalBody').textContent = SETTINGS.terms_text;
   }
 
+  // One-shot setup (must not re-register listeners/observers on refetch)
+  if (!initCalled) {
+    initCalled = true;
+    loadCart();
+    loadFavorites();
+    setupFooterObserver();
+    setupDrawerSwipe();
+  }
+
+  // Insert the virtual "favorites" category if there are any saved favorites.
+  // Must run before renderCategories so the chip appears on first paint.
+  updateFavoritesCategory();
+
+  // If the active category no longer exists in the fresh data, reset to "All"
+  if (activeCategory && activeCategory !== '__popular__' && activeCategory !== '__favorites__' &&
+      !CATEGORIES.some(c => String(c.id) === String(activeCategory))) {
+    activeCategory = null;
+  }
+
   renderCategories();
   renderProducts();
-  generateDateChips();
+  renderTestimonials();
+  setupDynamicManifest();
 }
 
 // ===== CATEGORIES =====
 function renderCategories() {
   const nav = document.getElementById('categoriesNav');
   nav.innerHTML = CATEGORIES.map(c => `
-    <button onclick="setCategory(${c.id === null ? 'null' : `'${c.id}'`})" class="whitespace-nowrap px-6 py-2.5 rounded-full font-bold text-sm transition-all ${activeCategory === c.id ? 'bg-[#92400e] text-white shadow-lg' : 'bg-surface-container-highest text-on-surface-variant hover:bg-surface-variant'}">
+    <button onclick="setCategory(${c.id === null ? 'null' : `'${c.id}'`})" class="whitespace-nowrap px-6 py-2.5 rounded-full font-bold text-sm transition-all ${activeCategory === c.id ? 'bg-primary-container text-white shadow-lg' : 'bg-surface-container-highest text-on-surface-variant hover:bg-surface-variant'}">
       ${c.name}
     </button>
   `).join('');
@@ -556,21 +843,45 @@ function setCategory(id) {
   activeCategory = id;
   renderCategories();
   renderProducts();
+  requestAnimationFrame(() => {
+    const nav = document.getElementById('categoriesNav');
+    const activeBtn = nav.querySelector('button.bg-primary-container');
+    if (activeBtn) {
+      activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }
+  });
 }
 
 // ===== PRODUCTS =====
+function hideSkeleton() {
+  const skel = document.getElementById('productsSkeleton');
+  if (skel) skel.style.display = 'none';
+}
+
 function filterProducts() {
+  const search = document.getElementById('searchInput').value.trim();
+  if (search && activeCategory !== null) {
+    activeCategory = null;
+    renderCategories();
+  }
   renderProducts();
 }
 
 function renderProducts() {
+  hideSkeleton();
   const grid = document.getElementById('productsGrid');
   const empty = document.getElementById('emptyState');
   const search = document.getElementById('searchInput').value.trim().toLowerCase();
   
   const filtered = PRODUCTS.filter(p => {
     if (!p.is_active) return false;
-    if (activeCategory !== null && !(p.categories||[]).some(c => String(c) === String(activeCategory))) return false;
+    if (activeCategory === '__popular__') {
+      if (!p.is_bestseller) return false;
+    } else if (activeCategory === '__favorites__') {
+      if (!isFavorite(p.id)) return false;
+    } else if (activeCategory !== null && !(p.categories||[]).some(c => String(c) === String(activeCategory))) {
+      return false;
+    }
     if (search && !p.name.toLowerCase().includes(search) && !(p.description||'').toLowerCase().includes(search)) return false;
     return true;
   });
@@ -579,33 +890,103 @@ function renderProducts() {
   empty.classList.add('hidden');
 
   grid.innerHTML = filtered.map(p => `
-    <div class="bg-surface-container-low rounded-xl overflow-hidden flex flex-col group transition-all duration-300 cursor-pointer" onclick="openProductModal('${p.id}')">
+    <div class="bg-surface-container-low rounded-xl overflow-hidden flex flex-col group transition-all duration-200 cursor-pointer active:scale-[0.98] hover:shadow-md ${p.is_sold_out ? 'opacity-60 pointer-events-none' : ''}" onclick="openProductModal('${p.id}')">
       <div class="relative aspect-[4/5] overflow-hidden">
-        ${p.image_url ? `<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="${p.image_url}" alt="${p.name}" loading="lazy"/>` : `<div class="w-full h-full bg-primary-fixed flex items-center justify-center text-5xl">🥐</div>`}
+        ${p.image_url ? `<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="${p.image_url}" alt="${p.name}" loading="lazy"/>` : `<div class="w-full h-full bg-primary-fixed flex items-center justify-center" aria-hidden="true"><span class="material-symbols-outlined text-primary-container" style="font-size: 64px;">restaurant</span></div>`}
         <div class="absolute top-2 right-2 flex flex-col gap-1">
-          ${p.is_bestseller ? `<span class="flex items-center gap-1 bg-[#ffbf00]/90 backdrop-blur-sm text-[#341000] px-3 py-1 rounded-lg text-[10px] font-bold shadow-sm"><span class="material-symbols-outlined text-[14px]">star</span>נמכר ביותר</span>` : ''}
-          ${p.is_new ? `<span class="flex items-center gap-1 bg-[#d1e8e2]/90 backdrop-blur-sm text-[#004d40] px-3 py-1 rounded-lg text-[10px] font-bold shadow-sm"><span class="material-symbols-outlined text-[14px]">auto_awesome</span>חדש!</span>` : ''}
+          ${p.is_sold_out ? `<span class="flex items-center gap-1 bg-surface-container-highest/95 backdrop-blur-sm text-on-surface-variant px-3 py-1 rounded-lg text-[10px] font-bold shadow-sm border border-outline-variant/30"><span class="material-symbols-outlined text-[14px]">block</span>אזל</span>` : ''}
+          ${!p.is_sold_out && p.is_bestseller ? `<span class="flex items-center gap-1 bg-[#ffbf00] text-[#341000] px-3 py-1 rounded-lg text-[10px] font-black shadow-lg ring-1 ring-white/60"><span class="material-symbols-outlined text-[14px]">star</span>נמכר ביותר</span>` : ''}
+          ${!p.is_sold_out && p.is_new ? `<span class="flex items-center gap-1 bg-[#d1e8e2] text-[#004d40] px-3 py-1 rounded-lg text-[10px] font-black shadow-lg ring-1 ring-white/60"><span class="material-symbols-outlined text-[14px]">auto_awesome</span>חדש!</span>` : ''}
         </div>
+        <button onclick="event.stopPropagation();toggleFavorite('${p.id}')" data-heart-product="${p.id}" class="absolute top-2 left-2 w-9 h-9 flex items-center justify-center bg-surface/80 hover:bg-surface backdrop-blur-md rounded-full shadow-md active:scale-90 transition-all z-10" aria-label="${isFavorite(p.id) ? 'הסר ממועדפים' : 'הוסף למועדפים'}" aria-pressed="${isFavorite(p.id) ? 'true' : 'false'}">
+          <span class="material-symbols-outlined text-[20px] ${isFavorite(p.id) ? 'text-red-500' : 'text-on-surface-variant'}" style="font-variation-settings: 'FILL' ${isFavorite(p.id) ? '1' : '0'};">${isFavorite(p.id) ? 'favorite' : 'favorite_border'}</span>
+        </button>
         ${p.dietary_type ? `<div class="absolute bottom-2 left-2 z-20">${getDietaryBadge(p.dietary_type)}</div>` : ''}
       </div>
       <div class="p-4 flex flex-col flex-1">
         <h3 class="font-bold text-lg text-on-surface leading-tight">${p.name}</h3>
         ${p.description ? `<p class="text-on-surface-variant text-xs mt-1 line-clamp-2">${p.description}</p>` : ''}
         <div class="mt-auto pt-4 flex items-center justify-between">
-          <span class="font-black text-primary text-lg">₪${p.price}</span>
-          <button onclick="event.stopPropagation();openProductModal('${p.id}')" class="bg-[#92400e] text-white px-4 py-2 rounded-lg text-sm font-bold active:scale-95 transition-transform">להזמנה</button>
+          <span class="font-black text-primary text-xl">₪${p.price}</span>
+          <button onclick="event.stopPropagation();quickAddToCart('${p.id}')" class="bg-primary-container/10 hover:bg-primary-container/20 active:scale-90 rounded-full p-2 transition-all" aria-label="הוסף ${p.name} לסל">
+            <span class="material-symbols-outlined text-primary-container text-[22px]" aria-hidden="true">add_shopping_cart</span>
+          </button>
         </div>
       </div>
     </div>
   `).join('');
 }
 
+// ===== TESTIMONIALS =====
+function renderTestimonials() {
+  const section = document.getElementById('testimonialsSection');
+  const grid = document.getElementById('testimonialsGrid');
+  const list = Array.isArray(SETTINGS.testimonials) ? SETTINGS.testimonials : [];
+  const valid = list.filter(t => (t.text || '').trim());
+  if (!valid.length) { section.classList.add('hidden'); return; }
+  section.classList.remove('hidden');
+  grid.innerHTML = valid.slice(0, 3).map(t => `
+    <div class="bg-surface-container-low rounded-xl p-6 border border-outline-variant/20 shadow-sm">
+      <span class="material-symbols-outlined text-primary-container/40 text-3xl leading-none" style="font-variation-settings: 'FILL' 1;">format_quote</span>
+      <p class="text-on-surface text-base leading-relaxed mt-2 mb-4">${(t.text || '').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
+      ${(t.name || '').trim() ? `<p class="text-on-surface-variant text-sm font-bold">\u2014 ${(t.name || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').trim()}</p>` : ''}
+    </div>
+  `).join('');
+}
+
 // ===== PRODUCT MODAL =====
+// ===== FOCUS TRAP =====
+let focusTrapHandler = null;
+let lastFocusedElement = null;
+
+function trapFocus(modalElement) {
+  lastFocusedElement = document.activeElement;
+  const focusableSelectors = 'button:not([disabled]), [href], input:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+  const focusables = modalElement.querySelectorAll(focusableSelectors);
+  if (focusables.length === 0) return;
+  const first = focusables[0];
+  const last = focusables[focusables.length - 1];
+  setTimeout(() => first.focus(), 50);
+  focusTrapHandler = (e) => {
+    if (e.key !== 'Tab') return;
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  };
+  modalElement.addEventListener('keydown', focusTrapHandler);
+}
+
+function releaseFocus(modalElement) {
+  if (focusTrapHandler) {
+    modalElement.removeEventListener('keydown', focusTrapHandler);
+    focusTrapHandler = null;
+  }
+  if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+    const target = lastFocusedElement;
+    lastFocusedElement = null;
+    setTimeout(() => {
+      try {
+        target.focus();
+      } catch(e) {
+        // ה-element הוסר מה-DOM בינתיים — זה בסדר, לא ניסיון נוסף
+      }
+    }, 50);
+  } else {
+    lastFocusedElement = null;
+  }
+}
+
 function openProductModal(id) {
   currentProduct = PRODUCTS.find(p => String(p.id) === String(id));
   if (!currentProduct) return;
+  if (currentProduct.is_sold_out) return;
   currentQty = 1;
-  document.getElementById('modalQty').textContent = 1;
+  document.getElementById('modalQty').value = 1;
+  updateMinusButtonState();
   document.getElementById('modalName').textContent = currentProduct.name;
   document.getElementById('modalPrice').textContent = '₪' + currentProduct.price;
   document.getElementById('modalDesc').textContent = currentProduct.description || '';
@@ -617,12 +998,14 @@ function openProductModal(id) {
   // Badges
   const top = document.getElementById('modalTopBadges');
   top.innerHTML = [
-    currentProduct.is_bestseller ? `<span class="flex items-center gap-1 bg-[#ffbf00]/90 backdrop-blur-sm text-[#341000] px-3 py-1 rounded-lg text-xs font-bold shadow-sm"><span class="material-symbols-outlined text-[14px]">star</span>נמכר ביותר</span>` : '',
-    currentProduct.is_new ? `<span class="flex items-center gap-1 bg-[#d1e8e2]/90 backdrop-blur-sm text-[#004d40] px-3 py-1 rounded-lg text-xs font-bold shadow-sm"><span class="material-symbols-outlined text-[14px]">auto_awesome</span>חדש!</span>` : '',
+    currentProduct.is_bestseller ? `<span class="flex items-center gap-1 bg-[#ffbf00] text-[#341000] px-3 py-1 rounded-lg text-xs font-black shadow-lg ring-1 ring-white/60"><span class="material-symbols-outlined text-[14px]">star</span>נמכר ביותר</span>` : '',
+    currentProduct.is_new ? `<span class="flex items-center gap-1 bg-[#d1e8e2] text-[#004d40] px-3 py-1 rounded-lg text-xs font-black shadow-lg ring-1 ring-white/60"><span class="material-symbols-outlined text-[14px]">auto_awesome</span>חדש!</span>` : '',
   ].join('');
   document.getElementById('modalBottomBadge').innerHTML = getDietaryBadge(currentProduct.dietary_type);
+  updateModalFavoriteIcon();
   document.getElementById('productModal').classList.remove('hidden');
   document.body.style.overflow = 'hidden';
+  trapFocus(document.getElementById('productModal'));
 }
 
 function closeProductModal(e) {
@@ -630,19 +1013,44 @@ function closeProductModal(e) {
   document.getElementById('productModal').classList.add('hidden');
   document.body.style.overflow = '';
   currentProduct = null;
+  releaseFocus(document.getElementById('productModal'));
 }
 
 function changeQty(delta) {
   currentQty = Math.max(1, currentQty + delta);
-  document.getElementById('modalQty').textContent = currentQty;
+  document.getElementById('modalQty').value = currentQty;
+  updateMinusButtonState();
+}
+
+function onModalQtyInput(el) {
+  const val = parseInt(el.value, 10);
+  if (isNaN(val) || val < 1) { currentQty = 1; el.value = 1; }
+  else currentQty = val;
+  updateMinusButtonState();
+}
+
+function updateMinusButtonState() {
+  const btn = document.getElementById('modalQtyMinus');
+  if (currentQty <= 1) { btn.disabled = true; btn.classList.add('opacity-30', 'cursor-not-allowed'); }
+  else { btn.disabled = false; btn.classList.remove('opacity-30', 'cursor-not-allowed'); }
 }
 
 function addToCartFromModal() {
   if (!currentProduct) return;
   addToCart(currentProduct, currentQty);
+  showToast(`${currentProduct.name} נוסף לסל`);
+  bounceCartFab();
   document.getElementById('productModal').classList.add('hidden');
   document.body.style.overflow = '';
   currentProduct = null;
+}
+
+function quickAddToCart(productId) {
+  const product = PRODUCTS.find(p => String(p.id) === String(productId));
+  if (!product || product.is_sold_out) return;
+  addToCart(product, 1);
+  showToast(`${product.name} נוסף לסל`);
+  bounceCartFab();
 }
 
 // ===== CART =====
@@ -651,6 +1059,7 @@ function addToCart(product, qty) {
   if (existing) existing.quantity += qty;
   else cart.push({...product, quantity: qty});
   updateCartUI();
+  saveCart();
 }
 
 function updateCartUI() {
@@ -658,13 +1067,26 @@ function updateCartUI() {
   const fab = document.getElementById('cartFab');
   const badge = document.getElementById('cartBadge');
   if (total > 0) {
+    const wasHidden = fab.classList.contains('pointer-events-none');
     fab.style.opacity = '1';
     fab.classList.remove('pointer-events-none');
     badge.textContent = total;
     badge.classList.remove('hidden');
+    if (wasHidden) {
+      fab.classList.remove('cart-fab-pop-in');
+      void fab.offsetWidth;
+      fab.classList.add('cart-fab-pop-in');
+      fab.addEventListener('animationend', function popEnd(e) {
+        if (e.animationName === 'cartFabPop') {
+          fab.classList.remove('cart-fab-pop-in');
+          fab.removeEventListener('animationend', popEnd);
+        }
+      });
+    }
   } else {
     fab.style.opacity = '0';
     fab.classList.add('pointer-events-none');
+    fab.classList.remove('cart-fab-pop-in');
     badge.classList.add('hidden');
   }
 }
@@ -674,17 +1096,25 @@ function openCart() {
   document.getElementById('cartDrawer').classList.remove('hidden');
   document.getElementById('cartOverlay').classList.remove('hidden');
   document.body.style.overflow = 'hidden';
+  saveCart();
+  trapFocus(document.getElementById('cartDrawer'));
 }
 
 function closeCart() {
   document.getElementById('cartDrawer').classList.add('hidden');
   document.getElementById('cartOverlay').classList.add('hidden');
   document.body.style.overflow = '';
+  saveCart();
+  releaseFocus(document.getElementById('cartDrawer'));
 }
 
 function renderCartItems() {
   const list = document.getElementById('cartItemsList');
   const footer = document.getElementById('cartFooter');
+  const soldOutIds = new Set(PRODUCTS.filter(p => p.is_sold_out).map(p => p.id));
+  const originalLength = cart.length;
+  cart = cart.filter(item => !soldOutIds.has(item.id));
+  if (cart.length !== originalLength) { saveCart(); updateCartUI(); }
   if (!cart.length) {
     list.innerHTML = '<div class="text-center py-12 text-on-surface-variant font-semibold">הסל ריק 🛒</div>';
     footer.style.display = 'none';
@@ -693,26 +1123,26 @@ function renderCartItems() {
   list.innerHTML = cart.map(item => `
     <div class="flex gap-4">
       <div class="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 bg-surface-container-low">
-        ${item.image_url ? `<img src="${item.image_url}" alt="${item.name}" class="w-full h-full object-cover"/>` : '<div class="w-full h-full flex items-center justify-center text-2xl">🥐</div>'}
+        ${item.image_url ? `<img src="${item.image_url}" alt="${item.name}" class="w-full h-full object-cover" loading="lazy"/>` : '<div class="w-full h-full bg-primary-fixed flex items-center justify-center" aria-hidden="true"><span class="material-symbols-outlined text-primary-container" style="font-size: 32px;">restaurant</span></div>'}
       </div>
       <div class="flex-1 flex flex-col justify-between py-1">
         <div class="flex justify-between items-start">
           <div>
-            <h3 class="font-bold text-lg text-[#92400e]">${item.name}</h3>
+            <h3 class="font-bold text-lg text-primary-container">${item.name}</h3>
             <p class="text-sm text-on-surface-variant">₪${item.price} ליח׳</p>
           </div>
-          <button onclick="removeFromCart('${item.id}')" class="text-error hover:bg-error-container/20 p-2 rounded-full transition-all">
-            <span class="material-symbols-outlined text-xl">delete</span>
+          <button onclick="removeFromCart('${item.id}')" aria-label="הסר ${item.name} מהסל" class="text-error hover:bg-error-container/20 p-2 rounded-full transition-all">
+            <span class="material-symbols-outlined text-xl" aria-hidden="true">delete</span>
           </button>
         </div>
         <div class="flex items-center justify-between mt-2">
-          <div class="flex items-center bg-surface-container-low rounded-full px-2 py-1 gap-4">
-            <button onclick="updateCartQty('${item.id}', 1)" class="w-8 h-8 flex items-center justify-center rounded-full bg-surface-container-highest text-[#92400e] hover:scale-105 active:scale-95 transition-transform">
-              <span class="material-symbols-outlined text-lg">add</span>
+          <div class="flex items-center bg-surface-container-low rounded-full px-3 py-1.5 gap-2">
+            <button onclick="updateCartQty('${item.id}', 1)" aria-label="הגדל כמות" class="w-11 h-11 flex items-center justify-center rounded-full bg-surface-container-highest text-primary-container hover:scale-105 active:scale-95 transition-transform">
+              <span class="material-symbols-outlined text-xl" aria-hidden="true">add</span>
             </button>
             <span class="font-bold text-md min-w-[1.5rem] text-center">${item.quantity}</span>
-            <button onclick="updateCartQty('${item.id}', -1)" class="w-8 h-8 flex items-center justify-center rounded-full bg-surface-container-highest text-[#92400e] hover:scale-105 active:scale-95 transition-transform">
-              <span class="material-symbols-outlined text-lg">remove</span>
+            <button onclick="updateCartQty('${item.id}', -1)" aria-label="${item.quantity === 1 ? 'הסר מהסל' : 'הקטן כמות'}" class="w-11 h-11 flex items-center justify-center rounded-full ${item.quantity === 1 ? 'bg-error-container text-error' : 'bg-surface-container-highest text-primary-container'} hover:scale-105 active:scale-95 transition-transform">
+              <span class="material-symbols-outlined text-xl" aria-hidden="true">${item.quantity === 1 ? 'delete' : 'remove'}</span>
             </button>
           </div>
           <span class="font-bold text-lg text-on-surface">₪${(item.price * item.quantity).toFixed(0)}</span>
@@ -732,12 +1162,14 @@ function updateCartQty(id, delta) {
   if (item.quantity <= 0) cart = cart.filter(i => String(i.id) !== String(id));
   updateCartUI();
   renderCartItems();
+  saveCart();
 }
 
 function removeFromCart(id) {
   cart = cart.filter(i => String(i.id) !== String(id));
   updateCartUI();
   renderCartItems();
+  saveCart();
 }
 
 // ===== DATE MODAL =====
@@ -787,10 +1219,19 @@ function generateDateChips() {
     }
 
     const d = date.toLocaleDateString('he-IL', {day:'2-digit', month:'2-digit'});
-    const dayName = days[dow];
+    let dayName;
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    if (date.getTime() === today.getTime()) {
+      dayName = 'היום';
+    } else if (date.getTime() === tomorrow.getTime()) {
+      dayName = 'מחר';
+    } else {
+      dayName = days[dow];
+    }
     const dateStr = date.getFullYear() + '-' + String(date.getMonth()+1).padStart(2,'0') + '-' + String(date.getDate()).padStart(2,'0');
     const isFirst = count === 0;
-    chips.push(`<button onclick="selectDateChip(this, '${dateStr}')" class="flex flex-col items-center justify-center py-3 rounded-2xl transition-all ${isFirst ? 'bg-[#92400e] text-white shadow-md' : 'bg-surface-container-highest text-on-surface-variant hover:bg-surface-container-high'}">
+    chips.push(`<button onclick="selectDateChip(this, '${dateStr}')" class="flex flex-col items-center justify-center py-3 rounded-2xl transition-all ${isFirst ? 'bg-primary-container text-white shadow-md' : 'bg-surface-container-highest text-on-surface-variant hover:bg-surface-container-high'}">
       <span class="text-xs font-bold">${dayName}</span>
       <span class="text-[10px]">${d}</span>
     </button>`);
@@ -807,17 +1248,51 @@ function selectDateChip(btn, dateStr) {
   document.querySelectorAll('#dateChipsContainer button').forEach(b => {
     b.className = 'flex flex-col items-center justify-center py-3 rounded-2xl bg-surface-container-highest text-on-surface-variant hover:bg-surface-container-high transition-all';
   });
-  btn.className = 'flex flex-col items-center justify-center py-3 rounded-2xl bg-[#92400e] text-white shadow-md transition-all';
+  btn.className = 'flex flex-col items-center justify-center py-3 rounded-2xl bg-primary-container text-white shadow-md transition-all';
 }
 
-function openDateModal(mode) {
-  dateModalMode = mode;
+function openDateModal() {
+  if (!cart.length) return;
+  document.getElementById('cartDrawer').classList.add('hidden');
+  document.getElementById('cartOverlay').classList.add('hidden');
   document.getElementById('dateModal').classList.remove('hidden');
+  document.getElementById('cartCustomerName').value = customerName;
+  document.getElementById('cartNote').value = orderNote;
+  const noteWrapper = document.getElementById('cartNoteWrapper');
+  const noteToggle = document.getElementById('cartNoteToggle');
+  if (orderNote.trim()) {
+    noteWrapper.classList.remove('hidden');
+    noteToggle.innerHTML = '<span class="material-symbols-outlined text-[18px]" aria-hidden="true">remove</span><span>סגור הערה</span>'; noteToggle.setAttribute('aria-label', 'סגור הערה');
+  } else {
+    noteWrapper.classList.add('hidden');
+    noteToggle.innerHTML = '<span class="material-symbols-outlined text-[18px]" aria-hidden="true">add</span><span>הוסף הערה</span>'; noteToggle.setAttribute('aria-label', 'הוסף הערה להזמנה');
+  }
+  renderConfirmSummary();
+  generateDateChips();
+  trapFocus(document.getElementById('dateModal'));
 }
 
 function closeDateModal() {
   document.getElementById('dateModal').classList.add('hidden');
   document.getElementById('customDateInput').classList.add('hidden');
+  selectedDate = null;
+  releaseFocus(document.getElementById('dateModal'));
+}
+
+function backToCart() {
+  closeDateModal();
+  openCart();
+}
+
+function renderConfirmSummary() {
+  document.getElementById('confirmItemsList').innerHTML = cart.map(item => `
+    <div class="flex justify-between items-center text-sm">
+      <span class="text-on-surface font-medium">${item.name} <span class="text-on-surface-variant">\u00d7${item.quantity}</span></span>
+      <span class="text-on-surface font-bold">₪${(item.price * item.quantity).toFixed(0)}</span>
+    </div>
+  `).join('');
+  const total = cart.reduce((s, i) => s + (i.price * i.quantity), 0);
+  document.getElementById('confirmTotal').textContent = '₪' + total.toFixed(0);
 }
 
 function toggleCustomDate() {
@@ -829,35 +1304,77 @@ function selectCustomDate(val) {
 }
 
 function confirmAndSend() {
-  if (!selectedDate) return;
+  if (!selectedDate) { alert('אנא בחרו תאריך איסוף'); return; }
   const d = new Date(selectedDate + 'T00:00:00');
   const dayNames = ['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
   const dateStr = `יום ${dayNames[d.getDay()]}, ${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
 
-  let msg = '';
-  if (dateModalMode === 'quick' && currentProduct) {
-    msg = `היי ${SETTINGS.contact_name || SETTINGS.business_name}\nאשמח להזמין:\n\n1. ${currentProduct.name} ×${currentQty}\n\nלאיסוף בתאריך: ${dateStr}\n\nמחכה לאישור הזמנה, תודה`;
-    document.getElementById('productModal').classList.add('hidden');
-  } else {
-    const items = cart.map((item,i) => `${i+1}. ${item.name} ×${item.quantity}`).join('\n');
-    const total = cart.reduce((s,i) => s+(i.price*i.quantity),0);
-    msg = `היי ${SETTINGS.contact_name || SETTINGS.business_name}\nאשמח להזמין:\n\n${items}\n\nסה"כ: ₪${total}\nלאיסוף בתאריך: ${dateStr}\n\nמחכה לאישור הזמנה, תודה`;
-    closeCart();
-  }
+  const items = cart.map((item,i) => `${i+1}. ${item.name} ×${item.quantity}`).join('\n');
+  const total = cart.reduce((s,i) => s+(i.price*i.quantity),0);
+  let msg = `היי ${SETTINGS.contact_name || SETTINGS.business_name}\nאשמח להזמין:\n\n${items}\n\nסה"כ: ₪${total}\nלאיסוף בתאריך: ${dateStr}`;
+  if (customerName.trim()) msg += `\n\nשם: ${customerName.trim()}`;
+  if (orderNote.trim()) msg += `\nהערה: ${orderNote.trim()}`;
+  msg += `\n\nמחכה לאישור הזמנה, תודה`;
+
   window.open(`https://wa.me/${SETTINGS.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+
+  cart = [];
+  customerName = '';
+  orderNote = '';
+  document.getElementById('cartCustomerName').value = '';
+  document.getElementById('cartNote').value = '';
+  document.getElementById('cartNoteWrapper').classList.add('hidden');
+  const _nt = document.getElementById('cartNoteToggle');
+  _nt.innerHTML = '<span class="material-symbols-outlined text-[18px]" aria-hidden="true">add</span><span>הוסף הערה</span>';
+  _nt.setAttribute('aria-label', 'הוסף הערה להזמנה');
+  updateCartUI();
+  saveCart();
   closeDateModal();
   document.body.style.overflow = '';
+}
+
+// ===== CUSTOMER INPUT =====
+function onCustomerNameInput(el) {
+  customerName = el.value;
+  saveCart();
+}
+
+function onCartNoteInput(el) {
+  orderNote = el.value;
+  saveCart();
+}
+
+function toggleCartNote() {
+  const wrapper = document.getElementById('cartNoteWrapper');
+  const toggle = document.getElementById('cartNoteToggle');
+  if (wrapper.classList.contains('hidden')) {
+    wrapper.classList.remove('hidden');
+    toggle.innerHTML = '<span class="material-symbols-outlined text-[18px]" aria-hidden="true">remove</span><span>סגור הערה</span>';
+    toggle.setAttribute('aria-label', 'סגור הערה');
+    document.getElementById('cartNote').focus();
+  } else {
+    wrapper.classList.add('hidden');
+    toggle.innerHTML = '<span class="material-symbols-outlined text-[18px]" aria-hidden="true">add</span><span>הוסף הערה</span>';
+    toggle.setAttribute('aria-label', 'הוסף הערה להזמנה');
+    if (!document.getElementById('cartNote').value.trim()) {
+      orderNote = '';
+      document.getElementById('cartNote').value = '';
+      saveCart();
+    }
+  }
 }
 
 // ===== ABOUT =====
 function openAbout() {
   document.getElementById('aboutModal').classList.remove('hidden');
   document.body.style.overflow = 'hidden';
+  trapFocus(document.getElementById('aboutModal'));
 }
 function closeAbout(e) {
   if (e && e.target !== document.getElementById('aboutModal')) return;
   document.getElementById('aboutModal').classList.add('hidden');
   document.body.style.overflow = '';
+  releaseFocus(document.getElementById('aboutModal'));
 }
 
 // ===== WHATSAPP =====
@@ -865,20 +1382,270 @@ function openWhatsApp() {
   window.open(`https://wa.me/${SETTINGS.whatsapp}?text=${encodeURIComponent('היי, אשמח לשמוע עוד על התפריט שלכם ')}`, '_blank');
 }
 
+// ===== PWA DYNAMIC MANIFEST =====
+function setupDynamicManifest() {
+  const bizName = SETTINGS.business_name || 'התפריט שלי';
+  const logoUrl = SETTINGS.logo_url || '';
+  const currentUrl = window.location.href;
+
+  const manifest = {
+    name: bizName,
+    short_name: bizName.length > 12 ? bizName.substring(0, 12) : bizName,
+    description: SETTINGS.tagline || `תפריט דיגיטלי של ${bizName}`,
+    start_url: currentUrl,
+    display: 'standalone',
+    orientation: 'portrait',
+    background_color: '#fcf9f4',
+    theme_color: '#92400e',
+    lang: 'he',
+    dir: 'rtl',
+    icons: []
+  };
+
+  if (logoUrl) {
+    manifest.icons = [
+      { src: logoUrl, sizes: '192x192', type: 'image/png', purpose: 'any maskable' },
+      { src: logoUrl, sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
+    ];
+  }
+
+  const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+  const manifestUrl = URL.createObjectURL(manifestBlob);
+
+  const manifestLink = document.getElementById('manifestLink');
+  if (manifestLink) {
+    const oldHref = manifestLink.getAttribute('href');
+    if (oldHref && oldHref.startsWith('blob:')) {
+      URL.revokeObjectURL(oldHref);
+    }
+    manifestLink.setAttribute('href', manifestUrl);
+  }
+
+  const appleIcon = document.getElementById('appleTouchIcon');
+  if (appleIcon && logoUrl) {
+    appleIcon.setAttribute('href', logoUrl);
+  }
+}
+
+// ===== SHARE MENU =====
+async function shareMenu() {
+  const shareUrl = window.location.href;
+  const bizName = SETTINGS.business_name || 'התפריט';
+  const shareTitle = bizName;
+  const shareText = `בואו לראות את התפריט של ${bizName}`;
+
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: shareTitle, text: shareText, url: shareUrl });
+      return;
+    } catch(e) {
+      if (e.name === 'AbortError') return; // user canceled
+      console.warn('Web Share failed, falling back to copy', e);
+    }
+  }
+
+  fallbackCopyToClipboard(shareUrl);
+}
+
+async function fallbackCopyToClipboard(text) {
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(text);
+      showToast('הקישור הועתק');
+      return;
+    }
+  } catch(e) {
+    console.warn('Clipboard API failed, using legacy method', e);
+  }
+
+  try {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    showToast('הקישור הועתק');
+  } catch(e) {
+    console.warn('Legacy copy failed', e);
+    showToast('לא הצליח להעתיק את הקישור');
+  }
+}
+
 function toggleTermsModal(show) {
   const modal = document.getElementById('termsModal');
-  if (show) { modal.classList.remove('hidden'); modal.classList.add('flex'); document.body.style.overflow = 'hidden'; }
-  else { modal.classList.add('hidden'); modal.classList.remove('flex'); document.body.style.overflow = ''; }
+  if (show) {
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+    trapFocus(modal);
+  } else {
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.style.overflow = '';
+    releaseFocus(modal);
+  }
 }
+
+// ===== TOAST + FAB BOUNCE =====
+let toastTimeoutId = null;
+function showToast(text = 'נוסף לסל') {
+  const toast = document.getElementById('toast');
+  const toastText = document.getElementById('toastText');
+  toastText.textContent = text;
+  if (toastTimeoutId) clearTimeout(toastTimeoutId);
+  toast.style.opacity = '1';
+  toast.style.transform = 'translate(-50%, 0)';
+  toastTimeoutId = setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translate(-50%, 20px)';
+    toastTimeoutId = null;
+  }, 2000);
+}
+
+function bounceCartFab() {
+  const fab = document.getElementById('cartFab');
+  // If pop-in is still running (very first add), let it play — no bounce on top
+  if (fab.classList.contains('cart-fab-pop-in')) return;
+  fab.classList.remove('cart-fab-bounce');
+  void fab.offsetWidth;
+  fab.classList.add('cart-fab-bounce');
+}
+
+// ===== HIDE FABS WHEN FOOTER VISIBLE =====
+function setupFooterObserver() {
+  const footer = document.querySelector('footer');
+  const cartFab = document.getElementById('cartFab');
+  const waFab = document.querySelector('button[onclick="openWhatsApp()"]');
+  if (!footer || !cartFab || !waFab) return;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        cartFab.classList.add('fabs-hidden');
+        waFab.classList.add('fabs-hidden');
+      } else {
+        cartFab.classList.remove('fabs-hidden');
+        waFab.classList.remove('fabs-hidden');
+      }
+    });
+  }, { threshold: 0, rootMargin: '0px 0px -50px 0px' });
+  observer.observe(footer);
+}
+
+// ===== SWIPE-DOWN TO CLOSE CART DRAWER =====
+function setupDrawerSwipe() {
+  const drawer = document.getElementById('cartDrawer');
+  const dragHandle = drawer.querySelector('.w-12.h-1\\.5');
+  if (!dragHandle) { console.warn('Cart drawer drag handle not found'); return; }
+
+  let startY = 0;
+  let currentY = 0;
+  let isDragging = false;
+  const threshold = 80;
+
+  const onTouchStart = (e) => {
+    startY = e.touches[0].clientY;
+    currentY = startY;
+    isDragging = true;
+    drawer.style.transition = 'none';
+  };
+  const onTouchMove = (e) => {
+    if (!isDragging) return;
+    currentY = e.touches[0].clientY;
+    const delta = currentY - startY;
+    if (delta > 0) {
+      drawer.style.transform = `translateY(${delta}px)`;
+    }
+  };
+  const onTouchEnd = () => {
+    if (!isDragging) return;
+    isDragging = false;
+    drawer.style.transition = 'transform 0.3s ease';
+    const delta = currentY - startY;
+    if (delta > threshold) {
+      drawer.style.transform = `translateY(100%)`;
+      setTimeout(() => {
+        drawer.style.transform = '';
+        closeCart();
+      }, 300);
+    } else {
+      drawer.style.transform = '';
+    }
+  };
+
+  // Drag handle (the small white bar at top)
+  dragHandle.addEventListener('touchstart', onTouchStart, { passive: true });
+  dragHandle.addEventListener('touchmove', onTouchMove, { passive: true });
+  dragHandle.addEventListener('touchend', onTouchEnd);
+
+  // Drawer header (title row) — also a valid drag area
+  const header = drawer.querySelector('header');
+  if (header) {
+    header.addEventListener('touchstart', onTouchStart, { passive: true });
+    header.addEventListener('touchmove', onTouchMove, { passive: true });
+    header.addEventListener('touchend', onTouchEnd);
+  }
+}
+
+// ===== SEARCH DEBOUNCE + CLEAR =====
+let searchDebounceTimeout = null;
+function debouncedSearch() {
+  if (searchDebounceTimeout) clearTimeout(searchDebounceTimeout);
+  searchDebounceTimeout = setTimeout(() => {
+    filterProducts();
+    updateClearSearchButton();
+  }, 180);
+}
+
+function clearSearch() {
+  const input = document.getElementById('searchInput');
+  input.value = '';
+  filterProducts();
+  updateClearSearchButton();
+  input.focus();
+}
+
+function updateClearSearchButton() {
+  const input = document.getElementById('searchInput');
+  const btn = document.getElementById('clearSearchBtn');
+  if (input.value.trim()) {
+    btn.classList.remove('hidden');
+    btn.classList.add('flex');
+  } else {
+    btn.classList.add('hidden');
+    btn.classList.remove('flex');
+  }
+}
+
+// ===== ESCAPE KEY CLOSES OPEN MODAL =====
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+  if (!document.getElementById('productModal').classList.contains('hidden')) {
+    closeProductModal();
+  } else if (!document.getElementById('dateModal').classList.contains('hidden')) {
+    closeDateModal();
+  } else if (!document.getElementById('cartDrawer').classList.contains('hidden')) {
+    closeCart();
+  } else if (!document.getElementById('aboutModal').classList.contains('hidden')) {
+    closeAbout();
+  } else if (!document.getElementById('termsModal').classList.contains('hidden')) {
+    toggleTermsModal(false);
+  }
+});
 
 // ===== Expose functions to window for onclick handlers =====
 Object.assign(window, {
-  openAbout, closeAbout, openCart, closeCart, openWhatsApp,
-  filterProducts, openProductModal, closeProductModal,
-  changeQty, addToCartFromModal, setCategory,
-  removeFromCart, updateCartQty,
+  openAbout, closeAbout, openCart, closeCart, openWhatsApp, shareMenu,
+  filterProducts, debouncedSearch, clearSearch,
+  openProductModal, closeProductModal,
+  changeQty, addToCartFromModal, quickAddToCart, setCategory,
+  toggleFavorite, toggleModalFavorite,
+  removeFromCart, updateCartQty, onModalQtyInput,
   openDateModal, closeDateModal, toggleCustomDate, selectCustomDate,
   confirmAndSend, selectDateChip, toggleTermsModal,
+  onCustomerNameInput, onCartNoteInput, toggleCartNote, backToCart,
 });
 </script>
 </body>

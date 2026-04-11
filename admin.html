@@ -638,6 +638,19 @@ input:checked + .slider:before { transform:translateX(-20px); }
         </div>
       </div>
 
+      <!-- Testimonials -->
+      <div class="card" style="padding:16px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">ציטוטי לקוחות</h3>
+          <span style="font-size:11px;color:var(--text-3);">עד 3 ציטוטים</span>
+        </div>
+        <p style="font-size:12px;color:var(--text-2);margin-bottom:12px;line-height:1.5;">הוסיפו עד 3 ציטוטים קצרים מלקוחות מרוצים. הם יופיעו בתפריט הציבורי ויעלו אמון.</p>
+        <div id="testimonialsList"></div>
+        <button type="button" id="addTestimonialBtn" onclick="addTestimonial()" style="margin-top:8px;padding:8px 16px;background:var(--surface-2);border:1px dashed var(--border);border-radius:8px;font-size:13px;font-weight:600;color:var(--text-2);cursor:pointer;width:100%;">+ הוסף ציטוט</button>
+        <button type="button" onclick="saveTestimonials()" class="btn-primary" style="margin-top:12px;padding:9px 18px;font-size:13px;width:100%;">שמור ציטוטים</button>
+        <p id="testimonials-save-ok" style="display:none;font-size:12px;color:#16a34a;font-weight:600;margin-top:8px;text-align:center;">✓ הציטוטים נשמרו!</p>
+      </div>
+
       <!-- Subscription -->
       <div class="card" style="padding:16px;">
         <p style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:12px;">המנוי שלי</p>
@@ -731,6 +744,7 @@ input:checked + .slider:before { transform:translateX(-20px); }
           <label class="flex items-center gap-2 cursor-pointer select-none"><input type="checkbox" id="pf-bestseller" class="w-4 h-4 accent-amber-800"/><span class="text-sm font-medium text-gray-700">נמכר ביותר</span></label>
           <label class="flex items-center gap-2 cursor-pointer select-none"><input type="checkbox" id="pf-new" class="w-4 h-4 accent-amber-800"/><span class="text-sm font-medium text-gray-700">מוצר חדש</span></label>
           <label class="flex items-center gap-2 cursor-pointer select-none"><input type="checkbox" id="pf-active" checked class="w-4 h-4 accent-amber-800"/><span class="text-sm font-medium text-gray-700">פעיל (מוצג בתפריט)</span></label>
+          <label class="flex items-center gap-2 cursor-pointer select-none"><input type="checkbox" id="pf-sold-out" class="w-4 h-4 accent-amber-800"/><span class="text-sm font-medium text-gray-700">אזל מהמלאי</span></label>
         </div>
       </div>
     </div>
@@ -756,6 +770,7 @@ let pendingCategoriesOrder = null;
 let editingProductId=null, selectedDietary='', selectedCategories=[];
 let currentSlug='';
 let activeDays = {};
+let testimonials = [];
 let dragSrcId=null, dragSrcType=null;
 let currentUser = null;
 let currentSettings = null;
@@ -828,6 +843,55 @@ async function loadDataFromSupabase() {
   }
 }
 
+// ===== TESTIMONIALS =====
+function renderTestimonials() {
+  const list = document.getElementById('testimonialsList');
+  list.innerHTML = testimonials.map((t, i) => `
+    <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:10px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <span style="font-size:12px;font-weight:700;color:var(--text-2);">ציטוט ${i + 1}</span>
+        <button type="button" onclick="removeTestimonial(${i})" style="background:none;border:none;color:#dc2626;cursor:pointer;padding:4px;display:flex;align-items:center;">
+          <span class="material-symbols-outlined" style="font-size:18px;">delete</span>
+        </button>
+      </div>
+      <input type="text" placeholder="שם הלקוח (למשל: מרים)" value="${(t.name || '').replace(/"/g, '&quot;')}" oninput="updateTestimonial(${i}, 'name', this.value)" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:'Heebo',sans-serif;margin-bottom:6px;direction:rtl;"/>
+      <textarea placeholder="הציטוט עצמו (למשל: מאפים מדהימים, חם מהתנור!)" rows="2" oninput="updateTestimonial(${i}, 'text', this.value)" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:'Heebo',sans-serif;resize:none;direction:rtl;">${(t.text || '').replace(/</g, '&lt;')}</textarea>
+    </div>
+  `).join('');
+  document.getElementById('addTestimonialBtn').style.display = testimonials.length >= 3 ? 'none' : 'block';
+}
+
+function addTestimonial() {
+  if (testimonials.length >= 3) return;
+  testimonials.push({ name: '', text: '' });
+  renderTestimonials();
+}
+
+function removeTestimonial(index) {
+  testimonials.splice(index, 1);
+  renderTestimonials();
+}
+
+function updateTestimonial(index, field, value) {
+  if (testimonials[index]) testimonials[index][field] = value;
+}
+
+async function saveTestimonials() {
+  const payload = {
+    testimonials: testimonials.filter(t => (t.name || '').trim() || (t.text || '').trim())
+  };
+  try {
+    await upsertSettingsPartial(payload);
+  } catch(e) {
+    console.error('saveTestimonials failed', e);
+    showSuccess('❌ שמירה נכשלה: ' + (e.message || e));
+    return;
+  }
+  const ok = document.getElementById('testimonials-save-ok');
+  ok.style.display = 'block';
+  setTimeout(() => ok.style.display = 'none', 2500);
+}
+
 function applySettingsToForm(s) {
   if (s.business_name) document.getElementById('s-business-name').value = s.business_name;
   if (s.tagline) document.getElementById('s-tagline').value = s.tagline;
@@ -847,6 +911,8 @@ function applySettingsToForm(s) {
   if (s.hero_bg_url) updatePreviewFromUrl(document.getElementById('s-hero-bg-url'), 'heroBgPreview', null);
   if (s.about_image_url) updatePreviewFromUrl(document.getElementById('s-about-img-url'), 'aboutImgPreview', null);
   if (s.terms_text) document.getElementById('s-terms').value = s.terms_text;
+  testimonials = Array.isArray(s.testimonials) ? s.testimonials.slice(0, 3) : [];
+  renderTestimonials();
   if (s.allow_same_day) document.getElementById('s-allow-same-day').checked = true;
   if (s.banner_text) document.getElementById('s-banner').value = s.banner_text;
   if (s.banner_active) document.getElementById('s-banner-active').checked = true;
@@ -1277,6 +1343,7 @@ function gatherSettingsData() {
     banner_text: document.getElementById('s-banner').value.trim(),
     banner_active: document.getElementById('s-banner-active').checked,
     terms_text: document.getElementById('s-terms').value.trim(),
+    testimonials: testimonials.filter(t => (t.name || '').trim() || (t.text || '').trim()),
     active_days: Object.assign(JSON.parse(JSON.stringify(activeDays)), {
       _overrides: JSON.parse(JSON.stringify(dayOverrides)),
       _defaults: JSON.parse(JSON.stringify(defaultHours))
@@ -1403,6 +1470,7 @@ function renderProducts(){
           <span class="font-bold text-gray-900 text-sm">${p.name}</span>
           ${p.is_bestseller?`<span style="background:var(--accent);color:white;font-size:9px;font-weight:700;padding:1px 6px;border-radius:99px">נמכר ביותר</span>`:''}
           ${p.is_new?`<span style="background:#065f46;color:white;font-size:9px;font-weight:700;padding:1px 6px;border-radius:99px">חדש</span>`:''}
+          ${p.is_sold_out?`<span style="background:#6b7280;color:white;font-size:9px;font-weight:700;padding:1px 6px;border-radius:99px">אזל</span>`:''}
         </div>
         <div class="flex items-center gap-2 mt-0.5 flex-wrap">
           <span class="text-amber-800 font-bold text-sm">₪${p.price}</span>
@@ -1426,6 +1494,7 @@ function openProductForm(id){
   document.getElementById('pf-bestseller').checked=false;
   document.getElementById('pf-new').checked=false;
   document.getElementById('pf-active').checked=true;
+  document.getElementById('pf-sold-out').checked=false;
   document.getElementById('pf-img-preview').innerHTML='🥐';
   document.getElementById('pf-img-preview').className='w-16 h-16 rounded-xl overflow-hidden bg-amber-50 flex items-center justify-center text-2xl border border-amber-100 flex-shrink-0';
   document.getElementById('pf-cat-warning').style.display='none';
@@ -1441,6 +1510,7 @@ function openProductForm(id){
     document.getElementById('pf-bestseller').checked=p.is_bestseller;
     document.getElementById('pf-new').checked=p.is_new;
     document.getElementById('pf-active').checked=p.is_active;
+    document.getElementById('pf-sold-out').checked=p.is_sold_out||false;
     selectedCategories=[...(p.categories||[])];
     selectedDietary=p.dietary_type||'';
     if(p.image_url){document.getElementById('pf-img-url').value=p.image_url;document.getElementById('pf-img-preview').innerHTML=`<img src="${p.image_url}" class="w-full h-full object-cover" alt=""/>`;document.getElementById('pf-img-preview').className='w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 border border-amber-100';}
@@ -1497,7 +1567,7 @@ async function saveProduct(){
     if(oldProduct && oldProduct.image_url) deleteOldImageFromStorage(oldProduct.image_url);
   }
 
-  const data={name,description:document.getElementById('pf-desc').value.trim(),price:isNaN(price)?0:price,categories:[...selectedCategories],dietary_type:selectedDietary,image_url:newImageUrl,allergens:document.getElementById('pf-allergens').value.trim(),is_bestseller:document.getElementById('pf-bestseller').checked,is_new:document.getElementById('pf-new').checked,is_active:document.getElementById('pf-active').checked};
+  const data={name,description:document.getElementById('pf-desc').value.trim(),price:isNaN(price)?0:price,categories:[...selectedCategories],dietary_type:selectedDietary,image_url:newImageUrl,allergens:document.getElementById('pf-allergens').value.trim(),is_bestseller:document.getElementById('pf-bestseller').checked,is_new:document.getElementById('pf-new').checked,is_active:document.getElementById('pf-active').checked,is_sold_out:document.getElementById('pf-sold-out').checked};
   const isEdit = !!editingProductId;
   if(editingProductId){
     const idx=products.findIndex(p=>String(p.id)===String(editingProductId));
@@ -2215,6 +2285,7 @@ Object.assign(window, {
   loadSampleAbout, loadSampleTerms,
   handleDefaultTimeInput, handleDayTimeInput,
   updateBannerStatus,
+  addTestimonial, removeTestimonial, updateTestimonial, saveTestimonials,
 });
 </script>
 <!-- Global success toast -->

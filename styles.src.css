@@ -1,0 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom CSS from menu.html */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined' !important;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block !important;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-feature-settings: 'liga';
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Force Material Symbols rendering even inside form containers */
+span.material-symbols-outlined,
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined' !important;
+  display: inline-block !important;
+  font-feature-settings: 'liga' !important;
+  -webkit-font-feature-settings: 'liga' !important;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  line-height: 1 !important;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+body {
+  font-family: 'Heebo', 'Be Vietnam Pro', sans-serif;
+  background-color: #fcf9f4;
+  min-height: 100dvh;
+}
+
+h1, h2, h3, .font-headline {
+  font-family: 'Heebo', 'Plus Jakarta Sans', sans-serif;
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+.hero-text-shadow {
+  text-shadow: 0 2px 8px rgba(0,0,0,0.6), 0 1px 3px rgba(0,0,0,0.5);
+}
+
+.glass-nav {
+  background: rgba(252,249,244,0.8);
+  backdrop-filter: blur(16px);
+}
+
+.custom-scrollbar::-webkit-scrollbar { width: 4px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: #e5e2dd; border-radius: 10px; }
+
+.modal-content::-webkit-scrollbar { width: 4px; }
+.modal-content::-webkit-scrollbar-track { background: transparent; }
+.modal-content::-webkit-scrollbar-thumb { background: #dcc1b6; border-radius: 10px; }
+
+/* Hide number input spinners for modalQty */
+#modalQty::-webkit-outer-spin-button,
+#modalQty::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+#modalQty {
+  -moz-appearance: textfield;
+}
+
+/* Cart FAB animations */
+@keyframes cartFabBounce {
+  0%, 100% { transform: scale(1.1); }
+  30% { transform: scale(1.25); }
+  60% { transform: scale(0.95); }
+}
+.cart-fab-bounce {
+  animation: cartFabBounce 0.5s ease-out;
+}
+
+@keyframes cartFabPop {
+  0% {
+    opacity: 0;
+    transform: scale(0) translateY(20px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.25) translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.1) translateY(0);
+  }
+}
+.cart-fab-pop-in {
+  animation: cartFabPop 0.4s ease-out forwards;
+}
+
+/* Hide FABs when footer visible */
+.fabs-hidden {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: translateY(20px) scale(1.1) !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Overscroll containment */
+#cartItemsList,
+#dateModal .overflow-y-auto,
+#aboutModal .modal-content {
+  overscroll-behavior: contain;
+}
+
+/* Focus states for accessibility */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid #92400e;
+  outline-offset: 2px;
+}
+
+button:focus:not(:focus-visible),
+a:focus:not(:focus-visible) {
+  outline: none;
+}

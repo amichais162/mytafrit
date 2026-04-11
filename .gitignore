@@ -2,3 +2,6 @@ admin_users.html
 fix-trigger.sql
 schema.sql
 .claude/
+node_modules/
+.DS_Store
+*.log
