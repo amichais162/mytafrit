@@ -776,6 +776,19 @@ let currentUser = null;
 let currentSettings = null;
 let supabaseReady = false;
 
+// Invalidate the public menu cache for the current business
+// Called automatically after every successful save
+function invalidateMenuCache() {
+  try {
+    const slug = currentSlug;
+    if (!slug) return;
+    const cacheKey = `mytafrit_cache_${slug}`;
+    localStorage.removeItem(cacheKey);
+  } catch (e) {
+    console.warn('Failed to invalidate menu cache:', e);
+  }
+}
+
 // ===== SESSION CHECK =====
 (async function checkSession() {
   try {
@@ -887,6 +900,7 @@ async function saveTestimonials() {
     showSuccess('❌ שמירה נכשלה: ' + (e.message || e));
     return;
   }
+  invalidateMenuCache();
   const ok = document.getElementById('testimonials-save-ok');
   ok.style.display = 'block';
   setTimeout(() => ok.style.display = 'none', 2500);
@@ -1424,6 +1438,7 @@ function saveProductsOrder(){
   const btn=document.getElementById('saveProductsOrderBtn');
   btn.style.display='none';
   syncProductsToLocalStorage();
+  invalidateMenuCache();
   showSuccess('סדר המוצרים נשמר!');
 }
 
@@ -1432,6 +1447,7 @@ function saveCategoriesOrder(){
   const btn=document.getElementById('saveCatsOrderBtn');
   btn.style.display='none';
   syncCategoriesToLocalStorage();
+  invalidateMenuCache();
   showSuccess('סדר הקטגוריות נשמר!');
 }
 
@@ -1579,16 +1595,17 @@ async function saveProduct(){
       newProduct.user_id = currentUser.id;
       try {
         const { data: inserted } = await supabaseClient.from('products').insert(newProduct).select().single();
-        if (inserted) { products.push(inserted); syncProductsToLocalStorage(); renderProducts(); closeProductForm(); showSuccess("המוצר נוסף בהצלחה!"); return; }
+        if (inserted) { products.push(inserted); syncProductsToLocalStorage(); invalidateMenuCache(); renderProducts(); closeProductForm(); showSuccess("המוצר נוסף בהצלחה!"); return; }
       } catch(e) { console.warn('Supabase insert product failed', e); }
     }
     products.push(newProduct);
   }
   syncProductsToLocalStorage();
+  invalidateMenuCache();
   renderProducts();closeProductForm();showSuccess(isEdit?"המוצר עודכן בהצלחה!":"המוצר נוסף בהצלחה!");
 }
 
-async function deleteProduct(id){const p=products.find(x=>String(x.id)===String(id));if(!p||!confirm(`למחוק את "${p.name}"?`))return;if(p.image_url)deleteOldImageFromStorage(p.image_url);products=products.filter(x=>String(x.id)!==String(id));if(supabaseReady){try{await supabaseClient.from('products').delete().eq('id',id);}catch(e){console.warn('Supabase delete product failed',e);}}syncProductsToLocalStorage();renderProducts();}
+async function deleteProduct(id){const p=products.find(x=>String(x.id)===String(id));if(!p||!confirm(`למחוק את "${p.name}"?`))return;if(p.image_url)deleteOldImageFromStorage(p.image_url);products=products.filter(x=>String(x.id)!==String(id));if(supabaseReady){try{await supabaseClient.from('products').delete().eq('id',id);}catch(e){console.warn('Supabase delete product failed',e);}}syncProductsToLocalStorage();invalidateMenuCache();renderProducts();}
 
 // ===== CATEGORIES =====
 function renderCategories(){
@@ -1624,11 +1641,11 @@ function renderCategories(){
 
 function startNewCategory(){document.getElementById('newCategoryRow').style.display='flex';setTimeout(()=>document.getElementById('newCategoryInput').focus(),50);}
 function cancelNewCategory(){document.getElementById('newCategoryRow').style.display='none';}
-async function saveNewCategory(){const name=document.getElementById('newCategoryInput').value.trim();if(!name)return;const newId=crypto.randomUUID();const newCat={id:newId,name,sort_order:categories.length};if(supabaseReady&&currentUser){newCat.user_id=currentUser.id;try{const{data:inserted}=await supabaseClient.from('categories').insert(newCat).select().single();if(inserted){categories.push(inserted);document.getElementById('newCategoryInput').value='';document.getElementById('newCategoryRow').style.display='none';syncCategoriesToLocalStorage();renderCategories();showSuccess('הקטגוריה נוספה בהצלחה!');return;}}catch(e){console.warn('Supabase insert category failed',e);}}categories.push(newCat);document.getElementById('newCategoryInput').value='';document.getElementById('newCategoryRow').style.display='none';syncCategoriesToLocalStorage();renderCategories();showSuccess('הקטגוריה נוספה בהצלחה!');}
+async function saveNewCategory(){const name=document.getElementById('newCategoryInput').value.trim();if(!name)return;const newId=crypto.randomUUID();const newCat={id:newId,name,sort_order:categories.length};if(supabaseReady&&currentUser){newCat.user_id=currentUser.id;try{const{data:inserted}=await supabaseClient.from('categories').insert(newCat).select().single();if(inserted){categories.push(inserted);document.getElementById('newCategoryInput').value='';document.getElementById('newCategoryRow').style.display='none';syncCategoriesToLocalStorage();invalidateMenuCache();renderCategories();showSuccess('הקטגוריה נוספה בהצלחה!');return;}}catch(e){console.warn('Supabase insert category failed',e);}}categories.push(newCat);document.getElementById('newCategoryInput').value='';document.getElementById('newCategoryRow').style.display='none';syncCategoriesToLocalStorage();invalidateMenuCache();renderCategories();showSuccess('הקטגוריה נוספה בהצלחה!');}
 function startEditCategory(id){document.getElementById('cat-view-'+id).style.display='none';document.getElementById('cat-edit-'+id).style.display='flex';setTimeout(()=>document.getElementById('cat-input-'+id).focus(),50);}
 function cancelEditCategory(id){document.getElementById('cat-view-'+id).style.display='flex';document.getElementById('cat-edit-'+id).style.display='none';}
-async function saveEditCategory(id){const name=document.getElementById('cat-input-'+id).value.trim();if(!name)return;const cat=categories.find(c=>String(c.id)===String(id));if(cat)cat.name=name;if(supabaseReady){try{await supabaseClient.from('categories').update({name}).eq('id',id);}catch(e){console.warn('Supabase update category failed',e);}}syncCategoriesToLocalStorage();renderCategories();showSuccess('הקטגוריה עודכנה בהצלחה!');}
-async function deleteCategory(id){const cat=categories.find(c=>String(c.id)===String(id));if(!cat||!confirm(`למחוק את "${cat.name}"?\nמוצרים המשויכים אליה לא יוצגו תחתיה.`))return;categories=categories.filter(c=>String(c.id)!==String(id));if(supabaseReady){try{await supabaseClient.from('categories').delete().eq('id',id);}catch(e){console.warn('Supabase delete category failed',e);}}syncCategoriesToLocalStorage();renderCategories();}
+async function saveEditCategory(id){const name=document.getElementById('cat-input-'+id).value.trim();if(!name)return;const cat=categories.find(c=>String(c.id)===String(id));if(cat)cat.name=name;if(supabaseReady){try{await supabaseClient.from('categories').update({name}).eq('id',id);}catch(e){console.warn('Supabase update category failed',e);}}syncCategoriesToLocalStorage();invalidateMenuCache();renderCategories();showSuccess('הקטגוריה עודכנה בהצלחה!');}
+async function deleteCategory(id){const cat=categories.find(c=>String(c.id)===String(id));if(!cat||!confirm(`למחוק את "${cat.name}"?\nמוצרים המשויכים אליה לא יוצגו תחתיה.`))return;categories=categories.filter(c=>String(c.id)!==String(id));if(supabaseReady){try{await supabaseClient.from('categories').delete().eq('id',id);}catch(e){console.warn('Supabase delete category failed',e);}}syncCategoriesToLocalStorage();invalidateMenuCache();renderCategories();}
 
 // ===== LOCALSTORAGE FALLBACK LOADER =====
 function loadFromLocalStorage() {
@@ -1741,6 +1758,7 @@ function saveBanner() {
   const currentText = document.getElementById('bannerCurrentText');
   if (currentText) currentText.textContent = text || 'אין טקסט באנר';
   syncSettingsToLocalStorage();
+  invalidateMenuCache();
   const ok = document.getElementById('bannerSaveSuccess');
   ok.style.display = 'block';
   setTimeout(() => ok.style.display = 'none', 2500);
@@ -1813,6 +1831,7 @@ async function saveSlug() {
   if (supabaseReady && currentUser) {
     supabaseClient.from('settings').update({ slug: currentSlug }).eq('user_id', currentUser.id).then().catch(e => console.warn('Slug save failed', e));
   }
+  invalidateMenuCache();
   okEl.style.display = 'block';
   setTimeout(() => okEl.style.display = 'none', 2500);
 }
@@ -2130,6 +2149,7 @@ async function saveBasics() {
     showSuccess('❌ שמירה נכשלה: ' + (e.message || e));
     return;
   }
+  invalidateMenuCache();
   if (typeof updateBusinessView === 'function') updateBusinessView();
   _showSectionView('Basics');
   showSuccess('פרטי העסק נשמרו בהצלחה!');
@@ -2169,6 +2189,7 @@ async function saveContact() {
     showSuccess('❌ שמירה נכשלה: ' + (e.message || e));
     return;
   }
+  invalidateMenuCache();
   if (typeof updateBusinessView === 'function') updateBusinessView();
   _showSectionView('Contact');
   showSuccess('פרטי יצירת קשר נשמרו בהצלחה!');
@@ -2189,6 +2210,7 @@ async function saveHours() {
     showSuccess('❌ שמירה נכשלה: ' + (e.message || e));
     return;
   }
+  invalidateMenuCache();
   if (typeof updateBusinessView === 'function') updateBusinessView();
   _showSectionView('Hours');
   showSuccess('שעות פעילות נשמרו בהצלחה!');
@@ -2240,6 +2262,7 @@ async function saveImages() {
   if (oldLogo && oldLogo !== newLogo && typeof deleteOldImageFromStorage === 'function') deleteOldImageFromStorage(oldLogo);
   if (oldHero && oldHero !== newHero && typeof deleteOldImageFromStorage === 'function') deleteOldImageFromStorage(oldHero);
   if (oldAbout && oldAbout !== newAbout && typeof deleteOldImageFromStorage === 'function') deleteOldImageFromStorage(oldAbout);
+  invalidateMenuCache();
   if (typeof updateBusinessView === 'function') updateBusinessView();
   _showSectionView('Images');
   showSuccess('התמונות נשמרו בהצלחה!');
@@ -2257,6 +2280,7 @@ async function saveContent() {
     showSuccess('❌ שמירה נכשלה: ' + (e.message || e));
     return;
   }
+  invalidateMenuCache();
   if (typeof updateBusinessView === 'function') updateBusinessView();
   _showSectionView('Content');
   showSuccess('התוכן נשמר בהצלחה!');
