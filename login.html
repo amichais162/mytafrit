@@ -506,6 +506,9 @@ function showScreen(name) {
     name = 'login';
   }
 
+  // Clear password fields when switching screens (security)
+  document.querySelectorAll('input[type="password"]').forEach(el => el.value = '');
+
   // הסתר את כל המסכים
   VALID_SCREENS.forEach(screen => {
     const el = document.getElementById('screen-' + screen);

@@ -3,9 +3,18 @@ main = "src/worker.js"
 compatibility_date = "2024-11-01"
 
 routes = [
-  { pattern = "mytafrit.co.il/menu*", zone_name = "mytafrit.co.il" }
+  { pattern = "mytafrit.co.il/menu*", zone_name = "mytafrit.co.il" },
+  { pattern = "mytafrit.co.il/publish", zone_name = "mytafrit.co.il" }
 ]
 
 # משתני סביבה — נגדיר אותם ב-deploy דרך wrangler secret
 # [vars]
 # SUPABASE_URL = "https://uskwkqibrjmeocildgay.supabase.co"
+
+# ⚠️ When adding a new table that should be published to KV,
+# update the TABLES_TO_PUBLISH constant in src/worker.js
+# and run `npx wrangler deploy` from this directory.
+
+[[kv_namespaces]]
+binding = "MYTAFRIT_KV_PROD"
+id = "b05f153bc36442d5b757ba5f8ead43ca"

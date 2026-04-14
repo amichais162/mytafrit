@@ -1,0 +1,107 @@
+:root {
+  --accent: #92400e;
+  --accent-light: #fffbeb;
+  --accent-dark: #78350f;
+  --surface: #ffffff;
+  --bg: #f5f7fa;
+  --border: #e8ecf0;
+  --text: #111827;
+  --text-2: #6b7280;
+  --text-3: #9ca3af;
+  --radius: 14px;
+  --radius-sm: 10px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 8px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+}
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+body { font-family:'Heebo',sans-serif; background:var(--bg); color:var(--text); direction:rtl; font-size:15px; }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+@keyframes slideUp { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+@keyframes slideDown { from{transform:translateY(-8px);opacity:0} to{transform:translateY(0);opacity:1} }
+@keyframes popIn { from{transform:scale(0.96);opacity:0} to{transform:scale(1);opacity:1} }
+@keyframes scaleIn { from{transform:scale(0.95);opacity:0} to{transform:scale(1);opacity:1} }
+.modal-overlay { animation:fadeIn 0.2s ease; }
+.modal-box { animation:scaleIn 0.2s ease; }
+@media (max-width:640px) {
+  .modal-box { border-radius:20px 20px 0 0 !important; max-height:94vh !important; }
+  #productFormOverlay { align-items:flex-end !important; padding:0 !important; }
+}
+input,textarea,select { font-family:'Heebo',sans-serif; direction:rtl; }
+.form-label { font-size:13px; font-weight:600; color:var(--text); margin-bottom:6px; display:block; }
+.form-hint { font-size:12px; color:var(--text-3); margin-top:4px; display:block; line-height:1.5; }
+.form-hint.warning { color:#d97706; }
+.form-input {
+  width:100%; border:1.5px solid var(--border); border-radius:var(--radius-sm);
+  padding:10px 14px; font-size:14px; outline:none; background:var(--surface);
+  font-family:'Heebo',sans-serif; direction:rtl; color:var(--text);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.form-input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(146,64,14,0.12); }
+.form-input.error { border-color:#ef4444; background:#fef2f2; }
+.form-textarea {
+  width:100%; border:1.5px solid var(--border); border-radius:var(--radius-sm);
+  padding:10px 14px; font-size:14px; outline:none; background:var(--surface);
+  font-family:'Heebo',sans-serif; resize:vertical; direction:rtl; color:var(--text);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.form-textarea:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(146,64,14,0.12); }
+.card { background:var(--surface); border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid var(--border); }
+.btn-primary {
+  background:var(--accent); color:white; border:none; border-radius:var(--radius-sm);
+  padding:10px 18px; font-size:14px; font-weight:700; cursor:pointer;
+  font-family:'Heebo',sans-serif; display:inline-flex; align-items:center; gap:6px;
+  transition:all 0.15s; white-space:nowrap;
+}
+.btn-primary:hover { background:var(--accent-dark); transform:translateY(-1px); }
+.btn-primary:active { transform:scale(0.98); }
+.btn-outline {
+  background:var(--surface); color:var(--text); border:1.5px solid var(--border);
+  border-radius:var(--radius-sm); padding:9px 16px; font-size:14px; font-weight:600;
+  cursor:pointer; font-family:'Heebo',sans-serif; display:inline-flex; align-items:center;
+  gap:5px; transition:all 0.15s; white-space:nowrap;
+}
+.btn-outline:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-light); }
+.btn-ghost {
+  background:none; border:none; cursor:pointer; border-radius:8px; padding:6px;
+  transition:background 0.15s; display:flex; align-items:center; justify-content:center; color:var(--text-2);
+}
+.btn-ghost:hover { background:var(--bg); color:var(--text); }
+.btn-danger {
+  background:none; border:none; cursor:pointer; border-radius:8px; padding:6px;
+  display:flex; align-items:center; justify-content:center; color:#dc2626; transition:background 0.15s;
+}
+.btn-danger:hover { background:#fef2f2; }
+/* Tabs */
+.tabs-bar { display:flex; border-bottom:1px solid var(--border); overflow-x:auto; scrollbar-width:none; background:white; }
+.tabs-bar::-webkit-scrollbar { display:none; }
+.tab-btn {
+  flex:1; min-width:0; display:flex; flex-direction:column; align-items:center; gap:3px;
+  padding:12px 6px 10px; border:none; background:transparent; cursor:pointer;
+  font-family:'Heebo',sans-serif; font-size:11px; font-weight:600; color:var(--text-3);
+  transition:all 0.2s; border-bottom:2px solid transparent; white-space:nowrap;
+}
+.tab-btn svg { width:20px; height:20px; }
+.tab-btn.active { color:var(--accent); border-bottom-color:var(--accent); }
+.tab-btn:not(.active):hover { color:var(--text-2); background:var(--bg); }
+/* Toggle */
+.switch { position:relative; display:inline-block; width:44px; height:24px; flex-shrink:0; }
+.switch input { opacity:0; width:0; height:0; }
+.slider { position:absolute; inset:0; background:#d1d5db; border-radius:99px; cursor:pointer; transition:0.2s; }
+.slider:before { content:''; position:absolute; width:18px; height:18px; right:3px; bottom:3px; background:white; border-radius:50%; transition:0.2s; box-shadow:0 1px 3px rgba(0,0,0,0.15); }
+input:checked + .slider { background:var(--accent); }
+input:checked + .slider:before { transform:translateX(-20px); }
+/* Drag */
+.drag-item { transition:opacity 0.15s; }
+.drag-item.drag-source { opacity:0.3; }
+.drag-item.drag-over-above { border-top:2px solid var(--accent) !important; }
+.drag-item.drag-over-below { border-bottom:2px solid var(--accent) !important; }
+.drag-handle { cursor:grab; color:var(--border); flex-shrink:0; transition:color 0.15s; padding:12px 8px; }
+.drag-handle:hover { color:var(--text-3); }
+/* Search */
+.search-wrap { position:relative; }
+.search-icon { position:absolute; right:12px; top:50%;transform:translateY(-50%);color:var(--text-3);pointer-events:none; }
+/* Link popup */
+.link-popup { animation:slideDown 0.2s ease; }
+@keyframes slideDown { from{transform:translateY(-6px);opacity:0} to{transform:translateY(0);opacity:1} }
+/* Section animation */
+.section-enter { animation:slideUp 0.2s ease; }

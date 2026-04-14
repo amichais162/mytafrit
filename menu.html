@@ -435,9 +435,7 @@
 </div>
 
 <script type="module">
-import { supabase as supabaseClient } from './supabase.js';
-
-// ===== DATA (will be populated from Supabase or localStorage) =====
+// ===== DATA (populated from injected __MYTAFRIT_DATA__ or preview localStorage) =====
 let SETTINGS = {};
 let CATEGORIES = [{id: null, name: 'הכל'}];
 let PRODUCTS = [];
@@ -540,41 +538,9 @@ function updateModalFavoriteIcon() {
   btn.setAttribute('aria-pressed', isFav ? 'true' : 'false');
 }
 
-// ===== CACHE (stale-while-revalidate) =====
-const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
-const CACHE_KEY_PREFIX = 'mytafrit_cache_';
-
-function getCacheKey(slug) {
-  return CACHE_KEY_PREFIX + (slug || 'preview');
-}
-
-function loadFromCache(slug) {
-  try {
-    const raw = localStorage.getItem(getCacheKey(slug));
-    if (!raw) return null;
-    const data = JSON.parse(raw);
-    if (!data.savedAt) return null;
-    const age = Date.now() - data.savedAt;
-    return {
-      settings: data.settings,
-      categories: data.categories,
-      products: data.products,
-      isFresh: age < CACHE_TTL,
-      age: age
-    };
-  } catch(e) { return null; }
-}
-
-function saveToCache(slug, settings, categories, products) {
-  try {
-    const data = { settings, categories, products, savedAt: Date.now() };
-    localStorage.setItem(getCacheKey(slug), JSON.stringify(data));
-  } catch(e) { console.warn('Cache save failed', e); }
-}
-
-function applyCachedPayload(settings, realCats, products) {
+function applyDataPayload(settings, realCats, products) {
   SETTINGS = settings || {};
-  PRODUCTS = Array.isArray(products) ? products : [];
+  PRODUCTS = Array.isArray(products) ? products.filter(p => p.is_active !== false) : [];
   const hasBestsellers = PRODUCTS.some(p => p.is_bestseller && !p.is_sold_out);
   CATEGORIES = [{id: null, name: 'הכל'}];
   if (hasBestsellers) {
@@ -602,75 +568,59 @@ function showError(title, msg) {
   if (msg) document.getElementById('menuErrorMsg').textContent = msg;
 }
 
-// ===== LOAD DATA (stale-while-revalidate) =====
+// ===== LOAD DATA (from Worker-injected payload or preview localStorage) =====
 async function loadData() {
   const slug = getSlugFromURL();
   currentSlug = slug;
 
-  // No slug — try localStorage fallback (for admin preview)
-  if (!slug) {
-    if (loadFromLocalStorage()) { init(); return; }
-    showError('תפריט לא נמצא', 'לא צוין לינק לתפריט.');
+  // Mode 1: Try to read injected data from Worker
+  if (slug) {
+    try {
+      const dataScript = document.getElementById('__MYTAFRIT_DATA__');
+      if (dataScript) {
+        const payload = JSON.parse(dataScript.textContent);
+
+        // Check if not published
+        if (payload.status === 'not_published') {
+          showError('התפריט עדיין לא פורסם', 'בעל העסק עדיין לא פרסם את התפריט. נסה שוב מאוחר יותר.');
+          return;
+        }
+
+        // Valid published data — apply it
+        if (payload.settings && Array.isArray(payload.products)) {
+          applyDataPayload(payload.settings, payload.categories || [], payload.products);
+          init();
+          return;
+        }
+      }
+    } catch (e) {
+      console.error('Failed to parse injected data', e);
+      // Fall through to error
+    }
+
+    // Slug exists but no injected data and parsing failed → error
+    showError('שגיאה בטעינת התפריט', 'נסה לרענן את הדף.');
     return;
   }
 
-  // Phase 1: render from cache immediately (if any)
-  const cached = loadFromCache(slug);
-  let renderedFromCache = false;
-  if (cached && cached.settings) {
-    applyCachedPayload(cached.settings, cached.categories, cached.products);
+  // Mode 2: No slug → preview mode (admin opens menu.html for preview)
+  if (loadFromLocalStoragePreview()) {
     init();
-    renderedFromCache = true;
+    return;
   }
 
-  // Phase 1b: fresh cache — skip the network fetch entirely
-  if (cached && cached.isFresh) return;
-
-  // Phase 2: fetch from Supabase and refresh
-  try {
-    const { data: settingsData, error: settingsErr } = await supabaseClient
-      .from('settings')
-      .select('*')
-      .eq('slug', slug)
-      .single();
-
-    if (settingsErr || !settingsData) {
-      if (!renderedFromCache) {
-        if (loadFromLocalStorage()) { init(); return; }
-        showError('תפריט לא נמצא', 'הלינק שגוי או שהתפריט לא קיים עדיין.');
-      }
-      return;
-    }
-
-    const userId = settingsData.user_id;
-    const [catsRes, prodsRes] = await Promise.all([
-      supabaseClient.from('categories').select('*').eq('user_id', userId).order('sort_order'),
-      supabaseClient.from('products').select('*').eq('user_id', userId).eq('is_active', true).order('sort_order'),
-    ]);
-
-    const realCats = (catsRes.data && catsRes.data.length) ? catsRes.data : [];
-    const freshProducts = prodsRes.data || [];
-
-    applyCachedPayload(settingsData, realCats, freshProducts);
-    saveToCache(slug, settingsData, realCats, freshProducts);
-    init();
-  } catch(e) {
-    console.warn('Supabase load failed', e);
-    if (!renderedFromCache) {
-      if (loadFromLocalStorage()) { init(); return; }
-      showError('שגיאה בטעינת התפריט', 'נסה שוב מאוחר יותר.');
-    }
-  }
+  // No slug and no preview data
+  showError('תפריט לא נמצא', 'לא צוין לינק לתפריט.');
 }
 
-function loadFromLocalStorage() {
+function loadFromLocalStoragePreview() {
   try {
-    const s = JSON.parse(localStorage.getItem('tafrit_settings'));
+    const s = JSON.parse(localStorage.getItem('tafrit_preview_settings'));
     if (!s || !s.business_name) return false;
     SETTINGS = s;
-    const cats = JSON.parse(localStorage.getItem('tafrit_categories'));
+    const cats = JSON.parse(localStorage.getItem('tafrit_preview_categories'));
     const realCats = (cats && cats.length) ? cats : [];
-    const prods = JSON.parse(localStorage.getItem('tafrit_products'));
+    const prods = JSON.parse(localStorage.getItem('tafrit_preview_products'));
     if (prods) PRODUCTS = prods.filter(p => p.is_active !== false);
     const hasBestsellers = PRODUCTS.some(p => p.is_bestseller && !p.is_sold_out);
     CATEGORIES = [{id: null, name: 'הכל'}];
@@ -1180,7 +1130,7 @@ function generateDateChips() {
   const now = new Date();
   const today = new Date(now);
   today.setHours(0,0,0,0);
-  const ad = SETTINGS.active_days;
+  const ad = (SETTINGS.hours_config && SETTINGS.hours_config.days) || {};
   const hasActiveDays = ad && Object.keys(ad).length > 0;
 
   // Determine start date: today if same-day allowed, otherwise tomorrow
@@ -1196,7 +1146,7 @@ function generateDateChips() {
     const dow = date.getDay();
     const isToday = date.getTime() === today.getTime();
 
-    // Filter by active_days if defined
+    // Filter by hours_config.days if defined
     if (hasActiveDays && !ad[String(dow)]) {
       date = new Date(date);
       date.setDate(date.getDate() + 1);

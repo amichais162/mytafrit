@@ -4,118 +4,9 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>ניהול התפריט</title>
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-:root {
-  --accent: #92400e;
-  --accent-light: #fffbeb;
-  --accent-dark: #78350f;
-  --surface: #ffffff;
-  --bg: #f5f7fa;
-  --border: #e8ecf0;
-  --text: #111827;
-  --text-2: #6b7280;
-  --text-3: #9ca3af;
-  --radius: 14px;
-  --radius-sm: 10px;
-  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 8px rgba(0,0,0,0.04);
-  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
-}
-* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
-body { font-family:'Heebo',sans-serif; background:var(--bg); color:var(--text); direction:rtl; font-size:15px; }
-@keyframes fadeIn { from{opacity:0} to{opacity:1} }
-@keyframes slideUp { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
-@keyframes slideDown { from{transform:translateY(-8px);opacity:0} to{transform:translateY(0);opacity:1} }
-@keyframes popIn { from{transform:scale(0.96);opacity:0} to{transform:scale(1);opacity:1} }
-@keyframes scaleIn { from{transform:scale(0.95);opacity:0} to{transform:scale(1);opacity:1} }
-.modal-overlay { animation:fadeIn 0.2s ease; }
-.modal-box { animation:scaleIn 0.2s ease; }
-@media (max-width:640px) {
-  .modal-box { border-radius:20px 20px 0 0 !important; max-height:94vh !important; }
-  #productFormOverlay { align-items:flex-end !important; padding:0 !important; }
-}
-input,textarea,select { font-family:'Heebo',sans-serif; direction:rtl; }
-.form-label { font-size:13px; font-weight:600; color:var(--text); margin-bottom:6px; display:block; }
-.form-hint { font-size:12px; color:var(--text-3); margin-top:4px; display:block; line-height:1.5; }
-.form-hint.warning { color:#d97706; }
-.form-input {
-  width:100%; border:1.5px solid var(--border); border-radius:var(--radius-sm);
-  padding:10px 14px; font-size:14px; outline:none; background:var(--surface);
-  font-family:'Heebo',sans-serif; direction:rtl; color:var(--text);
-  transition: border-color 0.15s, box-shadow 0.15s;
-}
-.form-input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(146,64,14,0.12); }
-.form-input.error { border-color:#ef4444; background:#fef2f2; }
-.form-textarea {
-  width:100%; border:1.5px solid var(--border); border-radius:var(--radius-sm);
-  padding:10px 14px; font-size:14px; outline:none; background:var(--surface);
-  font-family:'Heebo',sans-serif; resize:vertical; direction:rtl; color:var(--text);
-  transition: border-color 0.15s, box-shadow 0.15s;
-}
-.form-textarea:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(146,64,14,0.12); }
-.card { background:var(--surface); border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid var(--border); }
-.btn-primary {
-  background:var(--accent); color:white; border:none; border-radius:var(--radius-sm);
-  padding:10px 18px; font-size:14px; font-weight:700; cursor:pointer;
-  font-family:'Heebo',sans-serif; display:inline-flex; align-items:center; gap:6px;
-  transition:all 0.15s; white-space:nowrap;
-}
-.btn-primary:hover { background:var(--accent-dark); transform:translateY(-1px); }
-.btn-primary:active { transform:scale(0.98); }
-.btn-outline {
-  background:var(--surface); color:var(--text); border:1.5px solid var(--border);
-  border-radius:var(--radius-sm); padding:9px 16px; font-size:14px; font-weight:600;
-  cursor:pointer; font-family:'Heebo',sans-serif; display:inline-flex; align-items:center;
-  gap:5px; transition:all 0.15s; white-space:nowrap;
-}
-.btn-outline:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-light); }
-.btn-ghost {
-  background:none; border:none; cursor:pointer; border-radius:8px; padding:6px;
-  transition:background 0.15s; display:flex; align-items:center; justify-content:center; color:var(--text-2);
-}
-.btn-ghost:hover { background:var(--bg); color:var(--text); }
-.btn-danger {
-  background:none; border:none; cursor:pointer; border-radius:8px; padding:6px;
-  display:flex; align-items:center; justify-content:center; color:#dc2626; transition:background 0.15s;
-}
-.btn-danger:hover { background:#fef2f2; }
-/* Tabs */
-.tabs-bar { display:flex; border-bottom:1px solid var(--border); overflow-x:auto; scrollbar-width:none; background:white; }
-.tabs-bar::-webkit-scrollbar { display:none; }
-.tab-btn {
-  flex:1; min-width:0; display:flex; flex-direction:column; align-items:center; gap:3px;
-  padding:12px 6px 10px; border:none; background:transparent; cursor:pointer;
-  font-family:'Heebo',sans-serif; font-size:11px; font-weight:600; color:var(--text-3);
-  transition:all 0.2s; border-bottom:2px solid transparent; white-space:nowrap;
-}
-.tab-btn svg { width:20px; height:20px; }
-.tab-btn.active { color:var(--accent); border-bottom-color:var(--accent); }
-.tab-btn:not(.active):hover { color:var(--text-2); background:var(--bg); }
-/* Toggle */
-.switch { position:relative; display:inline-block; width:44px; height:24px; flex-shrink:0; }
-.switch input { opacity:0; width:0; height:0; }
-.slider { position:absolute; inset:0; background:#d1d5db; border-radius:99px; cursor:pointer; transition:0.2s; }
-.slider:before { content:''; position:absolute; width:18px; height:18px; right:3px; bottom:3px; background:white; border-radius:50%; transition:0.2s; box-shadow:0 1px 3px rgba(0,0,0,0.15); }
-input:checked + .slider { background:var(--accent); }
-input:checked + .slider:before { transform:translateX(-20px); }
-/* Drag */
-.drag-item { transition:opacity 0.15s; }
-.drag-item.drag-source { opacity:0.3; }
-.drag-item.drag-over-above { border-top:2px solid var(--accent) !important; }
-.drag-item.drag-over-below { border-bottom:2px solid var(--accent) !important; }
-.drag-handle { cursor:grab; color:var(--border); flex-shrink:0; transition:color 0.15s; padding:6px 4px; }
-.drag-handle:hover { color:var(--text-3); }
-/* Search */
-.search-wrap { position:relative; }
-.search-icon { position:absolute; right:12px; top:50%;transform:translateY(-50%);color:var(--text-3);pointer-events:none; }
-/* Link popup */
-.link-popup { animation:slideDown 0.2s ease; }
-@keyframes slideDown { from{transform:translateY(-6px);opacity:0} to{transform:translateY(0);opacity:1} }
-/* Section animation */
-.section-enter { animation:slideUp 0.2s ease; }
-
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="admin.css">
 </head>
 <body>
 
@@ -131,7 +22,7 @@ input:checked + .slider:before { transform:translateX(-20px); }
       <span style="font-size:16px;font-weight:700;color:var(--text);">ניהול תפריט</span>
     </div>
     <div style="display:flex;align-items:center;gap:6px;position:relative;">
-      <button onclick="shareSlugLink()" id="linkBtn" class="btn-outline" style="padding:7px 12px;font-size:13px;gap:5px;">
+      <button onclick="toggleLinkPopup()" id="linkBtn" class="btn-outline" style="padding:7px 12px;font-size:13px;gap:5px;">
         <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" stroke-width="2" stroke-linecap="round"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" stroke-width="2" stroke-linecap="round"/></svg>
         שיתוף
       </button>
@@ -139,8 +30,13 @@ input:checked + .slider:before { transform:translateX(-20px); }
         <p style="font-size:11px;font-weight:600;color:var(--text-3);margin-bottom:8px;">לינק לשיתוף עם לקוחות</p>
         <div id="linkPopupContent"></div>
       </div>
-      <button onclick="viewMenu()" class="btn-ghost" style="padding:7px;">
-        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke-width="2"/></svg>
+      <button id="publishBtn" onclick="publishChangesUI()" class="btn-primary" style="padding:7px 14px;font-size:13px;gap:5px;" aria-label="פרסם תפריט">
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        פרסם
+      </button>
+      <button onclick="openPreview()" class="btn-outline" style="padding:7px 12px;font-size:13px;gap:5px;" aria-label="תצוגה מקדימה של התפריט">
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke-width="2"/></svg>
+        תצוגה מקדימה
       </button>
     </div>
   </div>
@@ -174,7 +70,7 @@ input:checked + .slider:before { transform:translateX(-20px); }
       <h2 class="text-lg font-bold text-gray-800">מוצרים (<span id="productCount">0</span>)</h2>
       <div class="search-wrap flex-1 min-w-[160px]">
         <svg class="search-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input id="productSearch" class="form-input" style="padding-right:36px" placeholder="חיפוש מוצר..." oninput="renderProducts()"/>
+        <input id="productSearch" class="form-input" style="padding-right:36px" placeholder="חיפוש מוצר..." oninput="debouncedRenderProducts()"/>
       </div>
       <button class="btn-primary" onclick="openProductForm(null)">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -208,7 +104,7 @@ input:checked + .slider:before { transform:translateX(-20px); }
       <h2 class="text-lg font-bold text-gray-800">קטגוריות (<span id="categoryCount">0</span>)</h2>
       <div class="search-wrap flex-1 min-w-[160px]">
         <svg class="search-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input id="categorySearch" class="form-input" style="padding-right:36px" placeholder="חיפוש קטגוריה..." oninput="renderCategories()"/>
+        <input id="categorySearch" class="form-input" style="padding-right:36px" placeholder="חיפוש קטגוריה..." oninput="debouncedRenderCategories()"/>
       </div>
       <button class="btn-primary" onclick="startNewCategory()">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -676,7 +572,7 @@ input:checked + .slider:before { transform:translateX(-20px); }
       </div>
 
     </div>
-    <button onclick="supabaseClient.auth.signOut().then(()=>window.location.href='login.html')" style="display:inline-flex;align-items:center;gap:5px;background:none;border:none;padding:6px 0;margin-top:8px;font-size:13px;font-family:'Heebo',sans-serif;color:var(--text-3);cursor:pointer;transition:color 0.15s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-3)'">
+    <button onclick="signOutWithCleanup()" style="display:inline-flex;align-items:center;gap:5px;background:none;border:none;padding:6px 0;margin-top:8px;font-size:13px;font-family:'Heebo',sans-serif;color:var(--text-3);cursor:pointer;transition:color 0.15s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-3)'">
       <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" stroke-width="2"/><polyline points="16 17 21 12 16 7" stroke-width="2"/><line x1="21" y1="12" x2="9" y2="12" stroke-width="2"/></svg>
       התנתק
     </button>
@@ -760,7 +656,22 @@ import { supabase as supabaseClient } from './supabase.js';
 window.supabaseClient = supabaseClient;
 
 const DAY_NAMES = ['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
-const TAKEN_SLUGS = ['admin','login','register','tafrit','menu','about','help'];
+const TAKEN_SLUGS = ['admin','login','register','tafrit','menu','about','help','index','terms','signup','worker','api','assets','images','static','css','js','favicon','robots','sitemap'];
+
+function buildMenuLink(slug) {
+  return `https://mytafrit.co.il/menu.html?slug=${encodeURIComponent(slug || '')}`;
+}
+
+function debounce(fn, delay) {
+  let timer;
+  return function(...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn.apply(this, args), delay);
+  };
+}
+
+const debouncedRenderProducts = debounce(() => renderProducts(), 150);
+const debouncedRenderCategories = debounce(() => renderCategories(), 150);
 
 let categories = [];
 let products = [];
@@ -769,12 +680,36 @@ let pendingProductsOrder = null;
 let pendingCategoriesOrder = null;
 let editingProductId=null, selectedDietary='', selectedCategories=[];
 let currentSlug='';
-let activeDays = {};
+let hoursDays = {};
+let hoursDefault = { open: '', close: '' };
+let hoursOverrides = [];
 let testimonials = [];
 let dragSrcId=null, dragSrcType=null;
 let currentUser = null;
 let currentSettings = null;
 let supabaseReady = false;
+
+// ===== ONE-TIME LOCALSTORAGE KEY MIGRATION =====
+// Migrate old tafrit_* keys to tafrit_preview_* (idempotent on every page load)
+(function migratePreviewKeys() {
+  const oldNew = [
+    ['tafrit_preview_settings', 'tafrit_preview_settings'],
+    ['tafrit_preview_products', 'tafrit_preview_products'],
+    ['tafrit_preview_categories', 'tafrit_preview_categories'],
+    ['tafrit_preview_slug', 'tafrit_preview_slug'],
+  ];
+  for (const [oldKey, newKey] of oldNew) {
+    try {
+      const oldVal = localStorage.getItem(oldKey);
+      if (oldVal && !localStorage.getItem(newKey)) {
+        localStorage.setItem(newKey, oldVal);
+      }
+      if (oldVal) {
+        localStorage.removeItem(oldKey);
+      }
+    } catch(e) { /* ignore */ }
+  }
+})();
 
 // Invalidate the public menu cache for the current business
 // Called automatically after every successful save
@@ -827,20 +762,20 @@ async function loadDataFromSupabase() {
       applySettingsToForm(s);
       currentSettings = JSON.parse(JSON.stringify(s));
       // Cache to localStorage
-      localStorage.setItem('tafrit_settings', JSON.stringify(s));
-      if (s.slug) localStorage.setItem('tafrit_slug', s.slug);
+      localStorage.setItem('tafrit_preview_settings', JSON.stringify(s));
+      if (s.slug) localStorage.setItem('tafrit_preview_slug', s.slug);
     }
 
     // Categories
     if (catsRes.data && catsRes.data.length) {
       categories = catsRes.data;
-      localStorage.setItem('tafrit_categories', JSON.stringify(categories));
+      localStorage.setItem('tafrit_preview_categories', JSON.stringify(categories));
     }
 
     // Products
     if (prodsRes.data && prodsRes.data.length) {
       products = prodsRes.data;
-      localStorage.setItem('tafrit_products', JSON.stringify(products));
+      localStorage.setItem('tafrit_preview_products', JSON.stringify(products));
     }
 
     // Profile (subscription)
@@ -930,26 +865,30 @@ function applySettingsToForm(s) {
   if (s.allow_same_day) document.getElementById('s-allow-same-day').checked = true;
   if (s.banner_text) document.getElementById('s-banner').value = s.banner_text;
   if (s.banner_active) document.getElementById('s-banner-active').checked = true;
-  if (s.active_days && Object.keys(s.active_days).length) {
-    const raw = JSON.parse(JSON.stringify(s.active_days));
-    if (raw._overrides) { dayOverrides = raw._overrides; delete raw._overrides; }
-    if (raw._defaults) { defaultHours = raw._defaults; delete raw._defaults; }
-    activeDays = raw;
+  if (s.hours_config && typeof s.hours_config === 'object') {
+    const cfg = s.hours_config;
+    hoursDefault = cfg.default || { open: '', close: '' };
+    hoursDays = cfg.days || {};
+    hoursOverrides = Array.isArray(cfg.overrides) ? cfg.overrides.map(String) : [];
+
     const btns = document.querySelectorAll('.day-btn');
-    Object.keys(activeDays).map(Number).forEach(idx => {
+    Object.keys(hoursDays).map(Number).forEach(idx => {
       if (btns[idx]) {
         btns[idx].style.background = 'var(--accent)';
         btns[idx].style.borderColor = 'var(--accent)';
         btns[idx].style.color = 'white';
       }
     });
-    document.getElementById('defaultHoursRow').style.display = 'block';
-    if (defaultHours.open || defaultHours.close) {
+
+    if (Object.keys(hoursDays).length > 0) {
+      const defRow = document.getElementById('defaultHoursRow');
+      if (defRow) defRow.style.display = 'block';
       const defOpen = document.getElementById('default-open');
       const defClose = document.getElementById('default-close');
-      if (defOpen) defOpen.value = defaultHours.open || '';
-      if (defClose) defClose.value = defaultHours.close || '';
+      if (defOpen) defOpen.value = hoursDefault.open || '';
+      if (defClose) defClose.value = hoursDefault.close || '';
     }
+
     renderHoursRows();
     updateHoursPreview();
   }
@@ -998,8 +937,17 @@ function updateBannerPreview() {
   const active = document.getElementById('s-banner-active').checked;
   const text = document.getElementById('s-banner').value;
   const preview = document.getElementById('bannerPreview');
-  if (active && text.trim()) { preview.textContent=text; preview.style.display='block'; }
-  else { preview.style.display='none'; }
+  if (active && text.trim()) {
+    preview.textContent = text;
+    preview.style.opacity = '1';
+    preview.style.display = 'block';
+  } else if (active) {
+    preview.textContent = 'כך ייראה הבאנר בתפריט';
+    preview.style.opacity = '0.5';
+    preview.style.display = 'block';
+  } else {
+    preview.style.display = 'none';
+  }
 }
 
 // ===== SLUG =====
@@ -1047,20 +995,22 @@ function formatWhatsapp(input) {
 }
 
 // ===== HOURS BUILDER =====
-let defaultHours = { open: '', close: '' };
-// dayOverrides: days that have been manually edited and differ from default
-let dayOverrides = {};
 
 function toggleDay(idx, btn) {
-  if (activeDays[idx]) {
-    delete activeDays[idx];
-    delete dayOverrides[idx];
-    btn.style.background='white'; btn.style.borderColor='var(--border)'; btn.style.color='var(--text-3)';
+  const key = String(idx);
+  if (hoursDays[key]) {
+    delete hoursDays[key];
+    hoursOverrides = hoursOverrides.filter(k => k !== key);
+    btn.style.background = 'white';
+    btn.style.borderColor = 'var(--border)';
+    btn.style.color = 'var(--text-3)';
   } else {
-    activeDays[idx] = { open: defaultHours.open, close: defaultHours.close };
-    btn.style.background='var(--accent)'; btn.style.borderColor='var(--accent)'; btn.style.color='white';
+    hoursDays[key] = { open: hoursDefault.open, close: hoursDefault.close };
+    btn.style.background = 'var(--accent)';
+    btn.style.borderColor = 'var(--accent)';
+    btn.style.color = 'white';
   }
-  const hasDays = Object.keys(activeDays).length > 0;
+  const hasDays = Object.keys(hoursDays).length > 0;
   document.getElementById('defaultHoursRow').style.display = hasDays ? 'block' : 'none';
   renderHoursRows();
   updateHoursPreview();
@@ -1068,10 +1018,10 @@ function toggleDay(idx, btn) {
 
 function handleDefaultTimeInput(field, input) {
   const val = input.value;
-  defaultHours[field] = val;
-  Object.keys(activeDays).map(Number).forEach(idx => {
-    if (!dayOverrides[idx] || !dayOverrides[idx][field]) {
-      activeDays[idx][field] = val;
+  hoursDefault[field] = val;
+  Object.keys(hoursDays).forEach(key => {
+    if (!hoursOverrides.includes(key)) {
+      hoursDays[key][field] = val;
     }
   });
   renderHoursRows();
@@ -1080,11 +1030,12 @@ function handleDefaultTimeInput(field, input) {
 
 function renderHoursRows() {
   const container = document.getElementById('hoursPerDay');
-  const sortedDays = Object.keys(activeDays).map(Number).sort((a,b)=>a-b);
+  const sortedDays = Object.keys(hoursDays).map(Number).sort((a,b)=>a-b);
   if (!sortedDays.length) { container.innerHTML=''; return; }
 
   container.innerHTML = sortedDays.map(idx => {
-    const isOverridden = dayOverrides[idx];
+    const key = String(idx);
+    const isOverridden = hoursOverrides.includes(key);
     return `
     <div class="rounded-xl p-3 flex items-center gap-3 flex-wrap" style="animation:popIn 0.2s ease;background:${isOverridden?'#fffbeb':'#f9fafb'};border:1.5px solid ${isOverridden?'#fde68a':'#f3f4f6'}">
       <span class="font-bold text-amber-900 text-sm w-16 flex-shrink-0 text-right">יום ${DAY_NAMES[idx]}</span>
@@ -1092,19 +1043,19 @@ function renderHoursRows() {
       <div style="display:flex;align-items:center;gap:10px;flex:1;flex-wrap:wrap;">
         <div style="display:flex;align-items:center;gap:5px;">
           <span style="font-size:12px;color:var(--text-3);">סגירה</span>
-          <input type="time" id="close-${idx}" class="form-input" style="width:120px;direction:ltr;" value="${activeDays[idx].close}"
+          <input type="time" id="close-${idx}" class="form-input" style="width:120px;direction:ltr;" value="${hoursDays[key].close}"
             oninput="handleDayTimeInput(${idx},'close',this)"/>
         </div>
         <span style="color:var(--border);">—</span>
         <div style="display:flex;align-items:center;gap:5px;">
           <span style="font-size:12px;color:var(--text-3);">פתיחה</span>
-          <input type="time" id="open-${idx}" class="form-input" style="width:120px;direction:ltr;" value="${activeDays[idx].open}"
+          <input type="time" id="open-${idx}" class="form-input" style="width:120px;direction:ltr;" value="${hoursDays[key].open}"
             oninput="handleDayTimeInput(${idx},'open',this)"/>
         </div>
         <button onclick="resetDayOverride(${idx})" style="font-size:12px;color:var(--text-3);background:none;border:none;cursor:pointer;font-family:'Heebo',sans-serif;padding:0;">↺ איפוס</button>
       </div>` : `
       <div class="flex-1 text-sm text-gray-400 flex items-center justify-between" style="direction:ltr">
-        <span style="direction:rtl">${activeDays[idx].open && activeDays[idx].close ? `${stripLeadingZero(activeDays[idx].close)}–${stripLeadingZero(activeDays[idx].open)}` : 'ממתין לשעות ברירת מחדל'}</span>
+        <span style="direction:rtl">${hoursDays[key].open && hoursDays[key].close ? `${stripLeadingZero(hoursDays[key].close)}–${stripLeadingZero(hoursDays[key].open)}` : 'ממתין לשעות ברירת מחדל'}</span>
         <button onclick="overrideDay(${idx})" class="text-xs text-amber-700 hover:text-amber-900 font-semibold transition-colors" style="direction:rtl">ערוך בנפרד</button>
       </div>`}
     </div>`;
@@ -1112,24 +1063,27 @@ function renderHoursRows() {
 }
 
 function overrideDay(idx) {
-  if (!dayOverrides[idx]) dayOverrides[idx] = {};
-  dayOverrides[idx].open = true;
-  dayOverrides[idx].close = true;
+  const key = String(idx);
+  if (!hoursOverrides.includes(key)) hoursOverrides.push(key);
   renderHoursRows();
 }
 
 function resetDayOverride(idx) {
-  delete dayOverrides[idx];
-  activeDays[idx] = { open: defaultHours.open, close: defaultHours.close };
+  const key = String(idx);
+  hoursOverrides = hoursOverrides.filter(k => k !== key);
+  hoursDays[key] = { open: hoursDefault.open, close: hoursDefault.close };
   renderHoursRows();
   updateHoursPreview();
 }
 
 function handleDayTimeInput(idx, field, input) {
+  const key = String(idx);
   const val = input.value;
-  activeDays[idx][field] = val;
-  if (!dayOverrides[idx]) dayOverrides[idx] = {};
-  dayOverrides[idx][field] = true;
+  if (!hoursDays[key]) hoursDays[key] = { open: '', close: '' };
+  hoursDays[key][field] = val;
+  if (!hoursOverrides.includes(key)) {
+    hoursOverrides.push(key);
+  }
   updateHoursPreview();
 }
 
@@ -1142,12 +1096,12 @@ function stripLeadingZero(timeStr) {
 function updateHoursPreview() {
   const preview = document.getElementById('hoursPreview');
   const previewText = document.getElementById('hoursPreviewText');
-  const sortedDays = Object.keys(activeDays).map(Number).sort((a,b)=>a-b);
+  const sortedDays = Object.keys(hoursDays).map(Number).sort((a,b)=>a-b);
   if (!sortedDays.length) { preview.style.display='none'; return; }
 
   const groups = [];
   for (const idx of sortedDays) {
-    const d = activeDays[idx];
+    const d = hoursDays[String(idx)];
     const open = stripLeadingZero(d.open);
     const close = stripLeadingZero(d.close);
     // LTR: open on left, close on right
@@ -1241,6 +1195,8 @@ async function handleImageUpload(input,previewId,urlFieldId,infoId,maxKB){
   // Preview with local blob URL — no upload yet
   const localUrl=URL.createObjectURL(blob);
   const p=document.getElementById(previewId);
+  if (p.dataset.blobUrl) { try { URL.revokeObjectURL(p.dataset.blobUrl); } catch(e) {} }
+  p.dataset.blobUrl = localUrl;
   p.innerHTML=`<img src="${localUrl}" class="w-full h-full object-cover" alt=""/>`;
   p.className='w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 border border-amber-100';
 
@@ -1259,6 +1215,7 @@ function updatePreviewFromUrl(input,previewId,fallback){
     delete pendingImageBlobs[input.id];
   }
   const url=input.value.trim(),el=document.getElementById(previewId);
+  if (el.dataset.blobUrl) { try { URL.revokeObjectURL(el.dataset.blobUrl); } catch(e) {} delete el.dataset.blobUrl; }
   if(!url){el.innerHTML=fallback||'<svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>';return;}
   el.innerHTML=`<img src="${url}" class="w-full h-full object-cover" alt="" onerror="this.parentElement.innerHTML='❌'"/>`;
 }
@@ -1316,23 +1273,33 @@ function showTooltip(e, text) {
   }
   el.textContent = text;
   el.style.display = 'block';
-  el.style.top = (e.clientY - 36) + 'px';
-  el.style.left = (e.clientX - el.offsetWidth / 2) + 'px';
+
+  // Compute position with edge detection
+  const top = e.clientY - 36;
+  let left = e.clientX - el.offsetWidth / 2;
+  const margin = 10;
+  if (left < margin) left = margin;
+  if (left + el.offsetWidth > window.innerWidth - margin) {
+    left = window.innerWidth - el.offsetWidth - margin;
+  }
+
+  el.style.top = top + 'px';
+  el.style.left = left + 'px';
   clearTimeout(el._t);
   el._t = setTimeout(function() { el.style.display = 'none'; }, 1500);
 }
 
 // ===== SYNC DATA (Supabase + localStorage fallback) =====
 function gatherSettingsData() {
-  const sortedDays = Object.keys(activeDays).map(Number).sort((a,b)=>a-b);
+  const sortedDays = Object.keys(hoursDays).map(Number).sort((a,b)=>a-b);
   let hoursStr = '';
   if (sortedDays.length) {
     const groups = [];
     for (const idx of sortedDays) {
-      const d = activeDays[idx];
+      const d = hoursDays[String(idx)];
       const open = stripLeadingZero(d.open);
       const close = stripLeadingZero(d.close);
-      const hours = (d.open && d.close) ? close+'–'+open : '';
+      const hours = (d.open && d.close) ? open+'–'+close : '';
       const last = groups[groups.length-1];
       if (last && last.hours===hours && last.lastIdx===idx-1) { last.endDay=idx; last.lastIdx=idx; }
       else { groups.push({startDay:idx,endDay:idx,lastIdx:idx,hours}); }
@@ -1358,17 +1325,18 @@ function gatherSettingsData() {
     banner_active: document.getElementById('s-banner-active').checked,
     terms_text: document.getElementById('s-terms').value.trim(),
     testimonials: testimonials.filter(t => (t.name || '').trim() || (t.text || '').trim()),
-    active_days: Object.assign(JSON.parse(JSON.stringify(activeDays)), {
-      _overrides: JSON.parse(JSON.stringify(dayOverrides)),
-      _defaults: JSON.parse(JSON.stringify(defaultHours))
-    }),
+    hours_config: {
+      default: JSON.parse(JSON.stringify(hoursDefault)),
+      days: JSON.parse(JSON.stringify(hoursDays)),
+      overrides: [...hoursOverrides]
+    },
     allow_same_day: document.getElementById('s-allow-same-day').checked,
   };
 }
 
 async function syncSettingsToLocalStorage() {
   const data = gatherSettingsData();
-  localStorage.setItem('tafrit_settings', JSON.stringify(data));
+  localStorage.setItem('tafrit_preview_settings', JSON.stringify(data));
   if (supabaseReady && currentUser) {
     try {
       const { error } = await supabaseClient.from('settings')
@@ -1377,14 +1345,14 @@ async function syncSettingsToLocalStorage() {
       if (error) console.warn('Settings sync to Supabase failed', error);
       else {
         currentSettings = data;
-        localStorage.setItem('tafrit_settings', JSON.stringify(currentSettings));
+        localStorage.setItem('tafrit_preview_settings', JSON.stringify(currentSettings));
       }
     } catch(e) { console.warn('Settings sync to Supabase failed', e); }
   }
 }
 
 async function syncProductsToLocalStorage() {
-  localStorage.setItem('tafrit_products', JSON.stringify(products));
+  localStorage.setItem('tafrit_preview_products', JSON.stringify(products));
   if (supabaseReady && currentUser) {
     // Sort order is saved per-product via sort_order field
     try {
@@ -1409,7 +1377,7 @@ async function syncProductsToLocalStorage() {
 }
 
 async function syncCategoriesToLocalStorage() {
-  localStorage.setItem('tafrit_categories', JSON.stringify(categories));
+  localStorage.setItem('tafrit_preview_categories', JSON.stringify(categories));
   if (supabaseReady && currentUser) {
     try {
       const updates = categories.map((c, i) => ({
@@ -1479,7 +1447,7 @@ function renderProducts(){
     return `<div class="card drag-item px-3 py-2.5 flex items-center gap-3" draggable="true" data-id="${p.id}" style="${p.is_active?'':'opacity:0.45;filter:grayscale(30%)'}">
       <div class="drag-handle"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="9" y1="18" x2="9" y2="6"/><line x1="15" y1="18" x2="15" y2="6"/></svg></div>
       <div class="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 ${p.image_url?'':'bg-amber-50 flex items-center justify-center text-xl'}">
-        ${p.image_url?`<img src="${p.image_url}" class="w-full h-full object-cover" alt="${p.name}"/>`:'🥐'}
+        ${p.image_url?`<img src="${p.image_url}" class="w-full h-full object-cover" loading="lazy" alt="${p.name}"/>`:'🥐'}
       </div>
       <div class="flex-1 min-w-0">
         <div class="flex items-center gap-1.5 flex-wrap">
@@ -1538,7 +1506,7 @@ function openProductForm(id){
   setTimeout(()=>{const modalBody=document.querySelector('#productFormOverlay .overflow-y-auto');if(modalBody)modalBody.scrollTop=0;},50);
 }
 
-function closeProductForm(){delete pendingImageBlobs['pf-img-url'];document.getElementById('productFormOverlay').style.display='none';document.body.style.overflow='';}
+function closeProductForm(){delete pendingImageBlobs['pf-img-url'];const pfp=document.getElementById('pf-img-preview');if(pfp&&pfp.dataset.blobUrl){try{URL.revokeObjectURL(pfp.dataset.blobUrl);}catch(e){}delete pfp.dataset.blobUrl;}document.getElementById('productFormOverlay').style.display='none';document.body.style.overflow='';}
 
 function renderCategoryChips(){
   const c=document.getElementById('pf-categories');
@@ -1645,24 +1613,44 @@ async function saveNewCategory(){const name=document.getElementById('newCategory
 function startEditCategory(id){document.getElementById('cat-view-'+id).style.display='none';document.getElementById('cat-edit-'+id).style.display='flex';setTimeout(()=>document.getElementById('cat-input-'+id).focus(),50);}
 function cancelEditCategory(id){document.getElementById('cat-view-'+id).style.display='flex';document.getElementById('cat-edit-'+id).style.display='none';}
 async function saveEditCategory(id){const name=document.getElementById('cat-input-'+id).value.trim();if(!name)return;const cat=categories.find(c=>String(c.id)===String(id));if(cat)cat.name=name;if(supabaseReady){try{await supabaseClient.from('categories').update({name}).eq('id',id);}catch(e){console.warn('Supabase update category failed',e);}}syncCategoriesToLocalStorage();invalidateMenuCache();renderCategories();showSuccess('הקטגוריה עודכנה בהצלחה!');}
-async function deleteCategory(id){const cat=categories.find(c=>String(c.id)===String(id));if(!cat||!confirm(`למחוק את "${cat.name}"?\nמוצרים המשויכים אליה לא יוצגו תחתיה.`))return;categories=categories.filter(c=>String(c.id)!==String(id));if(supabaseReady){try{await supabaseClient.from('categories').delete().eq('id',id);}catch(e){console.warn('Supabase delete category failed',e);}}syncCategoriesToLocalStorage();invalidateMenuCache();renderCategories();}
+async function deleteCategory(id){
+  const cat=categories.find(c=>String(c.id)===String(id));
+  if(!cat||!confirm(`למחוק את "${cat.name}"?\nמוצרים המשויכים אליה לא יוצגו תחתיה.`))return;
+  categories=categories.filter(c=>String(c.id)!==String(id));
+  if(supabaseReady){try{await supabaseClient.from('categories').delete().eq('id',id);}catch(e){console.warn('Supabase delete category failed',e);}}
+  const affectedProducts = products.filter(p => (p.categories || []).some(c => String(c) === String(id)));
+  for (const p of affectedProducts) {
+    p.categories = (p.categories || []).filter(c => String(c) !== String(id));
+  }
+  if (affectedProducts.length && supabaseReady) {
+    try {
+      await supabaseClient.from('products').upsert(
+        affectedProducts.map(p => ({ id: p.id, categories: p.categories })),
+        { onConflict: 'id' }
+      );
+    } catch(e) { console.warn('Failed to clean orphan category refs', e); }
+  }
+  syncCategoriesToLocalStorage();
+  invalidateMenuCache();
+  renderCategories();
+}
 
 // ===== LOCALSTORAGE FALLBACK LOADER =====
 function loadFromLocalStorage() {
   try {
-    const storedProducts = JSON.parse(localStorage.getItem('tafrit_products'));
+    const storedProducts = JSON.parse(localStorage.getItem('tafrit_preview_products'));
     if (storedProducts && storedProducts.length) products = storedProducts;
   } catch(e) {}
   try {
-    const storedCategories = JSON.parse(localStorage.getItem('tafrit_categories'));
+    const storedCategories = JSON.parse(localStorage.getItem('tafrit_preview_categories'));
     if (storedCategories && storedCategories.length) categories = storedCategories;
   } catch(e) {}
   try {
-    const storedSlug = localStorage.getItem('tafrit_slug');
+    const storedSlug = localStorage.getItem('tafrit_preview_slug');
     if (storedSlug) currentSlug = storedSlug;
   } catch(e) {}
   try {
-    const s = JSON.parse(localStorage.getItem('tafrit_settings'));
+    const s = JSON.parse(localStorage.getItem('tafrit_preview_settings'));
     if (s) { applySettingsToForm(s); currentSettings = JSON.parse(JSON.stringify(s)); }
   } catch(e) {}
 }
@@ -1688,14 +1676,14 @@ function renderLinkPopup() {
 }
 function copyLinkFromPopup() {
   if(!currentSlug)return;
-  navigator.clipboard.writeText('https://mytafrit.co.il/menu.html?slug='+currentSlug).then(()=>{
+  navigator.clipboard.writeText(buildMenuLink(currentSlug)).then(()=>{
     const btn=document.getElementById('copyPopupBtn');if(btn){btn.textContent='✓ הועתק!';setTimeout(()=>renderLinkPopup(),1800);}
   });
 }
 
 function copySlugLink() {
   if (!currentSlug) return;
-  const link = 'https://mytafrit.co.il/menu.html?slug=' + currentSlug;
+  const link = buildMenuLink(currentSlug);
   navigator.clipboard.writeText(link).then(() => {
     const btn = document.getElementById('copySlugBtn');
     if (btn) { btn.textContent = '✓ הועתק!'; setTimeout(() => { btn.innerHTML = '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" stroke-width="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke-width="2"/></svg> העתק לינק'; }, 2000); }
@@ -1703,7 +1691,7 @@ function copySlugLink() {
 }
 function shareSlugLink() {
   if (!currentSlug) return;
-  const link = 'https://mytafrit.co.il/menu.html?slug=' + currentSlug;
+  const link = buildMenuLink(currentSlug);
   if (navigator.share) {
     navigator.share({ title: 'התפריט שלי', url: link });
   } else {
@@ -1818,8 +1806,28 @@ async function saveSlug() {
     errEl.style.display='block'; return;
   }
   if (currentSlug) {
-    const ok = confirm(`⚠️ שינוי הלינק\n\nלינק נוכחי: mytafrit.co.il/menu.html?slug=${currentSlug}\nלינק חדש: mytafrit.co.il/menu.html?slug=${val}\n\nהלינק הקודם יפסיק לעבוד!\n\nלהמשיך?`);
+    const ok = confirm(`⚠️ שינוי הלינק\n\nלינק נוכחי: ${buildMenuLink(currentSlug)}\nלינק חדש: ${buildMenuLink(val)}\n\nהלינק הקודם יפסיק לעבוד!\n\nלהמשיך?`);
     if (!ok) return;
+  }
+  if (supabaseReady && currentUser) {
+    try {
+      const { error } = await supabaseClient.from('settings').update({ slug: val }).eq('user_id', currentUser.id);
+      if (error) {
+        const msg = (error.message || '').toLowerCase();
+        if (error.code === '23505' || msg.includes('duplicate') || msg.includes('unique')) {
+          errEl.textContent = '⚠️ הלינק הזה נתפס בדקה האחרונה, בחר אחר';
+        } else {
+          errEl.textContent = '⚠️ שגיאה בשמירת הלינק, נסה שוב';
+        }
+        errEl.style.display = 'block';
+        return;
+      }
+    } catch (e) {
+      console.warn('Slug save failed', e);
+      errEl.textContent = '⚠️ שגיאה בשמירת הלינק, נסה שוב';
+      errEl.style.display = 'block';
+      return;
+    }
   }
   currentSlug = val;
   updateSlugDisplay();
@@ -1827,10 +1835,7 @@ async function saveSlug() {
   document.getElementById('slug-preview').style.display = 'none';
   document.getElementById('slugInputRow').style.display = 'none';
   document.getElementById('slugEditBtn').style.display = 'inline-flex';
-  localStorage.setItem('tafrit_slug', currentSlug);
-  if (supabaseReady && currentUser) {
-    supabaseClient.from('settings').update({ slug: currentSlug }).eq('user_id', currentUser.id).then().catch(e => console.warn('Slug save failed', e));
-  }
+  localStorage.setItem('tafrit_preview_slug', currentSlug);
   invalidateMenuCache();
   okEl.style.display = 'block';
   setTimeout(() => okEl.style.display = 'none', 2500);
@@ -1852,16 +1857,16 @@ function updateBusinessView() {
   document.getElementById('view-terms').textContent = document.getElementById('s-terms').value.trim() || '—';
   const aboutImgUrl = document.getElementById('s-about-img-url').value.trim();
   document.getElementById('view-about-img').innerHTML = aboutImgUrl ? '<img src="'+aboutImgUrl+'" style="width:40px;height:40px;object-fit:cover;border-radius:8px;" alt="about"/>' : '—';
-  const sortedDays = Object.keys(activeDays).map(Number).sort((a,b)=>a-b);
+  const sortedDays = Object.keys(hoursDays).map(Number).sort((a,b)=>a-b);
   if (!sortedDays.length) {
     document.getElementById('view-hours').textContent = '—';
   } else {
     const groups = [];
     for (const idx of sortedDays) {
-      const d = activeDays[idx];
+      const d = hoursDays[String(idx)];
       const open = stripLeadingZero(d.open);
       const close = stripLeadingZero(d.close);
-      const hours = (d.open && d.close) ? close+'–'+open : 'שעות לא הוגדרו';
+      const hours = (d.open && d.close) ? open+'–'+close : 'שעות לא הוגדרו';
       const last = groups[groups.length-1];
       if (last && last.hours===hours && last.lastIdx===idx-1) { last.endDay=idx; last.lastIdx=idx; }
       else { groups.push({startDay:idx,endDay:idx,lastIdx:idx,hours}); }
@@ -1936,7 +1941,7 @@ function initSubscription() {
   } catch(e) {}
   if (!expiresAt || isNaN(expiresAt.getTime())) {
     try {
-      const s = JSON.parse(localStorage.getItem('tafrit_settings'));
+      const s = JSON.parse(localStorage.getItem('tafrit_preview_settings'));
       if (s && s.subscription_expires) expiresAt = new Date(s.subscription_expires);
     } catch(e) {}
   }
@@ -1955,15 +1960,18 @@ function initSubscription() {
   const banner = document.getElementById('subscriptionBanner');
   if (daysLeft <= 0) {
     banner.style.display = 'block';
-    banner.style.background = '#dc2626';
+    banner.style.background = 'var(--accent)';
+    banner.style.color = 'white';
     banner.textContent = 'המנוי שלך פג תוקף — לחידוש פנה אלינו';
   } else if (daysLeft <= 3) {
     banner.style.display = 'block';
-    banner.style.background = '#dc2626';
+    banner.style.background = 'var(--accent)';
+    banner.style.color = 'white';
     banner.textContent = 'נשאר לך ' + daysLeft + ' ימים במנוי — לחידוש פנה אלינו';
   } else if (daysLeft <= 7) {
     banner.style.display = 'block';
-    banner.style.background = '#d97706';
+    banner.style.background = '#fef3c7';
+    banner.style.color = 'var(--accent)';
     banner.textContent = 'נשאר לך ' + daysLeft + ' ימים במנוי — לחידוש פנה אלינו';
   }
 
@@ -1975,14 +1983,14 @@ function initSubscription() {
   expiresEl.textContent = dateStr;
 
   if (daysLeft <= 0) {
-    statusEl.innerHTML = '<span style="color:#dc2626;">פג תוקף</span>';
-    daysEl.innerHTML = '<span style="color:#dc2626;font-weight:700;">פג תוקף</span>';
+    statusEl.innerHTML = '<span style="color:var(--accent);">פג תוקף</span>';
+    daysEl.innerHTML = '<span style="color:var(--accent);font-weight:700;">פג תוקף</span>';
   } else if (daysLeft <= 3) {
-    statusEl.innerHTML = '<span style="color:#d97706;">ניסיון</span>';
-    daysEl.innerHTML = '<span style="color:#dc2626;font-weight:700;">' + daysLeft + ' ימים</span>';
+    statusEl.innerHTML = '<span style="color:var(--accent);">ניסיון</span>';
+    daysEl.innerHTML = '<span style="color:var(--accent);font-weight:700;">' + daysLeft + ' ימים</span>';
   } else if (daysLeft <= 14) {
-    statusEl.innerHTML = '<span style="color:#d97706;">ניסיון</span>';
-    daysEl.innerHTML = '<span style="color:#d97706;">' + daysLeft + ' ימים</span>';
+    statusEl.innerHTML = '<span style="color:var(--accent);">ניסיון</span>';
+    daysEl.innerHTML = '<span style="color:var(--accent);">' + daysLeft + ' ימים</span>';
   } else {
     statusEl.innerHTML = '<span style="color:#16a34a;">פעיל</span>';
     daysEl.innerHTML = '<span style="color:var(--text);">' + daysLeft + ' ימים</span>';
@@ -1997,7 +2005,7 @@ async function upsertSettingsPartial(partialPayload) {
     .eq('user_id', currentUser.id);
   if (error) throw error;
   currentSettings = { ...currentSettings, ...partialPayload };
-  localStorage.setItem('tafrit_settings', JSON.stringify(currentSettings));
+  localStorage.setItem('tafrit_preview_settings', JSON.stringify(currentSettings));
 }
 
 // ===== SECTION EDIT/CANCEL — per-card (step 4, no save yet) =====
@@ -2046,21 +2054,20 @@ function cancelEditContact() {
 
 // ----- Hours -----
 function startEditHours() {
-  const raw = JSON.parse(JSON.stringify(currentSettings && currentSettings.active_days || {}));
-  if (raw._overrides) { dayOverrides = raw._overrides; delete raw._overrides; }
-  if (raw._defaults) { defaultHours = raw._defaults; delete raw._defaults; }
-  activeDays = raw;
+  const cfg = (currentSettings && currentSettings.hours_config) || {};
+  hoursDefault = cfg.default ? JSON.parse(JSON.stringify(cfg.default)) : { open: '', close: '' };
+  hoursDays = cfg.days ? JSON.parse(JSON.stringify(cfg.days)) : {};
+  hoursOverrides = Array.isArray(cfg.overrides) ? cfg.overrides.map(String) : [];
   _showSectionEdit('Hours');
 }
 function cancelEditHours() {
-  // Reset allow_same_day from state
   const _s0 = currentSettings || {};
   document.getElementById('s-allow-same-day').checked = !!_s0.allow_same_day;
-  // Reset state
-  activeDays = {};
-  dayOverrides = {};
-  defaultHours = { open: '', close: '' };
-  // Reset day buttons to inactive
+
+  hoursDays = {};
+  hoursOverrides = [];
+  hoursDefault = { open: '', close: '' };
+
   document.querySelectorAll('.day-btn').forEach(btn => {
     btn.style.background = 'white';
     btn.style.borderColor = '';
@@ -2074,15 +2081,15 @@ function cancelEditHours() {
   const defClose = document.getElementById('default-close');
   if (defOpen) defOpen.value = '';
   if (defClose) defClose.value = '';
-  // Reload from currentSettings.active_days
-  const s = currentSettings || {};
-  if (s.active_days && Object.keys(s.active_days).length) {
-    const raw = JSON.parse(JSON.stringify(s.active_days));
-    if (raw._overrides) { dayOverrides = raw._overrides; delete raw._overrides; }
-    if (raw._defaults) { defaultHours = raw._defaults; delete raw._defaults; }
-    activeDays = raw;
+
+  if (_s0.hours_config && typeof _s0.hours_config === 'object') {
+    const cfg = _s0.hours_config;
+    hoursDefault = cfg.default || { open: '', close: '' };
+    hoursDays = cfg.days || {};
+    hoursOverrides = Array.isArray(cfg.overrides) ? cfg.overrides.map(String) : [];
+
     const btns = document.querySelectorAll('.day-btn');
-    Object.keys(activeDays).map(Number).forEach(idx => {
+    Object.keys(hoursDays).map(Number).forEach(idx => {
       if (btns[idx]) {
         btns[idx].style.background = 'var(--accent)';
         btns[idx].style.borderColor = 'var(--accent)';
@@ -2090,8 +2097,8 @@ function cancelEditHours() {
       }
     });
     document.getElementById('defaultHoursRow').style.display = 'block';
-    if (defOpen) defOpen.value = defaultHours.open || '';
-    if (defClose) defClose.value = defaultHours.close || '';
+    if (defOpen) defOpen.value = hoursDefault.open || '';
+    if (defClose) defClose.value = hoursDefault.close || '';
     if (typeof renderHoursRows === 'function') renderHoursRows();
     if (typeof updateHoursPreview === 'function') updateHoursPreview();
   }
@@ -2198,10 +2205,11 @@ async function saveContact() {
 async function saveHours() {
   const payload = {
     allow_same_day: document.getElementById('s-allow-same-day').checked,
-    active_days: Object.assign(JSON.parse(JSON.stringify(activeDays)), {
-      _overrides: JSON.parse(JSON.stringify(dayOverrides)),
-      _defaults: JSON.parse(JSON.stringify(defaultHours))
-    })
+    hours_config: {
+      default: JSON.parse(JSON.stringify(hoursDefault)),
+      days: JSON.parse(JSON.stringify(hoursDays)),
+      overrides: [...hoursOverrides]
+    }
   };
   try {
     await upsertSettingsPartial(payload);
@@ -2286,6 +2294,121 @@ async function saveContent() {
   showSuccess('התוכן נשמר בהצלחה!');
 }
 
+// ===== PUBLISH =====
+async function publishChanges() {
+  if (!currentSlug) {
+    showSuccess('❌ אין לך עדיין כתובת לתפריט. הגדר אותה בהגדרות לפני שתפרסם.');
+    return { ok: false, error: 'no_slug' };
+  }
+
+  let session;
+  try {
+    const { data: { session: s } } = await supabaseClient.auth.getSession();
+    session = s;
+  } catch (e) {
+    console.error('Failed to get session', e);
+    showSuccess('❌ הסשן פג. התחבר מחדש.');
+    setTimeout(() => { window.location.href = 'login.html'; }, 2000);
+    return { ok: false, error: 'session_error' };
+  }
+
+  if (!session || !session.access_token) {
+    showSuccess('❌ הסשן פג. התחבר מחדש.');
+    setTimeout(() => { window.location.href = 'login.html'; }, 2000);
+    return { ok: false, error: 'no_session' };
+  }
+
+  try {
+    const res = await fetch('https://mytafrit.co.il/publish', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${session.access_token}`,
+      },
+      body: JSON.stringify({ slug: currentSlug }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      if (data.code === 'SESSION_EXPIRED') {
+        showSuccess('❌ הסשן פג. התחבר מחדש.');
+        setTimeout(() => { window.location.href = 'login.html'; }, 2000);
+        return { ok: false, error: 'session_expired' };
+      }
+      if (data.code === 'RATE_LIMIT') {
+        showSuccess(`❌ פרסמת יותר מדי בזמן קצר. נסה שוב בעוד ${data.retryAfterSeconds || 60} שניות.`);
+        return { ok: false, error: 'rate_limit' };
+      }
+      if (data.code === 'SLUG_MISMATCH') {
+        showSuccess('❌ שגיאת אבטחה: ה-slug לא תואם. רענן את הדף.');
+        return { ok: false, error: 'slug_mismatch' };
+      }
+      showSuccess('❌ הפרסום נכשל: ' + (data.error || 'שגיאה לא ידועה'));
+      return { ok: false, error: 'unknown' };
+    }
+
+    if (currentSettings) {
+      currentSettings.last_published_at = data.publishedAt;
+      currentSettings.updated_at = data.publishedAt;
+      localStorage.setItem('tafrit_preview_settings', JSON.stringify(currentSettings));
+    }
+
+    showSuccess('✓ פורסם בהצלחה!');
+    return { ok: true, publishedAt: data.publishedAt };
+
+  } catch (e) {
+    console.error('Publish request failed', e);
+    showSuccess('❌ הפרסום נכשל עקב בעיה בחיבור. נסה שוב בעוד דקה.');
+    return { ok: false, error: 'network' };
+  }
+}
+
+async function publishChangesUI() {
+  const btn = document.getElementById('publishBtn');
+  if (!btn) return;
+
+  btn.disabled = true;
+  const originalHTML = btn.innerHTML;
+  btn.innerHTML = '⏳ מפרסם...';
+
+  try {
+    const result = await publishChanges();
+
+    if (result.ok) {
+      btn.innerHTML = '✓ פורסם!';
+      setTimeout(() => {
+        btn.innerHTML = originalHTML;
+        btn.disabled = false;
+      }, 2500);
+    } else {
+      btn.innerHTML = originalHTML;
+      btn.disabled = false;
+    }
+  } catch (e) {
+    console.error('publishChangesUI error', e);
+    btn.innerHTML = originalHTML;
+    btn.disabled = false;
+  }
+}
+
+function openPreview() {
+  if (!currentSlug) {
+    showSuccess('⚠️ הגדר תחילה את כתובת הלינק שלך בהגדרות.');
+    switchTab('settings');
+    return;
+  }
+  window.open('preview.html', '_blank');
+}
+
+async function signOutWithCleanup() {
+  ['tafrit_preview_settings', 'tafrit_preview_categories', 'tafrit_preview_products', 'tafrit_preview_slug'].forEach(k => {
+    try { localStorage.removeItem(k); } catch(e) {}
+  });
+  try { await supabaseClient.auth.signOut(); } catch(e) { /* ignore */ }
+  window.location.href = 'login.html';
+}
+
 // ===== Expose functions to window for onclick handlers =====
 Object.defineProperty(window, 'currentSettings', { get: () => currentSettings, configurable: true });
 Object.assign(window, {
@@ -2296,7 +2419,7 @@ Object.assign(window, {
   startEditContent, cancelEditContent, saveContent,
   switchTab, viewMenu, toggleLinkPopup, closeLinkPopup,
   openProductForm, closeProductForm, saveProduct, deleteProduct,
-  renderProducts, renderCategories, setProductFilter,
+  renderProducts, renderCategories, debouncedRenderProducts, debouncedRenderCategories, setProductFilter,
   startNewCategory, cancelNewCategory, saveNewCategory,
   startEditCategory, cancelEditCategory, saveEditCategory, deleteCategory,
   saveProductsOrder, saveCategoriesOrder,
@@ -2310,6 +2433,7 @@ Object.assign(window, {
   handleDefaultTimeInput, handleDayTimeInput,
   updateBannerStatus,
   addTestimonial, removeTestimonial, updateTestimonial, saveTestimonials,
+  publishChanges, publishChangesUI, openPreview, signOutWithCleanup,
 });
 </script>
 <!-- Global success toast -->
