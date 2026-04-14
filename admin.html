@@ -144,7 +144,7 @@
         <!-- מלבן 1: פרטי העסק -->
         <div id="sectionBasicsView" class="card" style="padding:16px;">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">פרטי העסק</h3>
+            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">פרטי העסק <span id="dirty-Basics" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
             <button type="button" id="basicsEditBtn" onclick="startEditBasics()" class="btn-outline" style="font-size:12px;padding:6px 12px;">ערוך</button>
           </div>
           <div style="display:flex;flex-direction:column;gap:12px;">
@@ -174,24 +174,24 @@
           </div>
           <div>
             <label class="form-label">שם העסק <span style="color:#ef4444">*</span></label>
-            <input id="s-business-name" class="form-input" placeholder="שם העסק יופיע ככותרת בתפריט הציבורי"/>
+            <input id="s-business-name" class="form-input" placeholder="שם העסק יופיע ככותרת בתפריט הציבורי" oninput="checkDirty('Basics', ['s-business-name','s-tagline','s-contact-name'])"/>
             <p id="s-name-err" class="text-xs text-red-500 mt-1" style="display:none">⚠️ שם העסק הוא שדה חובה</p>
           </div>
           <div>
             <label class="form-label">תיאור קצר</label>
-            <input id="s-tagline" class="form-input" placeholder="לדוגמא: מאפים טריים בעבודת יד | הזמנה מראש בלבד"/>
+            <input id="s-tagline" class="form-input" placeholder="לדוגמא: מאפים טריים בעבודת יד | הזמנה מראש בלבד" oninput="checkDirty('Basics', ['s-business-name','s-tagline','s-contact-name'])"/>
             <span class="form-hint warning">💡 יופיע מתחת לשם העסק בתפריט</span>
           </div>
           <div>
             <label class="form-label">שם איש קשר <span style="font-size:12px;font-weight:400;color:var(--text-3)">(ישמש בתבנית הודעות וואטסאפ)</span></label>
-            <input id="s-contact-name" class="form-input" placeholder="לדוגמא: יעל"/>
+            <input id="s-contact-name" class="form-input" placeholder="לדוגמא: יעל" oninput="checkDirty('Basics', ['s-business-name','s-tagline','s-contact-name'])"/>
           </div>
         </div>
 
         <!-- מלבן 2: יצירת קשר -->
         <div id="sectionContactView" class="card" style="padding:16px;">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">יצירת קשר</h3>
+            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">יצירת קשר <span id="dirty-Contact" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
             <button type="button" id="contactEditBtn" onclick="startEditContact()" class="btn-outline" style="font-size:12px;padding:6px 12px;">ערוך</button>
           </div>
           <div style="display:flex;flex-direction:column;gap:12px;">
@@ -221,24 +221,24 @@
           </div>
           <div>
             <label class="form-label">מספר וואטסאפ לקבלת הזמנות <span style="color:#ef4444">*</span></label>
-            <input id="s-whatsapp" class="form-input" type="tel" placeholder="05X-XXXXXXX" dir="ltr" style="text-align:right" oninput="formatWhatsapp(this)"/>
+            <input id="s-whatsapp" class="form-input" type="tel" placeholder="05X-XXXXXXX" dir="ltr" style="text-align:right" oninput="formatWhatsapp(this); checkDirty('Contact', ['s-whatsapp','s-phone','s-area'])"/>
             <p id="whatsapp-preview" class="text-xs mt-1" style="display:none"></p>
             <p id="s-wa-err" class="text-xs text-red-500 mt-1" style="display:none">⚠️ מספר וואטסאפ הוא שדה חובה — בלעדיו לא ניתן לקבל הזמנות</p>
           </div>
           <div>
             <label class="form-label">טלפון העסק <span style="font-size:12px;font-weight:400;color:var(--text-3)">(יוצג בתפריט)</span></label>
-            <input id="s-phone" class="form-input" type="tel" placeholder="050-0000000" dir="ltr" style="text-align:right" oninput="this.value=this.value.replace(/[^0-9-]/g,'')"/>
+            <input id="s-phone" class="form-input" type="tel" placeholder="050-0000000" dir="ltr" style="text-align:right" oninput="this.value=this.value.replace(/[^0-9-]/g,''); checkDirty('Contact', ['s-whatsapp','s-phone','s-area'])"/>
           </div>
           <div>
             <label class="form-label">אזור איסוף</label>
-            <input id="s-area" class="form-input" placeholder="לדוגמא: גוש דן, רמת גן"/>
+            <input id="s-area" class="form-input" placeholder="לדוגמא: גוש דן, רמת גן" oninput="checkDirty('Contact', ['s-whatsapp','s-phone','s-area'])"/>
           </div>
         </div>
 
         <!-- מלבן 3: שעות פעילות -->
         <div id="sectionHoursView" class="card" style="padding:16px;">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">שעות פעילות</h3>
+            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">שעות פעילות <span id="dirty-Hours" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
             <button type="button" id="hoursEditBtn" onclick="startEditHours()" class="btn-outline" style="font-size:12px;padding:6px 12px;">ערוך</button>
           </div>
           <div style="display:flex;flex-direction:column;gap:12px;">
@@ -261,7 +261,7 @@
           <div style="display:flex;align-items:center;justify-content:space-between;">
             <label style="font-size:13px;color:var(--text-2);">אפשר הזמנה מהיום להיום</label>
             <label class="switch">
-              <input type="checkbox" id="s-allow-same-day"/>
+              <input type="checkbox" id="s-allow-same-day" onchange="checkDirty('Hours', ['s-allow-same-day','default-open','default-close'])"/>
               <span class="slider"></span>
             </label>
           </div>
@@ -305,7 +305,7 @@
         <!-- מלבן 4: תמונות -->
         <div id="sectionImagesView" class="card" style="padding:16px;">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">תמונות</h3>
+            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">תמונות <span id="dirty-Images" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
             <button type="button" id="imagesEditBtn" onclick="startEditImages()" class="btn-outline" style="font-size:12px;padding:6px 12px;">ערוך</button>
           </div>
           <div style="display:flex;flex-direction:column;gap:12px;">
@@ -345,7 +345,7 @@
                   <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(this,'logoPreview','s-logo-url','logo-info',500)"/>
                 </label>
                 <div id="logo-info" class="text-xs text-green-600 font-semibold mb-1" style="display:none"></div>
-                <input id="s-logo-url" class="form-input text-xs" placeholder="או הדבק URL..." oninput="updatePreviewFromUrl(this,'logoPreview','🥐')"/>
+                <input id="s-logo-url" class="form-input text-xs" placeholder="או הדבק URL..." oninput="updatePreviewFromUrl(this,'logoPreview','🥐'); checkDirty('Images', ['s-logo-url','s-hero-bg-url','s-about-img-url'])"/>
               </div>
             </div>
           </div>
@@ -366,7 +366,7 @@
                   או בחר מגלריה
                 </button>
                 <div id="hero-bg-info" class="text-xs text-green-600 font-semibold mb-1" style="display:none"></div>
-                <input id="s-hero-bg-url" class="form-input text-xs" placeholder="או הדבק URL..." oninput="updatePreviewFromUrl(this,'heroBgPreview',null)"/>
+                <input id="s-hero-bg-url" class="form-input text-xs" placeholder="או הדבק URL..." oninput="updatePreviewFromUrl(this,'heroBgPreview',null); checkDirty('Images', ['s-logo-url','s-hero-bg-url','s-about-img-url'])"/>
               </div>
             </div>
           </div>
@@ -387,7 +387,7 @@
                   או בחר מגלריה
                 </button>
                 <div id="about-info" class="text-xs text-green-600 font-semibold mb-1" style="display:none"></div>
-                <input id="s-about-img-url" class="form-input text-xs" placeholder="או הדבק URL..." oninput="updatePreviewFromUrl(this,'aboutImgPreview',null)"/>
+                <input id="s-about-img-url" class="form-input text-xs" placeholder="או הדבק URL..." oninput="updatePreviewFromUrl(this,'aboutImgPreview',null); checkDirty('Images', ['s-logo-url','s-hero-bg-url','s-about-img-url'])"/>
               </div>
             </div>
           </div>
@@ -396,7 +396,7 @@
         <!-- מלבן 5: תוכן -->
         <div id="sectionContentView" class="card" style="padding:16px;">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">תוכן</h3>
+            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">תוכן <span id="dirty-Content" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
             <button type="button" id="contentEditBtn" onclick="startEditContent()" class="btn-outline" style="font-size:12px;padding:6px 12px;">ערוך</button>
           </div>
           <div style="display:flex;flex-direction:column;gap:12px;">
@@ -422,7 +422,7 @@
           </div>
           <div>
             <label class="form-label">טקסט אודות</label>
-            <textarea id="s-about" class="form-textarea" rows="2" style="overflow:hidden;resize:none;" placeholder="הכנס כאן את טקסט אודות..." oninput="autoResizeTextarea(this)"></textarea>
+            <textarea id="s-about" class="form-textarea" rows="2" style="overflow:hidden;resize:none;" placeholder="הכנס כאן את טקסט אודות..." oninput="autoResizeTextarea(this); checkDirty('Content', ['s-about','s-terms'])"></textarea>
             <button type="button" onclick="loadSampleAbout()" class="btn-outline" style="margin-top:6px;padding:5px 12px;font-size:12px;">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-left:4px;"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
               טען טקסט לדוגמא
@@ -430,7 +430,7 @@
           </div>
           <div>
             <label class="form-label">תקנון <span style="font-size:12px;font-weight:400;color:var(--text-3)">(אם ריק — הלינק לא יופיע בתפריט)</span></label>
-            <textarea id="s-terms" class="form-textarea" rows="4" placeholder="הכנס כאן את תקנון העסק..."></textarea>
+            <textarea id="s-terms" class="form-textarea" rows="4" placeholder="הכנס כאן את תקנון העסק..." oninput="checkDirty('Content', ['s-about','s-terms'])"></textarea>
             <button type="button" onclick="loadSampleTerms()" class="btn-outline" style="margin-top:6px;padding:5px 12px;font-size:12px;">טען תקנון לדוגמא</button>
           </div>
         </div>
@@ -689,6 +689,55 @@ let currentUser = null;
 let currentSettings = null;
 let supabaseReady = false;
 
+// ===== DIRTY STATE TRACKING =====
+const dirtySnapshots = {};  // sectionId → snapshot string
+const dirtySections = new Set();  // sectionIds that are currently dirty
+
+function captureSnapshot(sectionId, fieldIds) {
+  const values = {};
+  for (const id of fieldIds) {
+    const el = document.getElementById(id);
+    if (!el) continue;
+    if (el.type === 'checkbox') values[id] = el.checked;
+    else values[id] = el.value || '';
+  }
+  dirtySnapshots[sectionId] = JSON.stringify(values);
+  dirtySections.delete(sectionId);
+  updateDirtyIndicator(sectionId);
+}
+
+function checkDirty(sectionId, fieldIds) {
+  if (!(sectionId in dirtySnapshots)) return;
+  const current = {};
+  for (const id of fieldIds) {
+    const el = document.getElementById(id);
+    if (!el) continue;
+    if (el.type === 'checkbox') current[id] = el.checked;
+    else current[id] = el.value || '';
+  }
+  const isDirty = JSON.stringify(current) !== dirtySnapshots[sectionId];
+  if (isDirty) dirtySections.add(sectionId);
+  else dirtySections.delete(sectionId);
+  updateDirtyIndicator(sectionId);
+}
+
+function clearDirty(sectionId) {
+  delete dirtySnapshots[sectionId];
+  dirtySections.delete(sectionId);
+  updateDirtyIndicator(sectionId);
+}
+
+function updateDirtyIndicator(sectionId) {
+  const indicator = document.getElementById('dirty-' + sectionId);
+  if (indicator) {
+    indicator.style.display = dirtySections.has(sectionId) ? 'inline-block' : 'none';
+  }
+}
+
+function hasAnyDirty() {
+  return dirtySections.size > 0;
+}
+
 // ===== ONE-TIME LOCALSTORAGE KEY MIGRATION =====
 // Migrate old tafrit_* keys to tafrit_preview_* (idempotent on every page load)
 (function migratePreviewKeys() {
@@ -916,6 +965,12 @@ function viewMenu() {
 }
 
 function switchTab(tab) {
+  if (hasAnyDirty()) {
+    const dirtyList = Array.from(dirtySections).join(', ');
+    const ok = confirm(`יש לך שינויים לא שמורים ב: ${dirtyList}\n\nאם תעבור עכשיו, השינויים יאבדו. להמשיך?`);
+    if (!ok) return;
+    Object.keys(dirtySnapshots).forEach(k => clearDirty(k));
+  }
   ['products','categories','business','settings'].forEach(t=>{
     const section=document.getElementById('section-'+t);
     const btn=document.getElementById('tab-'+t);
@@ -1014,6 +1069,8 @@ function toggleDay(idx, btn) {
   document.getElementById('defaultHoursRow').style.display = hasDays ? 'block' : 'none';
   renderHoursRows();
   updateHoursPreview();
+  dirtySections.add('Hours');
+  updateDirtyIndicator('Hours');
 }
 
 function handleDefaultTimeInput(field, input) {
@@ -1026,6 +1083,8 @@ function handleDefaultTimeInput(field, input) {
   });
   renderHoursRows();
   updateHoursPreview();
+  dirtySections.add('Hours');
+  updateDirtyIndicator('Hours');
 }
 
 function renderHoursRows() {
@@ -1085,6 +1144,8 @@ function handleDayTimeInput(idx, field, input) {
     hoursOverrides.push(key);
   }
   updateHoursPreview();
+  dirtySections.add('Hours');
+  updateDirtyIndicator('Hours');
 }
 
 function stripLeadingZero(timeStr) {
@@ -1208,6 +1269,10 @@ async function handleImageUpload(input,previewId,urlFieldId,infoId,maxKB){
   document.getElementById(urlFieldId).value='__pending__';
 
   if(infoEl){infoEl.textContent=origKB>maxKB?`✓ נדחסה מ-${origKB}KB ל-${sizeKB}KB — תעלה בשמירה`:`✓ מוכנה (${sizeKB}KB) — תעלה בשמירה`;setTimeout(()=>infoEl.style.display='none',4000);}
+  if (urlFieldId === 's-logo-url' || urlFieldId === 's-hero-bg-url' || urlFieldId === 's-about-img-url') {
+    dirtySections.add('Images');
+    updateDirtyIndicator('Images');
+  }
 }
 
 function updatePreviewFromUrl(input,previewId,fallback){
@@ -2026,7 +2091,10 @@ function _showSectionView(card) {
 }
 
 // ----- Basics -----
-function startEditBasics() { _showSectionEdit('Basics'); }
+function startEditBasics() {
+  _showSectionEdit('Basics');
+  captureSnapshot('Basics', ['s-business-name','s-tagline','s-contact-name']);
+}
 function cancelEditBasics() {
   const s = currentSettings || {};
   document.getElementById('s-business-name').value = s.business_name || '';
@@ -2034,11 +2102,15 @@ function cancelEditBasics() {
   document.getElementById('s-contact-name').value = s.contact_name || '';
   document.getElementById('s-name-err').style.display = 'none';
   document.getElementById('s-business-name').classList.remove('error');
+  clearDirty('Basics');
   _showSectionView('Basics');
 }
 
 // ----- Contact -----
-function startEditContact() { _showSectionEdit('Contact'); }
+function startEditContact() {
+  _showSectionEdit('Contact');
+  captureSnapshot('Contact', ['s-whatsapp','s-phone','s-area']);
+}
 function cancelEditContact() {
   const s = currentSettings || {};
   let wa = s.whatsapp || '';
@@ -2049,6 +2121,7 @@ function cancelEditContact() {
   document.getElementById('whatsapp-preview').style.display = 'none';
   document.getElementById('s-wa-err').style.display = 'none';
   document.getElementById('s-whatsapp').classList.remove('error');
+  clearDirty('Contact');
   _showSectionView('Contact');
 }
 
@@ -2059,6 +2132,7 @@ function startEditHours() {
   hoursDays = cfg.days ? JSON.parse(JSON.stringify(cfg.days)) : {};
   hoursOverrides = Array.isArray(cfg.overrides) ? cfg.overrides.map(String) : [];
   _showSectionEdit('Hours');
+  captureSnapshot('Hours', ['s-allow-same-day','default-open','default-close']);
 }
 function cancelEditHours() {
   const _s0 = currentSettings || {};
@@ -2102,11 +2176,15 @@ function cancelEditHours() {
     if (typeof renderHoursRows === 'function') renderHoursRows();
     if (typeof updateHoursPreview === 'function') updateHoursPreview();
   }
+  clearDirty('Hours');
   _showSectionView('Hours');
 }
 
 // ----- Images -----
-function startEditImages() { _showSectionEdit('Images'); }
+function startEditImages() {
+  _showSectionEdit('Images');
+  captureSnapshot('Images', ['s-logo-url','s-hero-bg-url','s-about-img-url']);
+}
 function cancelEditImages() {
   // Discard pending blobs
   delete pendingImageBlobs['s-logo-url'];
@@ -2119,16 +2197,21 @@ function cancelEditImages() {
   updatePreviewFromUrl(document.getElementById('s-logo-url'), 'logoPreview', '🥐');
   updatePreviewFromUrl(document.getElementById('s-hero-bg-url'), 'heroBgPreview', null);
   updatePreviewFromUrl(document.getElementById('s-about-img-url'), 'aboutImgPreview', null);
+  clearDirty('Images');
   _showSectionView('Images');
 }
 
 // ----- Content -----
-function startEditContent() { _showSectionEdit('Content'); }
+function startEditContent() {
+  _showSectionEdit('Content');
+  captureSnapshot('Content', ['s-about','s-terms']);
+}
 function cancelEditContent() {
   const s = currentSettings || {};
   document.getElementById('s-about').value = s.about_text || '';
   document.getElementById('s-terms').value = s.terms_text || '';
   if (typeof autoResizeTextarea === 'function') autoResizeTextarea(document.getElementById('s-about'));
+  clearDirty('Content');
   _showSectionView('Content');
 }
 
@@ -2158,6 +2241,7 @@ async function saveBasics() {
   }
   invalidateMenuCache();
   if (typeof updateBusinessView === 'function') updateBusinessView();
+  clearDirty('Basics');
   _showSectionView('Basics');
   showSuccess('פרטי העסק נשמרו בהצלחה!');
 }
@@ -2198,6 +2282,7 @@ async function saveContact() {
   }
   invalidateMenuCache();
   if (typeof updateBusinessView === 'function') updateBusinessView();
+  clearDirty('Contact');
   _showSectionView('Contact');
   showSuccess('פרטי יצירת קשר נשמרו בהצלחה!');
 }
@@ -2220,6 +2305,7 @@ async function saveHours() {
   }
   invalidateMenuCache();
   if (typeof updateBusinessView === 'function') updateBusinessView();
+  clearDirty('Hours');
   _showSectionView('Hours');
   showSuccess('שעות פעילות נשמרו בהצלחה!');
 }
@@ -2272,6 +2358,7 @@ async function saveImages() {
   if (oldAbout && oldAbout !== newAbout && typeof deleteOldImageFromStorage === 'function') deleteOldImageFromStorage(oldAbout);
   invalidateMenuCache();
   if (typeof updateBusinessView === 'function') updateBusinessView();
+  clearDirty('Images');
   _showSectionView('Images');
   showSuccess('התמונות נשמרו בהצלחה!');
 }
@@ -2290,6 +2377,7 @@ async function saveContent() {
   }
   invalidateMenuCache();
   if (typeof updateBusinessView === 'function') updateBusinessView();
+  clearDirty('Content');
   _showSectionView('Content');
   showSuccess('התוכן נשמר בהצלחה!');
 }
@@ -2409,6 +2497,15 @@ async function signOutWithCleanup() {
   window.location.href = 'login.html';
 }
 
+// ===== Warn on page unload if there are unsaved changes =====
+window.addEventListener('beforeunload', function(e) {
+  if (hasAnyDirty()) {
+    e.preventDefault();
+    e.returnValue = '';
+    return '';
+  }
+});
+
 // ===== Expose functions to window for onclick handlers =====
 Object.defineProperty(window, 'currentSettings', { get: () => currentSettings, configurable: true });
 Object.assign(window, {
@@ -2434,6 +2531,7 @@ Object.assign(window, {
   updateBannerStatus,
   addTestimonial, removeTestimonial, updateTestimonial, saveTestimonials,
   publishChanges, publishChangesUI, openPreview, signOutWithCleanup,
+  captureSnapshot, checkDirty, clearDirty, updateDirtyIndicator, hasAnyDirty,
 });
 </script>
 <!-- Global success toast -->
