@@ -42,7 +42,7 @@
         <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" stroke-width="2" stroke-linecap="round"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" stroke-width="2" stroke-linecap="round"/></svg>
         שיתוף
       </button>
-      <div id="linkPopup" class="link-popup" style="display:none;position:absolute;top:calc(100% + 8px);left:0;min-width:260px;background:white;border-radius:var(--radius);box-shadow:var(--shadow-md);border:1px solid var(--border);padding:14px;z-index:100;">
+      <div id="linkPopup" class="link-popup" role="dialog" aria-label="אפשרויות שיתוף הלינק" style="display:none;position:absolute;top:calc(100% + 8px);left:0;min-width:260px;background:white;border-radius:var(--radius);box-shadow:var(--shadow-md);border:1px solid var(--border);padding:14px;z-index:100;">
         <p style="font-size:11px;font-weight:600;color:var(--text-3);margin-bottom:8px;">לינק לשיתוף עם לקוחות</p>
         <div id="linkPopupContent"></div>
       </div>
@@ -53,21 +53,21 @@
     </div>
   </div>
   <!-- Tabs -->
-  <div class="tabs-bar">
-    <button onclick="switchTab('products')" id="tab-products" class="tab-btn active">
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z" stroke-width="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16" stroke-width="2"/></svg>
+  <div class="tabs-bar" role="tablist" aria-label="ניווט ראשי">
+    <button onclick="switchTab('products')" id="tab-products" class="tab-btn active" role="tab" aria-selected="true" aria-controls="section-products">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z" stroke-width="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16" stroke-width="2"/></svg>
       מוצרים
     </button>
-    <button onclick="switchTab('categories')" id="tab-categories" class="tab-btn">
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" stroke-width="2" rx="1"/><rect x="14" y="3" width="7" height="7" stroke-width="2" rx="1"/><rect x="14" y="14" width="7" height="7" stroke-width="2" rx="1"/><rect x="3" y="14" width="7" height="7" stroke-width="2" rx="1"/></svg>
+    <button onclick="switchTab('categories')" id="tab-categories" class="tab-btn" role="tab" aria-selected="false" aria-controls="section-categories">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" stroke-width="2" rx="1"/><rect x="14" y="3" width="7" height="7" stroke-width="2" rx="1"/><rect x="14" y="14" width="7" height="7" stroke-width="2" rx="1"/><rect x="3" y="14" width="7" height="7" stroke-width="2" rx="1"/></svg>
       קטגוריות
     </button>
-    <button onclick="switchTab('business')" id="tab-business" class="tab-btn">
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" stroke-width="2"/><polyline points="9 22 9 12 15 12 15 22" stroke-width="2"/></svg>
+    <button onclick="switchTab('business')" id="tab-business" class="tab-btn" role="tab" aria-selected="false" aria-controls="section-business">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" stroke-width="2"/><polyline points="9 22 9 12 15 12 15 22" stroke-width="2"/></svg>
       העסק
     </button>
-    <button onclick="switchTab('settings')" id="tab-settings" class="tab-btn">
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" stroke-width="2"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" stroke-width="2"/></svg>
+    <button onclick="switchTab('settings')" id="tab-settings" class="tab-btn" role="tab" aria-selected="false" aria-controls="section-settings">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3" stroke-width="2"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" stroke-width="2"/></svg>
       הגדרות
     </button>
   </div>
@@ -77,7 +77,7 @@
 <div style="max-width:640px;margin:0 auto;padding:20px 16px 48px;">
 
   <!-- ===== PRODUCTS ===== -->
-  <div id="section-products" class="section-enter">
+  <div id="section-products" class="section-enter" role="tabpanel" aria-labelledby="tab-products">
     <div class="flex items-center gap-3 mb-3 flex-wrap">
       <h2 class="text-lg font-bold text-gray-800">מוצרים (<span id="productCount">0</span>)</h2>
       <div class="search-wrap flex-1 min-w-[160px]">
@@ -120,7 +120,7 @@
   </div>
 
   <!-- ===== CATEGORIES ===== -->
-  <div id="section-categories" style="display:none">
+  <div id="section-categories" style="display:none" role="tabpanel" aria-labelledby="tab-categories">
     <div class="flex items-center gap-3 mb-3 flex-wrap">
       <h2 class="text-lg font-bold text-gray-800">קטגוריות (<span id="categoryCount">0</span>)</h2>
       <div class="search-wrap flex-1 min-w-[160px]">
@@ -162,7 +162,7 @@
   </div>
 
   <!-- ===== BUSINESS ===== -->
-  <div id="section-business" style="display:none">
+  <div id="section-business" style="display:none" role="tabpanel" aria-labelledby="tab-business">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
       <h2 style="font-size:17px;font-weight:700;color:var(--text);">פרטי העסק</h2>
     </div>
@@ -205,8 +205,8 @@
           </div>
           <div>
             <label class="form-label">שם העסק <span style="color:#ef4444">*</span></label>
-            <input id="s-business-name" class="form-input" placeholder="שם העסק יופיע ככותרת בתפריט הציבורי" oninput="checkDirty('Basics', ['s-business-name','s-tagline','s-contact-name'])"/>
-            <p id="s-name-err" class="text-xs text-red-500 mt-1" style="display:none">⚠️ שם העסק הוא שדה חובה</p>
+            <input id="s-business-name" class="form-input" placeholder="שם העסק יופיע ככותרת בתפריט הציבורי" aria-describedby="s-name-err" aria-required="true" oninput="checkDirty('Basics', ['s-business-name','s-tagline','s-contact-name'])"/>
+            <p id="s-name-err" role="alert" class="text-xs text-red-500 mt-1" style="display:none">⚠️ שם העסק הוא שדה חובה</p>
           </div>
           <div>
             <label class="form-label">תיאור קצר</label>
@@ -252,9 +252,9 @@
           </div>
           <div>
             <label class="form-label">מספר וואטסאפ לקבלת הזמנות <span style="color:#ef4444">*</span></label>
-            <input id="s-whatsapp" class="form-input" type="tel" placeholder="05X-XXXXXXX" dir="ltr" style="text-align:right" oninput="formatWhatsapp(this); checkDirty('Contact', ['s-whatsapp','s-phone','s-area'])"/>
+            <input id="s-whatsapp" class="form-input" type="tel" placeholder="05X-XXXXXXX" dir="ltr" style="text-align:right" aria-describedby="s-wa-err whatsapp-preview" aria-required="true" oninput="formatWhatsapp(this); checkDirty('Contact', ['s-whatsapp','s-phone','s-area'])"/>
             <p id="whatsapp-preview" class="text-xs mt-1" style="display:none"></p>
-            <p id="s-wa-err" class="text-xs text-red-500 mt-1" style="display:none">⚠️ מספר וואטסאפ הוא שדה חובה — בלעדיו לא ניתן לקבל הזמנות</p>
+            <p id="s-wa-err" role="alert" class="text-xs text-red-500 mt-1" style="display:none">⚠️ מספר וואטסאפ הוא שדה חובה — בלעדיו לא ניתן לקבל הזמנות</p>
           </div>
           <div>
             <label class="form-label">טלפון העסק <span style="font-size:12px;font-weight:400;color:var(--text-3)">(יוצג בתפריט)</span></label>
@@ -302,13 +302,13 @@
             <div class="mt-3">
               <p class="text-xs font-semibold text-gray-500 mb-2" style="margin-top:10px;">בחר ימי פעילות:</p>
               <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;" id="dayBtns">
-                <button type="button" onclick="toggleDay(0,this)" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">א'</button>
-                <button type="button" onclick="toggleDay(1,this)" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">ב'</button>
-                <button type="button" onclick="toggleDay(2,this)" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">ג'</button>
-                <button type="button" onclick="toggleDay(3,this)" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">ד'</button>
-                <button type="button" onclick="toggleDay(4,this)" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">ה'</button>
-                <button type="button" onclick="toggleDay(5,this)" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">ו'</button>
-                <button type="button" onclick="toggleDay(6,this)" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">ש'</button>
+                <button type="button" onclick="toggleDay(0,this)" aria-label="יום ראשון" aria-pressed="false" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">א'</button>
+                <button type="button" onclick="toggleDay(1,this)" aria-label="יום שני" aria-pressed="false" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">ב'</button>
+                <button type="button" onclick="toggleDay(2,this)" aria-label="יום שלישי" aria-pressed="false" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">ג'</button>
+                <button type="button" onclick="toggleDay(3,this)" aria-label="יום רביעי" aria-pressed="false" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">ד'</button>
+                <button type="button" onclick="toggleDay(4,this)" aria-label="יום חמישי" aria-pressed="false" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">ה'</button>
+                <button type="button" onclick="toggleDay(5,this)" aria-label="יום שישי" aria-pressed="false" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">ו'</button>
+                <button type="button" onclick="toggleDay(6,this)" aria-label="יום שבת" aria-pressed="false" class="day-btn w-10 h-10 rounded-full border-2 text-sm font-bold transition-all border-gray-200 bg-white text-gray-400">ש'</button>
               </div>
               <div id="defaultHoursRow" class="bg-gray-50 rounded-xl p-3 mb-2" style="display:none">
                 <p class="text-xs font-semibold text-gray-500 mb-2">שעות לכל הימים שנבחרו:</p>
@@ -377,7 +377,7 @@
                 <label class="btn-outline cursor-pointer mb-1" style="display:inline-flex;font-size:13px;padding:7px 12px;">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                   העלה תמונה
-                  <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(this,'logoPreview','s-logo-url','logo-info',500)"/>
+                  <input type="file" accept="image/*" class="hidden" aria-label="העלה תמונת לוגו" onchange="handleImageUpload(this,'logoPreview','s-logo-url','logo-info',500)"/>
                 </label>
                 <div id="logo-info" class="text-xs text-green-600 font-semibold mb-1" style="display:none"></div>
                 <input id="s-logo-url" class="form-input text-xs" placeholder="או הדבק URL..." oninput="updatePreviewFromUrl(this,'logoPreview','🥐'); checkDirty('Images', ['s-logo-url','s-hero-bg-url','s-about-img-url'])"/>
@@ -394,7 +394,7 @@
                 <label class="btn-outline cursor-pointer mb-1" style="display:inline-flex;font-size:13px;padding:7px 12px;">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                   העלה תמונה
-                  <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(this,'heroBgPreview','s-hero-bg-url','hero-bg-info',1024)"/>
+                  <input type="file" accept="image/*" class="hidden" aria-label="העלה תמונת רקע" onchange="handleImageUpload(this,'heroBgPreview','s-hero-bg-url','hero-bg-info',1024)"/>
                 </label>
                 <button type="button" class="btn-outline mb-1" style="display:inline-flex;font-size:13px;padding:7px 12px;margin-right:6px;" onclick="openGalleryModal('s-hero-bg-url','heroBgPreview')">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
@@ -415,7 +415,7 @@
                 <label class="btn-outline cursor-pointer mb-1" style="display:inline-flex;font-size:13px;padding:7px 12px;">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                   העלה תמונה
-                  <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(this,'aboutImgPreview','s-about-img-url','about-info',1024)"/>
+                  <input type="file" accept="image/*" class="hidden" aria-label="העלה תמונת אודות" onchange="handleImageUpload(this,'aboutImgPreview','s-about-img-url','about-info',1024)"/>
                 </label>
                 <button type="button" class="btn-outline mb-1" style="display:inline-flex;font-size:13px;padding:7px 12px;margin-right:6px;" onclick="openGalleryModal('s-about-img-url','aboutImgPreview')">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
@@ -478,7 +478,7 @@
   </div>
 
   <!-- ===== SETTINGS ===== -->
-  <div id="section-settings" class="section-enter" style="display:none">
+  <div id="section-settings" class="section-enter" style="display:none" role="tabpanel" aria-labelledby="tab-settings">
     <h2 style="font-size:17px;font-weight:700;color:var(--text);margin-bottom:16px;">הגדרות</h2>
     <div style="display:flex;flex-direction:column;gap:12px;">
 
@@ -556,7 +556,7 @@
             <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
               <div style="display:flex;align-items:center;flex:1;min-width:180px;border:1.5px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;background:white;">
                 <span style="font-size:12px;color:var(--text-3);padding:10px 8px;background:var(--bg);border-left:1px solid var(--border);white-space:nowrap;flex-shrink:0;">mytafrit.co.il/menu.html?slug=</span>
-                <input id="s-slug" style="flex:1;border:none;outline:none;padding:10px 10px;font-size:13px;font-family:'Heebo',sans-serif;direction:ltr;text-align:left;background:transparent;transition:border-color 0.15s;" placeholder="my-business" dir="ltr" oninput="validateSlug(this)" onblur="formatSlug(this)"/>
+                <input id="s-slug" aria-label="כתובת הלינק" aria-describedby="slug-err slug-preview" aria-required="true" style="flex:1;border:none;outline:none;padding:10px 10px;font-size:13px;font-family:'Heebo',sans-serif;direction:ltr;text-align:left;background:transparent;transition:border-color 0.15s;" placeholder="my-business" dir="ltr" oninput="validateSlug(this)" onblur="formatSlug(this)"/>
               </div>
             </div>
             <div style="display:flex;gap:8px;margin-top:8px;">
@@ -566,11 +566,39 @@
           </div>
         </div>
         <p id="slug-preview" style="display:none;font-size:12px;color:var(--accent);margin-top:6px;font-weight:600;"></p>
-        <p id="slug-err" style="display:none;font-size:12px;color:#ef4444;margin-top:6px;"></p>
+        <p id="slug-err" role="alert" style="display:none;font-size:12px;color:#ef4444;margin-top:6px;"></p>
         <p id="slug-save-ok" style="display:none;font-size:12px;color:#16a34a;font-weight:600;margin-top:6px;">✓ הלינק עודכן בהצלחה!</p>
         <div id="slug-warning" style="display:none;margin-top:10px;padding:10px 12px;background:#fffbeb;border-radius:8px;font-size:12px;color:#92400e;line-height:1.5;border:1px solid #fde68a;">
           ⚠️ שינוי הלינק יבטל את הלינק הקודם — כל מי שיש לו את הלינק הישן לא יוכל להגיע לתפריט שלך.
         </div>
+      </div>
+
+      <h3 style="font-size:13px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.5px;margin:20px 4px 4px;">🏖️ מצב חופשה</h3>
+
+      <div class="card" style="padding:16px;">
+        <div style="display:flex;align-items:flex-start;gap:12px;">
+          <div style="flex:1;">
+            <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;">השהה הזמנות זמנית</div>
+            <div style="font-size:12px;color:var(--text-3);line-height:1.5;">כש-ON, התפריט יוצג אבל הלקוחות לא יוכלו להזמין. מופיעה הודעה "המסעדה בחופשה, הזמנות יחזרו בקרוב".</div>
+          </div>
+          <label class="switch" style="flex-shrink:0;">
+            <input type="checkbox" id="s-orders-paused" onchange="handleOrdersPausedChange(this.checked)">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <h3 style="font-size:13px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.5px;margin:20px 4px 4px;">📅 באנרים אוטומטיים</h3>
+
+      <div class="card" style="padding:16px;">
+        <div style="font-size:13px;color:var(--text-3);line-height:1.5;margin-bottom:12px;">
+          באנרים שמופיעים אוטומטית בתפריט בימים ושעות שתקבע. מקסימום 10 באנרים.
+        </div>
+        <div id="autoBannersList" style="display:flex;flex-direction:column;gap:10px;"></div>
+        <button id="addAutoBannerBtn" onclick="addAutoBanner()" class="btn-outline" style="margin-top:12px;padding:8px 14px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          הוסף באנר אוטומטי
+        </button>
       </div>
 
       <h3 style="font-size:13px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.5px;margin:20px 4px 4px;">⭐ ביקורות לקוחות</h3>
@@ -623,18 +651,18 @@
 </div>
 
 <!-- PRODUCT FORM MODAL -->
-<div id="productFormOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:100;align-items:center;justify-content:center;padding:16px" class="modal-overlay">
+<div id="productFormOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:100;align-items:center;justify-content:center;padding:16px" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="productFormTitle">
   <div class="modal-box bg-white rounded-2xl w-full max-w-lg shadow-2xl flex flex-col" style="max-height:90vh">
     <div class="flex items-center justify-between p-5 border-b border-gray-100 flex-shrink-0">
       <h3 id="productFormTitle" style="font-family:'Frank Ruhl Libre',serif" class="font-bold text-gray-900 text-lg">מוצר חדש</h3>
-      <button onclick="closeProductForm()" class="btn-ghost text-gray-500">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      <button onclick="closeProductForm()" class="btn-ghost text-gray-500" aria-label="סגור">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
     <div class="overflow-y-auto flex-1 p-5 space-y-4">
       <div>
         <label class="form-label">שם המוצר <span class="text-red-500">*</span></label>
-        <input id="pf-name" class="form-input" placeholder='לדוגמא: "קרואסון חמאה"' oninput="this.style.borderColor=''"/>
+        <input id="pf-name" class="form-input" aria-required="true" placeholder='לדוגמא: "קרואסון חמאה"' oninput="this.style.borderColor=''"/>
       </div>
       <div>
         <label class="form-label">תיאור</label>
@@ -646,8 +674,8 @@
       </div>
       <div>
         <label class="form-label">קטגוריות <span class="text-red-500">*</span> <span style="font-weight:400;color:var(--text-3);font-size:12px;">(ניתן לבחור יותר מאחת)</span></label>
-        <div id="pf-categories" class="flex flex-wrap gap-2 mt-1"></div>
-        <p id="pf-cat-warning" style="font-size:12px;color:#ef4444;font-weight:600;margin-top:6px;display:none;">⚠️ יש לבחור לפחות קטגוריה אחת</p>
+        <div id="pf-categories" class="flex flex-wrap gap-2 mt-1" aria-describedby="pf-cat-warning" role="group" aria-label="קטגוריות המוצר"></div>
+        <p id="pf-cat-warning" role="alert" style="font-size:12px;color:#ef4444;font-weight:600;margin-top:6px;display:none;">⚠️ יש לבחור לפחות קטגוריה אחת</p>
       </div>
       <div>
         <label class="form-label">תמונה</label>
@@ -658,7 +686,7 @@
             <label class="btn-outline cursor-pointer mb-1" style="display:inline-flex">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
               העלה תמונה
-              <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(this,'pf-img-preview','pf-img-url','pf-img-info',500)"/>
+              <input type="file" accept="image/*" class="hidden" aria-label="העלה תמונת מוצר" onchange="handleImageUpload(this,'pf-img-preview','pf-img-url','pf-img-info',500)"/>
             </label>
             <div id="pf-img-info" class="text-xs text-green-600 font-semibold mb-1" style="display:none"></div>
             <input id="pf-img-url" class="form-input text-xs" placeholder="או הדבק URL..." oninput="updatePreviewFromUrl(this,'pf-img-preview','🥐')"/>
@@ -724,6 +752,7 @@ let pendingCategoriesOrder = null;
 let editingProductId=null, selectedDietary='', selectedCategories=[];
 let selectedProductIds = new Set();
 let bulkMode = false;
+let autoBanners = [];
 
 function highlightMatch(text, query) {
   if (!query || !text) return text || '';
@@ -953,6 +982,25 @@ function showToast(message, type = 'success') {
   toast._t = setTimeout(() => { toast.style.display = 'none'; }, 2800);
 }
 
+// ===== GLOBAL ERROR BOUNDARY =====
+window.addEventListener('error', function(event) {
+  console.error('[GlobalError]', event.error || event.message, event);
+  try {
+    if (typeof showToast === 'function') {
+      showToast('אירעה שגיאה — נסה לרענן את הדף', 'error');
+    }
+  } catch(e) {}
+});
+
+window.addEventListener('unhandledrejection', function(event) {
+  console.error('[UnhandledRejection]', event.reason);
+  try {
+    if (typeof showToast === 'function') {
+      showToast('אירעה שגיאה — נסה לרענן את הדף', 'error');
+    }
+  } catch(e) {}
+});
+
 // ===== UNDO TOAST =====
 function showUndoToast(message, undoCallback, timeoutMs = 5000) {
   let toast = document.getElementById('undoToast');
@@ -1152,6 +1200,173 @@ async function saveTestimonials() {
   setTimeout(() => ok.style.display = 'none', 2500);
 }
 
+// ===== VACATION MODE =====
+async function handleOrdersPausedChange(isPaused) {
+  try {
+    await upsertSettingsPartial({ orders_paused: !!isPaused });
+    showToast(
+      isPaused ? '🏖️ מצב חופשה הופעל — זכור לפרסם!' : 'מצב חופשה בוטל — זכור לפרסם!',
+      'success'
+    );
+  } catch(e) {
+    console.error('Failed to update orders_paused', e);
+    showToast('השינוי נכשל', 'error');
+    document.getElementById('s-orders-paused').checked = !isPaused;
+  }
+}
+
+// ===== AUTO BANNERS =====
+const DAY_NAMES_SHORT = ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ש'];
+const MAX_AUTO_BANNERS = 10;
+
+function escapeHtml(s) {
+  return String(s || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function renderAutoBanners() {
+  const container = document.getElementById('autoBannersList');
+  if (!container) return;
+
+  const addBtn = document.getElementById('addAutoBannerBtn');
+  if (addBtn) {
+    addBtn.style.display = autoBanners.length >= MAX_AUTO_BANNERS ? 'none' : 'inline-flex';
+  }
+
+  if (!autoBanners.length) {
+    container.innerHTML = '<p style="color:var(--text-3);font-size:13px;text-align:center;padding:16px;">אין באנרים אוטומטיים. הוסף את הראשון למטה.</p>';
+    return;
+  }
+
+  container.innerHTML = autoBanners.map((b, idx) => `
+    <div class="card" style="padding:12px;border:1.5px solid var(--border);">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <label class="switch" style="flex-shrink:0;display:inline-flex;align-items:center;gap:6px;">
+          <input type="checkbox" ${b.enabled ? 'checked' : ''} onchange="updateAutoBannerField(${idx}, 'enabled', this.checked)">
+          <span class="slider"></span>
+        </label>
+        <button onclick="removeAutoBanner(${idx})" class="btn-ghost" style="color:#dc2626;padding:4px 8px;font-size:12px;" aria-label="מחק באנר">🗑️ מחק</button>
+      </div>
+
+      <input type="text" value="${escapeHtml(b.text || '')}" placeholder="טקסט הבאנר" maxlength="150"
+        oninput="updateAutoBannerField(${idx}, 'text', this.value)"
+        class="form-input" style="margin-bottom:8px;">
+
+      <div style="display:flex;gap:6px;margin-bottom:10px;">
+        <button onclick="updateAutoBannerField(${idx}, 'mode', 'weekly')"
+          class="btn-outline" style="padding:5px 10px;font-size:12px;${b.mode === 'weekly' ? 'background:var(--accent);color:white;border-color:var(--accent);' : ''}">
+          חוזר שבועי
+        </button>
+        <button onclick="updateAutoBannerField(${idx}, 'mode', 'dateRange')"
+          class="btn-outline" style="padding:5px 10px;font-size:12px;${b.mode === 'dateRange' ? 'background:var(--accent);color:white;border-color:var(--accent);' : ''}">
+          טווח תאריכים
+        </button>
+      </div>
+
+      ${b.mode === 'weekly' ? `
+        <div style="margin-bottom:8px;">
+          <div style="font-size:12px;color:var(--text-3);margin-bottom:4px;">ימים:</div>
+          <div style="display:flex;gap:4px;">
+            ${DAY_NAMES_SHORT.map((d, dayIdx) => `
+              <button onclick="toggleAutoBannerDay(${idx}, ${dayIdx})"
+                aria-label="יום ${d}" aria-pressed="${(b.days || []).includes(dayIdx)}"
+                style="width:34px;height:34px;border-radius:8px;border:1.5px solid var(--border);font-size:13px;font-weight:700;cursor:pointer;${(b.days || []).includes(dayIdx) ? 'background:var(--accent);color:white;border-color:var(--accent);' : 'background:white;color:var(--text);'}">
+                ${d}
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      ` : `
+        <div style="display:flex;gap:6px;margin-bottom:8px;">
+          <div style="flex:1;">
+            <div style="font-size:12px;color:var(--text-3);margin-bottom:2px;">מתאריך:</div>
+            <input type="date" value="${b.from || ''}" onchange="updateAutoBannerField(${idx}, 'from', this.value)" class="form-input" style="padding:6px;font-size:13px;">
+          </div>
+          <div style="flex:1;">
+            <div style="font-size:12px;color:var(--text-3);margin-bottom:2px;">עד תאריך:</div>
+            <input type="date" value="${b.until || ''}" onchange="updateAutoBannerField(${idx}, 'until', this.value)" class="form-input" style="padding:6px;font-size:13px;">
+          </div>
+        </div>
+      `}
+
+      <div style="display:flex;gap:6px;">
+        <div style="flex:1;">
+          <div style="font-size:12px;color:var(--text-3);margin-bottom:2px;">משעה:</div>
+          <input type="time" value="${b.startTime || ''}" onchange="updateAutoBannerField(${idx}, 'startTime', this.value)" class="form-input" style="padding:6px;font-size:13px;">
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:12px;color:var(--text-3);margin-bottom:2px;">עד שעה:</div>
+          <input type="time" value="${b.endTime || ''}" onchange="updateAutoBannerField(${idx}, 'endTime', this.value)" class="form-input" style="padding:6px;font-size:13px;">
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function addAutoBanner() {
+  if (autoBanners.length >= MAX_AUTO_BANNERS) {
+    showToast(`הגעת למקסימום של ${MAX_AUTO_BANNERS} באנרים`, 'warning');
+    return;
+  }
+
+  autoBanners.push({
+    text: '',
+    mode: 'weekly',
+    days: [],
+    from: '',
+    until: '',
+    startTime: '',
+    endTime: '',
+    enabled: false,
+  });
+
+  renderAutoBanners();
+  await saveAutoBanners();
+}
+
+async function removeAutoBanner(idx) {
+  const ok = await confirmDanger(`למחוק את הבאנר "${autoBanners[idx]?.text || 'ללא שם'}"?`, 'מחק', 'מחיקת באנר');
+  if (!ok) return;
+
+  autoBanners.splice(idx, 1);
+  renderAutoBanners();
+  await saveAutoBanners();
+}
+
+function updateAutoBannerField(idx, field, value) {
+  if (!autoBanners[idx]) return;
+  autoBanners[idx][field] = value;
+  if (field === 'mode') renderAutoBanners();
+  clearTimeout(window._autoBannerSaveTimer);
+  window._autoBannerSaveTimer = setTimeout(saveAutoBanners, 600);
+}
+
+function toggleAutoBannerDay(idx, dayIdx) {
+  if (!autoBanners[idx]) return;
+  if (!Array.isArray(autoBanners[idx].days)) autoBanners[idx].days = [];
+  const days = autoBanners[idx].days;
+  if (days.includes(dayIdx)) {
+    autoBanners[idx].days = days.filter(d => d !== dayIdx);
+  } else {
+    autoBanners[idx].days = [...days, dayIdx].sort();
+  }
+  renderAutoBanners();
+  clearTimeout(window._autoBannerSaveTimer);
+  window._autoBannerSaveTimer = setTimeout(saveAutoBanners, 600);
+}
+
+async function saveAutoBanners() {
+  try {
+    await upsertSettingsPartial({ auto_banners: autoBanners });
+  } catch(e) {
+    console.error('Save auto banners failed', e);
+    showToast('שמירת באנרים נכשלה', 'error');
+  }
+}
+
 function applySettingsToForm(s) {
   if (s.business_name) document.getElementById('s-business-name').value = s.business_name;
   if (s.tagline) document.getElementById('s-tagline').value = s.tagline;
@@ -1176,6 +1391,10 @@ function applySettingsToForm(s) {
   if (s.allow_same_day) document.getElementById('s-allow-same-day').checked = true;
   if (s.banner_text) document.getElementById('s-banner').value = s.banner_text;
   if (s.banner_active) document.getElementById('s-banner-active').checked = true;
+  const ordersPausedEl = document.getElementById('s-orders-paused');
+  if (ordersPausedEl) ordersPausedEl.checked = !!s.orders_paused;
+  autoBanners = Array.isArray(s.auto_banners) ? s.auto_banners : [];
+  if (typeof renderAutoBanners === 'function') renderAutoBanners();
   if (s.hours_config && typeof s.hours_config === 'object') {
     const cfg = s.hours_config;
     hoursDefault = cfg.default || { open: '', close: '' };
@@ -1264,9 +1483,11 @@ async function switchTab(tab) {
       section.style.animation='none';
       requestAnimationFrame(()=>{ section.style.animation=''; section.style.animation='slideUp 0.2s ease'; });
       btn.classList.add('active'); btn.classList.remove('tab-inactive');
+      btn.setAttribute('aria-selected', 'true');
     } else {
       section.style.display='none';
       btn.classList.remove('active'); btn.classList.add('tab-inactive');
+      btn.setAttribute('aria-selected', 'false');
     }
   });
 }
@@ -1343,11 +1564,13 @@ function toggleDay(idx, btn) {
     btn.style.background = 'white';
     btn.style.borderColor = 'var(--border)';
     btn.style.color = 'var(--text-3)';
+    btn.setAttribute('aria-pressed', 'false');
   } else {
     hoursDays[key] = { open: hoursDefault.open, close: hoursDefault.close };
     btn.style.background = 'var(--accent)';
     btn.style.borderColor = 'var(--accent)';
     btn.style.color = 'white';
+    btn.setAttribute('aria-pressed', 'true');
   }
   const hasDays = Object.keys(hoursDays).length > 0;
   document.getElementById('defaultHoursRow').style.display = hasDays ? 'block' : 'none';
@@ -1815,7 +2038,6 @@ function renderProducts(){
       </div>
       <div class="flex gap-0.5 flex-shrink-0">
         <button class="btn-ghost text-gray-500" onclick="openProductForm('${p.id}')" aria-label="ערוך מוצר" title="ערוך"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-        <button class="btn-ghost text-gray-500" onclick="duplicateProduct('${p.id}')" aria-label="שכפל מוצר" title="שכפל"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
         <button class="btn-danger" onclick="deleteProduct('${p.id}')" aria-label="מחק מוצר" title="מחק"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg></button>
       </div>
     </div>`;
@@ -2004,48 +2226,6 @@ async function deleteProduct(id) {
   }
 }
 
-async function duplicateProduct(id) {
-  const original = products.find(x => String(x.id) === String(id));
-  if (!original) return;
-
-  const newProduct = {
-    ...JSON.parse(JSON.stringify(original)),
-    id: crypto.randomUUID(),
-    name: original.name + ' (עותק)',
-    sort_order: products.length,
-    is_active: false,
-  };
-
-  if (supabaseReady && currentUser) {
-    newProduct.user_id = currentUser.id;
-    try {
-      const { data: inserted, error } = await supabaseClient
-        .from('products')
-        .insert(newProduct)
-        .select()
-        .single();
-      if (error) throw error;
-      if (inserted) {
-        products.push(inserted);
-        syncProductsToLocalStorage();
-        invalidateMenuCache();
-        renderProducts();
-        showToast(`שוכפל: "${inserted.name}" — נוצר כלא פעיל. ערוך ופרסם.`, 'success');
-        return;
-      }
-    } catch(e) {
-      console.error('Duplicate failed', e);
-      showToast('השכפול נכשל', 'error');
-      return;
-    }
-  }
-
-  products.push(newProduct);
-  syncProductsToLocalStorage();
-  renderProducts();
-  showToast(`שוכפל: "${newProduct.name}"`, 'success');
-}
-
 // ===== BULK ACTIONS =====
 function toggleBulkMode() {
   bulkMode = !bulkMode;
@@ -2127,16 +2307,31 @@ async function bulkDelete() {
   if (!ids.length) return;
 
   const ok = await confirmDanger(
-    `למחוק ${ids.length} מוצרים? פעולה זו אינה ניתנת לביטול.`,
+    `למחוק ${ids.length} מוצרים? ניתן לבטל תוך 5 שניות.`,
     'מחק הכל',
     'מחיקה מרובה'
   );
   if (!ok) return;
 
-  const imageUrls = ids
-    .map(id => products.find(p => String(p.id) === id))
-    .filter(p => p && p.image_url)
-    .map(p => p.image_url);
+  const backups = [];
+  for (const id of ids) {
+    const idx = products.findIndex(p => String(p.id) === id);
+    if (idx >= 0) {
+      backups.push({
+        product: JSON.parse(JSON.stringify(products[idx])),
+        originalIndex: idx,
+      });
+    }
+  }
+
+  if (!backups.length) {
+    cancelBulkMode();
+    return;
+  }
+
+  const imageUrls = backups
+    .filter(b => b.product.image_url)
+    .map(b => b.product.image_url);
 
   products = products.filter(p => !selectedProductIds.has(String(p.id)));
 
@@ -2146,21 +2341,57 @@ async function bulkDelete() {
     } catch(e) {
       console.error('Bulk delete failed', e);
       showToast('המחיקה נכשלה', 'error');
+      for (const b of backups) products.splice(b.originalIndex, 0, b.product);
+      renderProducts();
       return;
     }
   }
 
-  imageUrls.forEach(url => deleteOldImageFromStorage(url));
-
-  localStorage.setItem('tafrit_preview_products', JSON.stringify(products));
-  if (currentSettings) {
-    currentSettings.updated_at = new Date().toISOString();
-    if (typeof updatePublishBanner === 'function') updatePublishBanner();
-  }
+  syncProductsToLocalStorage();
   invalidateMenuCache();
   cancelBulkMode();
   renderProducts();
-  showToast(`${ids.length} מוצרים נמחקו`, 'success');
+
+  showUndoToast(`${backups.length} מוצרים נמחקו`, async () => {
+    const sortedBackups = [...backups].sort((a, b) => a.originalIndex - b.originalIndex);
+    for (const b of sortedBackups) {
+      const insertAt = Math.min(b.originalIndex, products.length);
+      products.splice(insertAt, 0, b.product);
+    }
+
+    if (supabaseReady && currentUser) {
+      try {
+        const toInsert = backups.map(b => b.product);
+        await supabaseClient.from('products').insert(toInsert);
+      } catch(e) {
+        console.error('Bulk undo failed', e);
+        showToast('הביטול נכשל — המוצרים לא הוחזרו במלואם', 'error');
+        const restoredIds = new Set(backups.map(b => String(b.product.id)));
+        products = products.filter(p => !restoredIds.has(String(p.id)));
+        renderProducts();
+        return;
+      }
+    }
+
+    syncProductsToLocalStorage();
+    invalidateMenuCache();
+    renderProducts();
+    showToast('המחיקה בוטלה', 'success');
+  });
+
+  setTimeout(() => {
+    const backupIds = new Set(backups.map(b => String(b.product.id)));
+    const stillDeleted = Array.from(backupIds).every(id =>
+      !products.find(p => String(p.id) === id)
+    );
+    if (stillDeleted) {
+      imageUrls.forEach(url => {
+        if (typeof deleteOldImageFromStorage === 'function') {
+          deleteOldImageFromStorage(url);
+        }
+      });
+    }
+  }, 5500);
 }
 
 // ===== COPY HOURS =====
@@ -2226,8 +2457,8 @@ function renderCategories(){
       <div id="cat-view-${c.id}" class="flex-1 flex items-center justify-between gap-2">
         <span class="font-semibold text-gray-800">${search ? highlightMatch(c.name, search) : c.name}</span>
         <div class="flex gap-1">
-          <button class="btn-ghost text-gray-500" onclick="startEditCategory('${c.id}')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-          <button class="btn-danger" onclick="deleteCategory('${c.id}')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg></button>
+          <button class="btn-ghost text-gray-500" onclick="startEditCategory('${c.id}')" aria-label="ערוך קטגוריה"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+          <button class="btn-danger" onclick="deleteCategory('${c.id}')" aria-label="מחק קטגוריה"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg></button>
         </div>
       </div>
       <div id="cat-edit-${c.id}" class="flex-1 flex items-center gap-2" style="display:none">
@@ -3256,9 +3487,10 @@ Object.assign(window, {
   captureSnapshot, checkDirty, clearDirty, updateDirtyIndicator, hasAnyDirty,
   updatePublishBanner, computePublishDirty, formatTimeAgo,
   showModal, confirmAction, alertAction, confirmDanger, showToast,
-  duplicateProduct, showUndoToast,
+  showUndoToast,
   toggleBulkMode, cancelBulkMode, toggleProductSelection, bulkSetActive, bulkDelete,
   copyHoursToWeekdays, copyHoursToAllWeek, highlightMatch, isVisible,
+  handleOrdersPausedChange, addAutoBanner, removeAutoBanner, updateAutoBannerField, toggleAutoBannerDay,
 });
 </script>
 <!-- Global success toast -->
@@ -3272,11 +3504,11 @@ Object.assign(window, {
 </div>
 
 <!-- Image Gallery Modal -->
-<div id="galleryModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);overflow-y:auto;" onclick="if(event.target===this)closeGalleryModal()">
+<div id="galleryModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);overflow-y:auto;" onclick="if(event.target===this)closeGalleryModal()" role="dialog" aria-modal="true" aria-labelledby="galleryModalTitle">
   <div style="max-width:860px;margin:40px auto;background:var(--card-bg,#fff);border-radius:16px;padding:24px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-      <h3 style="margin:0;font-size:18px;font-weight:700;">בחר תמונה מהגלריה</h3>
-      <button onclick="closeGalleryModal()" style="background:none;border:none;cursor:pointer;font-size:24px;color:var(--text-3);line-height:1;">&times;</button>
+      <h3 id="galleryModalTitle" style="margin:0;font-size:18px;font-weight:700;">בחר תמונה מהגלריה</h3>
+      <button onclick="closeGalleryModal()" aria-label="סגור" style="background:none;border:none;cursor:pointer;font-size:24px;color:var(--text-3);line-height:1;">&times;</button>
     </div>
     <div id="galleryGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;"></div>
   </div>

@@ -7,7 +7,7 @@
   --border: #e8ecf0;
   --text: #111827;
   --text-2: #6b7280;
-  --text-3: #9ca3af;
+  --text-3: #6b7280;
   --radius: 14px;
   --radius-sm: 10px;
   --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 8px rgba(0,0,0,0.04);
@@ -105,3 +105,8 @@ input:checked + .slider:before { transform:translateX(-20px); }
 @keyframes slideDown { from{transform:translateY(-6px);opacity:0} to{transform:translateY(0);opacity:1} }
 /* Section animation */
 .section-enter { animation:slideUp 0.2s ease; }
+/* Visible focus indicator for keyboard navigation (WCAG) */
+button:focus-visible, input:focus-visible, a:focus-visible, textarea:focus-visible, select:focus-visible, [tabindex]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
