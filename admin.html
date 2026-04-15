@@ -3196,22 +3196,25 @@ window.addEventListener('beforeunload', function(e) {
 });
 
 // ===== KEYBOARD SHORTCUTS =====
+function isVisible(el) {
+  if (!el) return false;
+  const cs = window.getComputedStyle(el);
+  return cs.display !== 'none' && cs.visibility !== 'hidden' && el.offsetParent !== null;
+}
+
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
-    const productOverlay = document.getElementById('productFormOverlay');
-    if (productOverlay && productOverlay.style.display !== 'none' && productOverlay.style.display !== '') {
+    if (isVisible(document.getElementById('productFormOverlay'))) {
       e.preventDefault();
       if (typeof closeProductForm === 'function') closeProductForm();
       return;
     }
-    const galleryModal = document.getElementById('galleryModal');
-    if (galleryModal && galleryModal.style.display !== 'none' && galleryModal.style.display !== '') {
+    if (isVisible(document.getElementById('galleryModal'))) {
       e.preventDefault();
       if (typeof closeGalleryModal === 'function') closeGalleryModal();
       return;
     }
-    const linkPopup = document.getElementById('linkPopup');
-    if (linkPopup && linkPopup.style.display !== 'none' && linkPopup.style.display !== '') {
+    if (isVisible(document.getElementById('linkPopup'))) {
       e.preventDefault();
       if (typeof closeLinkPopup === 'function') closeLinkPopup();
       return;
@@ -3224,30 +3227,26 @@ document.addEventListener('keydown', function(e) {
   }
 
   if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-    const productOverlay = document.getElementById('productFormOverlay');
-    if (productOverlay && productOverlay.style.display !== 'none' && productOverlay.style.display !== '') {
+    if (isVisible(document.getElementById('productFormOverlay'))) {
       e.preventDefault();
       if (typeof saveProduct === 'function') saveProduct();
       return;
     }
     const editSections = ['Basics', 'Contact', 'Hours', 'Images', 'Content'];
     for (const section of editSections) {
-      const editEl = document.getElementById('section' + section + 'Edit');
-      if (editEl && editEl.style.display !== 'none' && editEl.style.display !== '') {
+      if (isVisible(document.getElementById('section' + section + 'Edit'))) {
         e.preventDefault();
         const saveFn = window['save' + section];
         if (typeof saveFn === 'function') saveFn();
         return;
       }
     }
-    const bannerEdit = document.getElementById('bannerEditMode');
-    if (bannerEdit && bannerEdit.style.display !== 'none' && bannerEdit.style.display !== '') {
+    if (isVisible(document.getElementById('bannerEditMode'))) {
       e.preventDefault();
       if (typeof saveBanner === 'function') saveBanner();
       return;
     }
-    const slugRow = document.getElementById('slugInputRow');
-    if (slugRow && slugRow.style.display !== 'none' && slugRow.style.display !== '') {
+    if (isVisible(document.getElementById('slugInputRow'))) {
       e.preventDefault();
       if (typeof saveSlug === 'function') saveSlug();
       return;
@@ -3255,8 +3254,7 @@ document.addEventListener('keydown', function(e) {
   }
 
   if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
-    const productsSection = document.getElementById('section-products');
-    if (productsSection && productsSection.style.display !== 'none') {
+    if (isVisible(document.getElementById('section-products'))) {
       e.preventDefault();
       if (typeof openProductForm === 'function') openProductForm(null);
       return;
@@ -3294,7 +3292,7 @@ Object.assign(window, {
   showModal, confirmAction, alertAction, confirmDanger, showToast,
   duplicateProduct, showUndoToast,
   toggleBulkMode, cancelBulkMode, toggleProductSelection, bulkSetActive, bulkDelete,
-  copyHoursToWeekdays, copyHoursToAllWeek, highlightMatch,
+  copyHoursToWeekdays, copyHoursToAllWeek, highlightMatch, isVisible,
 });
 </script>
 <!-- Global success toast -->
