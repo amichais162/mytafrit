@@ -12,6 +12,22 @@
 
 <div id="subscriptionBanner" style="display:none;text-align:center;padding:10px 16px;font-size:14px;font-weight:600;color:white;font-family:'Heebo',sans-serif;"></div>
 
+<div id="publishBanner" style="display:none;background:#fff7ed;border-bottom:2px solid #fb923c;padding:10px 16px;font-family:'Heebo',sans-serif;">
+  <div style="max-width:640px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+    <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:200px;">
+      <span style="font-size:18px;">📝</span>
+      <div style="display:flex;flex-direction:column;gap:2px;">
+        <span id="publishBannerText" style="font-size:13px;font-weight:700;color:#92400e;">יש לך שינויים לא מפורסמים</span>
+        <span id="publishLastInfo" style="font-size:11px;color:#9a3412;"></span>
+      </div>
+    </div>
+    <button id="publishBannerBtn" onclick="publishChangesUI()" style="background:#92400e;color:white;border:none;padding:8px 18px;border-radius:8px;font-family:'Heebo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;">
+      <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      פרסם שינויים
+    </button>
+  </div>
+</div>
+
 <!-- HEADER -->
 <header style="background:white;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
   <div style="max-width:640px;margin:0 auto;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;">
@@ -30,10 +46,6 @@
         <p style="font-size:11px;font-weight:600;color:var(--text-3);margin-bottom:8px;">לינק לשיתוף עם לקוחות</p>
         <div id="linkPopupContent"></div>
       </div>
-      <button id="publishBtn" onclick="publishChangesUI()" class="btn-primary" style="padding:7px 14px;font-size:13px;gap:5px;" aria-label="פרסם תפריט">
-        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        פרסם
-      </button>
       <button onclick="openPreview()" class="btn-outline" style="padding:7px 12px;font-size:13px;gap:5px;" aria-label="תצוגה מקדימה של התפריט">
         <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke-width="2"/></svg>
         תצוגה מקדימה
@@ -837,6 +849,7 @@ async function loadDataFromSupabase() {
     }
 
     initUI();
+    updatePublishBanner();
   } catch(e) {
     console.warn('Supabase load failed, falling back to localStorage', e);
     loadFromLocalStorage();
@@ -973,6 +986,25 @@ function switchTab(tab) {
     const dirtyList = Array.from(dirtySections).join(', ');
     const ok = confirm(`יש לך שינויים לא שמורים ב: ${dirtyList}\n\nאם תעבור עכשיו, השינויים יאבדו. להמשיך?`);
     if (!ok) return;
+
+    // User confirmed — rollback all dirty sections to their saved state
+    const cancelMap = {
+      'Basics': typeof cancelEditBasics === 'function' ? cancelEditBasics : null,
+      'Contact': typeof cancelEditContact === 'function' ? cancelEditContact : null,
+      'Hours': typeof cancelEditHours === 'function' ? cancelEditHours : null,
+      'Images': typeof cancelEditImages === 'function' ? cancelEditImages : null,
+      'Content': typeof cancelEditContent === 'function' ? cancelEditContent : null,
+    };
+
+    const sectionsToCancel = Array.from(dirtySections);
+    for (const sectionId of sectionsToCancel) {
+      const cancelFn = cancelMap[sectionId];
+      if (cancelFn) {
+        try { cancelFn(); } catch(e) { console.warn('Rollback failed for', sectionId, e); }
+      }
+    }
+
+    // Safety: ensure all dirty state is cleared even if a cancelFn missed something
     Object.keys(dirtySnapshots).forEach(k => clearDirty(k));
   }
   ['products','categories','business','settings'].forEach(t=>{
@@ -1443,6 +1475,11 @@ async function syncProductsToLocalStorage() {
       await supabaseClient.from('products').upsert(updates, { onConflict: 'id' });
     } catch(e) { console.warn('Products sync to Supabase failed', e); }
   }
+  if (currentSettings) {
+    currentSettings.updated_at = new Date().toISOString();
+    localStorage.setItem('tafrit_preview_settings', JSON.stringify(currentSettings));
+  }
+  if (typeof updatePublishBanner === 'function') updatePublishBanner();
 }
 
 async function syncCategoriesToLocalStorage() {
@@ -1458,6 +1495,11 @@ async function syncCategoriesToLocalStorage() {
       await supabaseClient.from('categories').upsert(updates, { onConflict: 'id' });
     } catch(e) { console.warn('Categories sync to Supabase failed', e); }
   }
+  if (currentSettings) {
+    currentSettings.updated_at = new Date().toISOString();
+    localStorage.setItem('tafrit_preview_settings', JSON.stringify(currentSettings));
+  }
+  if (typeof updatePublishBanner === 'function') updatePublishBanner();
 }
 
 // ===== GLOBAL SUCCESS TOAST =====
@@ -2073,8 +2115,9 @@ async function upsertSettingsPartial(partialPayload) {
     .update(partialPayload)
     .eq('user_id', currentUser.id);
   if (error) throw error;
-  currentSettings = { ...currentSettings, ...partialPayload };
+  currentSettings = { ...currentSettings, ...partialPayload, updated_at: new Date().toISOString() };
   localStorage.setItem('tafrit_preview_settings', JSON.stringify(currentSettings));
+  if (typeof updatePublishBanner === 'function') updatePublishBanner();
 }
 
 // ===== SECTION EDIT/CANCEL — per-card (step 4, no save yet) =====
@@ -2446,6 +2489,7 @@ async function publishChanges() {
       localStorage.setItem('tafrit_preview_settings', JSON.stringify(currentSettings));
     }
 
+    updatePublishBanner();
     showSuccess('✓ פורסם בהצלחה!');
     return { ok: true, publishedAt: data.publishedAt };
 
@@ -2456,31 +2500,94 @@ async function publishChanges() {
   }
 }
 
-async function publishChangesUI() {
-  const btn = document.getElementById('publishBtn');
-  if (!btn) return;
+// ===== PUBLISH BANNER (Global Dirty State) =====
+function computePublishDirty() {
+  if (!currentSettings) return false;
+  if (!currentSettings.last_published_at) return true;
+  if (!currentSettings.updated_at) return false;
+  return new Date(currentSettings.updated_at) > new Date(currentSettings.last_published_at);
+}
 
-  btn.disabled = true;
-  const originalHTML = btn.innerHTML;
-  btn.innerHTML = '⏳ מפרסם...';
+function formatTimeAgo(isoString) {
+  if (!isoString) return '';
+  try {
+    const then = new Date(isoString);
+    const now = new Date();
+    const diffSec = Math.floor((now - then) / 1000);
+    if (diffSec < 60) return 'לפני כמה שניות';
+    const diffMin = Math.floor(diffSec / 60);
+    if (diffMin < 60) return `לפני ${diffMin} דקות`;
+    const diffHour = Math.floor(diffMin / 60);
+    if (diffHour < 24) return `לפני ${diffHour} שעות`;
+    const diffDay = Math.floor(diffHour / 24);
+    if (diffDay === 1) return 'אתמול';
+    if (diffDay < 7) return `לפני ${diffDay} ימים`;
+    return then.toLocaleDateString('he-IL', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  } catch (e) { return ''; }
+}
+
+function updatePublishBanner() {
+  const banner = document.getElementById('publishBanner');
+  if (!banner) return;
+
+  const isDirty = computePublishDirty();
+
+  if (!isDirty) {
+    banner.style.display = 'none';
+    return;
+  }
+
+  banner.style.display = 'block';
+
+  const textEl = document.getElementById('publishBannerText');
+  const infoEl = document.getElementById('publishLastInfo');
+
+  if (currentSettings && !currentSettings.last_published_at) {
+    if (textEl) textEl.textContent = 'התפריט עדיין לא פורסם';
+    if (infoEl) infoEl.textContent = 'לקוחות לא יראו את התפריט עד שתפרסם';
+  } else {
+    if (textEl) textEl.textContent = 'יש לך שינויים לא מפורסמים';
+    if (infoEl) {
+      const lastPub = currentSettings && currentSettings.last_published_at
+        ? `פורסם לאחרונה ${formatTimeAgo(currentSettings.last_published_at)}`
+        : '';
+      infoEl.textContent = lastPub;
+    }
+  }
+}
+
+setInterval(() => {
+  if (typeof updatePublishBanner === 'function') updatePublishBanner();
+}, 60000);
+
+async function publishChangesUI() {
+  const btn = document.getElementById('publishBannerBtn');
+  const fallbackBtn = document.getElementById('publishBtn');
+  const targetBtn = btn || fallbackBtn;
+  if (!targetBtn) return;
+
+  const originalHTML = targetBtn.innerHTML;
+  targetBtn.disabled = true;
+  targetBtn.innerHTML = '⏳ מפרסם...';
 
   try {
     const result = await publishChanges();
 
     if (result.ok) {
-      btn.innerHTML = '✓ פורסם!';
+      targetBtn.innerHTML = '✓ פורסם!';
+      updatePublishBanner();
       setTimeout(() => {
-        btn.innerHTML = originalHTML;
-        btn.disabled = false;
-      }, 2500);
+        targetBtn.innerHTML = originalHTML;
+        targetBtn.disabled = false;
+      }, 2000);
     } else {
-      btn.innerHTML = originalHTML;
-      btn.disabled = false;
+      targetBtn.innerHTML = originalHTML;
+      targetBtn.disabled = false;
     }
   } catch (e) {
     console.error('publishChangesUI error', e);
-    btn.innerHTML = originalHTML;
-    btn.disabled = false;
+    targetBtn.innerHTML = originalHTML;
+    targetBtn.disabled = false;
   }
 }
 
@@ -2536,6 +2643,7 @@ Object.assign(window, {
   addTestimonial, removeTestimonial, updateTestimonial, saveTestimonials,
   publishChanges, publishChangesUI, openPreview, signOutWithCleanup,
   captureSnapshot, checkDirty, clearDirty, updateDirtyIndicator, hasAnyDirty,
+  updatePublishBanner, computePublishDirty, formatTimeAgo,
 });
 </script>
 <!-- Global success toast -->
