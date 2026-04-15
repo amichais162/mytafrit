@@ -3064,11 +3064,12 @@ async function saveSlug() {
   }
   if (currentSlug) {
     const ok = await confirmAction(
-      `לינק נוכחי: ${buildMenuLink(currentSlug)}\nלינק חדש: ${buildMenuLink(val)}\n\nהלינק הקודם יפסיק לעבוד.`,
+      `לינק נוכחי: ${buildMenuLink(currentSlug)}\nלינק חדש: ${buildMenuLink(val)}\n\nהלינק הקודם יפסיק לעבוד מיד.`,
       '⚠️ שינוי כתובת לינק'
     );
     if (!ok) return;
   }
+  const oldSlug = currentSlug;
   if (supabaseReady && currentUser) {
     try {
       const { error } = await supabaseClient.from('settings').update({ slug: val }).eq('user_id', currentUser.id);
@@ -3089,6 +3090,27 @@ async function saveSlug() {
       return;
     }
   }
+
+  // Migrate KV if user has published before
+  if (currentSettings && currentSettings.last_published_at && oldSlug && oldSlug !== val) {
+    try {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      if (session && session.access_token) {
+        await fetch('https://mytafrit.co.il/rename-slug', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session.access_token}`,
+          },
+          body: JSON.stringify({ oldSlug, newSlug: val }),
+        });
+      }
+    } catch(e) {
+      console.warn('KV slug migration failed', e);
+    }
+  }
+
+  if (currentSettings) currentSettings.slug = val;
   currentSlug = val;
   updateSlugDisplay();
   document.getElementById('slug-warning').style.display = 'none';

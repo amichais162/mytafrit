@@ -4,7 +4,8 @@ compatibility_date = "2024-11-01"
 
 routes = [
   { pattern = "mytafrit.co.il/menu*", zone_name = "mytafrit.co.il" },
-  { pattern = "mytafrit.co.il/publish", zone_name = "mytafrit.co.il" }
+  { pattern = "mytafrit.co.il/publish", zone_name = "mytafrit.co.il" },
+  { pattern = "mytafrit.co.il/rename-slug", zone_name = "mytafrit.co.il" }
 ]
 
 # משתני סביבה — נגדיר אותם ב-deploy דרך wrangler secret
