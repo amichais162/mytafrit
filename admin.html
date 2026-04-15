@@ -3084,19 +3084,28 @@ async function upsertSettingsPartial(partialPayload) {
 
 // ===== SECTION EDIT/CANCEL — per-card (step 4, no save yet) =====
 function _showSectionEdit(card) {
-  document.getElementById('section' + card + 'View').style.display = 'none';
+  const view = document.getElementById('section' + card + 'View');
+  if (view) view.style.display = 'none';
   const edit = document.getElementById('section' + card + 'Edit');
-  edit.style.display = 'flex';
-  document.getElementById(card.toLowerCase() + 'EditBtn').style.display = 'none';
-  document.getElementById(card.toLowerCase() + 'SaveBtn').style.display = 'inline-flex';
-  document.getElementById(card.toLowerCase() + 'CancelBtn').style.display = 'inline-flex';
+  if (edit) edit.style.display = 'flex';
+  const editBtn = document.getElementById(card.toLowerCase() + 'EditBtn');
+  if (editBtn) editBtn.style.display = 'none';
+  const saveBtn = document.getElementById(card.toLowerCase() + 'SaveBtn');
+  if (saveBtn) saveBtn.style.display = 'inline-flex';
+  const cancelBtn = document.getElementById(card.toLowerCase() + 'CancelBtn');
+  if (cancelBtn) cancelBtn.style.display = 'inline-flex';
 }
 function _showSectionView(card) {
-  document.getElementById('section' + card + 'Edit').style.display = 'none';
-  document.getElementById('section' + card + 'View').style.display = 'block';
-  document.getElementById(card.toLowerCase() + 'EditBtn').style.display = 'inline-flex';
-  document.getElementById(card.toLowerCase() + 'SaveBtn').style.display = 'none';
-  document.getElementById(card.toLowerCase() + 'CancelBtn').style.display = 'none';
+  const edit = document.getElementById('section' + card + 'Edit');
+  if (edit) edit.style.display = 'none';
+  const view = document.getElementById('section' + card + 'View');
+  if (view) view.style.display = 'block';
+  const editBtn = document.getElementById(card.toLowerCase() + 'EditBtn');
+  if (editBtn) editBtn.style.display = 'inline-flex';
+  const saveBtn = document.getElementById(card.toLowerCase() + 'SaveBtn');
+  if (saveBtn) saveBtn.style.display = 'none';
+  const cancelBtn = document.getElementById(card.toLowerCase() + 'CancelBtn');
+  if (cancelBtn) cancelBtn.style.display = 'none';
 }
 
 // ----- Basics -----

@@ -437,6 +437,69 @@
 <script type="module">
 // ===== DATA (populated from injected __MYTAFRIT_DATA__ or preview localStorage) =====
 let SETTINGS = {};
+
+// ===== BANNER DECISION LOGIC =====
+function isAutoBannerActiveNow(banner) {
+  if (!banner || !banner.enabled) return false;
+  if (!banner.text || !banner.text.trim()) return false;
+  if (!banner.startTime || !banner.endTime) return false;
+
+  const now = new Date();
+  const parseTime = (t) => {
+    const [h, m] = t.split(':').map(Number);
+    return h * 60 + m;
+  };
+  const nowMinutes = now.getHours() * 60 + now.getMinutes();
+  const startMinutes = parseTime(banner.startTime);
+  const endMinutes = parseTime(banner.endTime);
+  if (nowMinutes < startMinutes || nowMinutes > endMinutes) return false;
+
+  if (banner.mode === 'weekly') {
+    const days = Array.isArray(banner.days) ? banner.days : [];
+    if (!days.length) return false;
+    return days.includes(now.getDay());
+  }
+  if (banner.mode === 'dateRange') {
+    if (!banner.from || !banner.until) return false;
+    const todayStr = now.toISOString().split('T')[0];
+    return todayStr >= banner.from && todayStr <= banner.until;
+  }
+  return false;
+}
+
+function decideActiveBanner(settings) {
+  if (!settings) return null;
+  if (settings.orders_paused) {
+    return { type: 'holiday', text: '🏖️ המסעדה בחופשה זמנית — הזמנות יחזרו בקרוב' };
+  }
+  const autoBanners = Array.isArray(settings.auto_banners) ? settings.auto_banners : [];
+  for (const b of autoBanners) {
+    if (isAutoBannerActiveNow(b)) {
+      return { type: 'auto', text: b.text };
+    }
+  }
+  if (settings.banner_active && settings.banner_text && settings.banner_text.trim()) {
+    return { type: 'manual', text: settings.banner_text.trim() };
+  }
+  return null;
+}
+
+function applyActiveBanner(settings) {
+  const banner = decideActiveBanner(settings);
+  const bannerEl = document.getElementById('topBanner');
+  if (!bannerEl) return;
+  if (!banner) {
+    bannerEl.style.display = 'none';
+    bannerEl.textContent = '';
+    return;
+  }
+  bannerEl.textContent = banner.text;
+  bannerEl.style.display = 'block';
+}
+
+function isOrderingEnabled() {
+  return !(SETTINGS && SETTINGS.orders_paused);
+}
 let CATEGORIES = [{id: null, name: 'הכל'}];
 let PRODUCTS = [];
 
@@ -696,11 +759,12 @@ function getDietaryBadge(type) {
 
 // ===== INIT =====
 function init() {
-  // Banner
-  if (SETTINGS.banner_active && SETTINGS.banner_text) {
-    const b = document.getElementById('topBanner');
-    b.textContent = SETTINGS.banner_text;
-    b.style.display = 'block';
+  // Banner — unified decision (holiday → auto → manual)
+  applyActiveBanner(SETTINGS);
+  if (!window._bannerRefreshTimer) {
+    window._bannerRefreshTimer = setInterval(() => {
+      if (typeof applyActiveBanner === 'function' && SETTINGS) applyActiveBanner(SETTINGS);
+    }, 60000);
   }
   document.getElementById('bizName').textContent = SETTINGS.business_name || 'התפריט שלי';
   document.getElementById('bizTagline').textContent = SETTINGS.tagline || '';
@@ -1202,6 +1266,10 @@ function selectDateChip(btn, dateStr) {
 }
 
 function openDateModal() {
+  if (!isOrderingEnabled()) {
+    alert('המסעדה בחופשה זמנית. הזמנות יחזרו בקרוב.');
+    return;
+  }
   if (!cart.length) return;
   document.getElementById('cartDrawer').classList.add('hidden');
   document.getElementById('cartOverlay').classList.add('hidden');
@@ -1254,6 +1322,10 @@ function selectCustomDate(val) {
 }
 
 function confirmAndSend() {
+  if (!isOrderingEnabled()) {
+    alert('המסעדה בחופשה זמנית. הזמנות יחזרו בקרוב.');
+    return;
+  }
   if (!selectedDate) { alert('אנא בחרו תאריך איסוף'); return; }
   const d = new Date(selectedDate + 'T00:00:00');
   const dayNames = ['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
