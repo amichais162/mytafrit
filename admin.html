@@ -84,6 +84,7 @@
         <svg class="search-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input id="productSearch" class="form-input" style="padding-right:36px" placeholder="חיפוש מוצר..." oninput="debouncedRenderProducts()"/>
       </div>
+      <button id="bulkToggleBtn" onclick="toggleBulkMode()" class="btn-outline" style="padding:6px 14px;font-size:12px;">בחר כמה</button>
       <button class="btn-primary" onclick="openProductForm(null)">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         מוצר חדש
@@ -105,8 +106,16 @@
       <button onclick="setProductFilter('inactive')" id="prodFilter-inactive" class="btn-outline" style="padding:6px 14px;font-size:12px">מוסתרים</button>
     </div>
     <div id="productsList" class="flex flex-col gap-2"></div>
-    <div id="productsEmpty" class="card p-12 text-center text-gray-400" style="display:none">
-      <p class="text-lg">אין מוצרים עדיין</p><p class="text-sm mt-1">הוסף את המוצר הראשון!</p>
+    <div id="productsEmpty" class="card p-10 text-center" style="display:none">
+      <div style="margin:0 auto 16px;width:80px;height:80px;background:#fef3c7;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+        <svg width="40" height="40" fill="none" stroke="#92400e" stroke-width="1.5" viewBox="0 0 24 24"><path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z" stroke-linecap="round"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16" stroke-linecap="round"/></svg>
+      </div>
+      <h3 style="font-size:17px;font-weight:700;color:var(--text);margin-bottom:6px;">עדיין אין מוצרים</h3>
+      <p style="font-size:14px;color:var(--text-3);margin-bottom:18px;">הוסף את המוצר הראשון שלך כדי להתחיל</p>
+      <button onclick="openProductForm(null)" class="btn-primary" style="padding:9px 20px;font-size:14px;">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        הוסף מוצר ראשון
+      </button>
     </div>
   </div>
 
@@ -139,7 +148,17 @@
       <button class="btn-outline" style="padding:8px 14px" onclick="cancelNewCategory()">✕</button>
     </div>
     <div id="categoriesList" class="card divide-y divide-gray-100"></div>
-    <div id="categoriesEmpty" class="card p-10 text-center text-gray-400 text-sm" style="display:none">אין קטגוריות עדיין</div>
+    <div id="categoriesEmpty" class="card p-10 text-center" style="display:none">
+      <div style="margin:0 auto 16px;width:80px;height:80px;background:#fef3c7;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+        <svg width="40" height="40" fill="none" stroke="#92400e" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+      </div>
+      <h3 style="font-size:17px;font-weight:700;color:var(--text);margin-bottom:6px;">עדיין אין קטגוריות</h3>
+      <p style="font-size:14px;color:var(--text-3);margin-bottom:18px;">הוסף קטגוריה ראשונה כדי לסדר את המוצרים</p>
+      <button onclick="startNewCategory()" class="btn-primary" style="padding:9px 20px;font-size:14px;">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        הוסף קטגוריה ראשונה
+      </button>
+    </div>
   </div>
 
   <!-- ===== BUSINESS ===== -->
@@ -306,6 +325,10 @@
                 </div>
               </div>
               <div id="hoursPerDay" class="space-y-2"></div>
+              <div id="hoursCopyButtons" style="display:none;flex-direction:row;gap:8px;flex-wrap:wrap;margin-top:8px;">
+                <button type="button" onclick="copyHoursToWeekdays()" class="btn-outline" style="font-size:12px;padding:6px 12px;">📋 העתק לימי חול (א'-ה')</button>
+                <button type="button" onclick="copyHoursToAllWeek()" class="btn-outline" style="font-size:12px;padding:6px 12px;">📋 העתק לכל השבוע</button>
+              </div>
               <div id="hoursPreview" class="mt-3 p-3 bg-amber-50 border border-amber-100 rounded-xl" style="display:none">
                 <p class="text-xs font-semibold text-amber-700 mb-1">תצוגה מקדימה:</p>
                 <p id="hoursPreviewText" class="text-sm text-amber-900 font-medium leading-relaxed whitespace-pre-line" style="direction:rtl"></p>
@@ -459,6 +482,8 @@
     <h2 style="font-size:17px;font-weight:700;color:var(--text);margin-bottom:16px;">הגדרות</h2>
     <div style="display:flex;flex-direction:column;gap:12px;">
 
+      <h3 style="font-size:13px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.5px;margin:8px 4px 4px;">📢 מראה ופרסום</h3>
+
       <!-- Banner -->
       <div class="card" style="padding:16px;">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;">
@@ -494,9 +519,11 @@
         <div id="bannerSaveSuccess" style="display:none;margin-top:8px;font-size:12px;color:#16a34a;font-weight:600;text-align:center;">✓ הבאנר נשמר!</div>
       </div>
 
+      <h3 style="font-size:13px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.5px;margin:20px 4px 4px;">🔗 כתובת הלינק</h3>
+
       <!-- Public link -->
       <div class="card" style="padding:16px;">
-        <p style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;">כתובת הלינק של התפריט הציבורי</p>
+        <p style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;">כתובת הלינק של התפריט הציבורי <span style="color:#ef4444" aria-label="שדה חובה">*</span></p>
         <p style="font-size:12px;color:var(--text-3);margin-bottom:12px;">באנגלית בלבד — אותיות קטנות, מספרים ומקפים (-)</p>
 
         <!-- Link display when set -->
@@ -546,6 +573,8 @@
         </div>
       </div>
 
+      <h3 style="font-size:13px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.5px;margin:20px 4px 4px;">⭐ ביקורות לקוחות</h3>
+
       <!-- Testimonials -->
       <div class="card" style="padding:16px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
@@ -558,6 +587,8 @@
         <button type="button" onclick="saveTestimonials()" class="btn-primary" style="margin-top:12px;padding:9px 18px;font-size:13px;width:100%;">שמור ציטוטים</button>
         <p id="testimonials-save-ok" style="display:none;font-size:12px;color:#16a34a;font-weight:600;margin-top:8px;text-align:center;">✓ הציטוטים נשמרו!</p>
       </div>
+
+      <h3 style="font-size:13px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.5px;margin:20px 4px 4px;">💳 מנוי</h3>
 
       <!-- Subscription -->
       <div class="card" style="padding:16px;">
@@ -691,6 +722,17 @@ let products = [];
 let pendingProductsOrder = null;
 let pendingCategoriesOrder = null;
 let editingProductId=null, selectedDietary='', selectedCategories=[];
+let selectedProductIds = new Set();
+let bulkMode = false;
+
+function highlightMatch(text, query) {
+  if (!query || !text) return text || '';
+  const safeQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return String(text).replace(
+    new RegExp(`(${safeQuery})`, 'gi'),
+    '<mark style="background:#fef3c7;padding:0 2px;border-radius:3px;">$1</mark>'
+  );
+}
 let currentSlug='';
 let hoursDays = {};
 let hoursDefault = { open: '', close: '' };
@@ -752,6 +794,209 @@ function updateDirtyIndicator(sectionId) {
 
 function hasAnyDirty() {
   return dirtySections.size > 0;
+}
+
+// ===== UNIFIED MODAL SYSTEM =====
+let _modalStack = [];
+
+function showModal(options) {
+  return new Promise((resolve) => {
+    const {
+      title = '',
+      message = '',
+      buttons = [{ text: 'אישור', role: 'confirm', style: 'primary' }],
+    } = options || {};
+
+    const previouslyFocused = document.activeElement;
+
+    const overlay = document.createElement('div');
+    overlay.style.cssText = `position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:10000;display:flex;align-items:center;justify-content:center;padding:16px;animation:fadeIn 0.15s ease;font-family:Heebo,sans-serif;`;
+
+    const box = document.createElement('div');
+    box.style.cssText = `background:white;border-radius:14px;padding:20px;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.3);animation:scaleIn 0.15s ease;`;
+    box.setAttribute('role', 'dialog');
+    box.setAttribute('aria-modal', 'true');
+    const titleId = 'modal-title-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7);
+    if (title) box.setAttribute('aria-labelledby', titleId);
+
+    if (title) {
+      const titleEl = document.createElement('h3');
+      titleEl.id = titleId;
+      titleEl.textContent = title;
+      titleEl.style.cssText = 'font-size:16px;font-weight:700;color:#111827;margin:0 0 10px;';
+      box.appendChild(titleEl);
+    }
+
+    if (message) {
+      const msgEl = document.createElement('p');
+      msgEl.textContent = message;
+      msgEl.style.cssText = 'font-size:14px;color:#374151;margin:0 0 18px;line-height:1.5;white-space:pre-line;';
+      box.appendChild(msgEl);
+    }
+
+    const btnsWrap = document.createElement('div');
+    btnsWrap.style.cssText = 'display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;';
+
+    const btnEls = [];
+    let resolved = false;
+    function close(role) {
+      if (resolved) return;
+      resolved = true;
+      if (overlay.parentNode) document.body.removeChild(overlay);
+      _modalStack = _modalStack.filter(m => m.overlay !== overlay);
+      try { previouslyFocused && previouslyFocused.focus(); } catch(e) {}
+      resolve(role);
+    }
+
+    buttons.forEach((btn) => {
+      const btnEl = document.createElement('button');
+      btnEl.textContent = btn.text;
+      btnEl.type = 'button';
+      const isPrimary = btn.style === 'primary';
+      const isDanger = btn.style === 'danger';
+      btnEl.style.cssText = `padding:9px 18px;border-radius:10px;font-family:Heebo,sans-serif;font-size:14px;font-weight:700;cursor:pointer;border:none;${isPrimary ? 'background:#92400e;color:white;' : ''}${isDanger ? 'background:#dc2626;color:white;' : ''}${!isPrimary && !isDanger ? 'background:white;color:#374151;border:1.5px solid #e5e7eb;' : ''}`;
+      btnEl.addEventListener('click', () => close(btn.role || 'confirm'));
+      btnsWrap.appendChild(btnEl);
+      btnEls.push(btnEl);
+    });
+
+    box.appendChild(btnsWrap);
+    overlay.appendChild(box);
+    document.body.appendChild(overlay);
+
+    _modalStack.push({ overlay, box, btnEls });
+
+    const focusableSelectors = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+    const focusables = Array.from(box.querySelectorAll(focusableSelectors));
+    if (focusables.length) focusables[focusables.length - 1].focus();
+
+    function handleKeydown(e) {
+      if (e.key === 'Escape') {
+        close(null);
+        return;
+      }
+      if (e.key === 'Tab') {
+        const focusableNow = Array.from(box.querySelectorAll(focusableSelectors));
+        if (!focusableNow.length) return;
+        const first = focusableNow[0];
+        const last = focusableNow[focusableNow.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    }
+    overlay.addEventListener('keydown', handleKeydown);
+
+    const hasCancel = buttons.some(b => b.role === 'cancel');
+    if (hasCancel) {
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) close('cancel');
+      });
+    }
+  });
+}
+
+async function confirmAction(message, title = 'אישור') {
+  const result = await showModal({
+    title,
+    message,
+    buttons: [
+      { text: 'בטל', role: 'cancel' },
+      { text: 'אישור', role: 'confirm', style: 'primary' },
+    ],
+  });
+  return result === 'confirm';
+}
+
+async function alertAction(message, title = '') {
+  await showModal({
+    title,
+    message,
+    buttons: [{ text: 'הבנתי', role: 'confirm', style: 'primary' }],
+  });
+}
+
+async function confirmDanger(message, confirmText = 'מחק', title = 'אישור מחיקה') {
+  const result = await showModal({
+    title,
+    message,
+    buttons: [
+      { text: 'בטל', role: 'cancel' },
+      { text: confirmText, role: 'confirm', style: 'danger' },
+    ],
+  });
+  return result === 'confirm';
+}
+
+function showToast(message, type = 'success') {
+  const toast = document.getElementById('globalSuccessToast');
+  if (!toast) return;
+
+  if (!toast.hasAttribute('role')) toast.setAttribute('role', 'status');
+  if (!toast.hasAttribute('aria-live')) toast.setAttribute('aria-live', 'polite');
+  if (!toast.hasAttribute('aria-atomic')) toast.setAttribute('aria-atomic', 'true');
+
+  let icon = '✓', bg = '#16a34a';
+  if (type === 'error') { icon = '❌'; bg = '#dc2626'; }
+  if (type === 'warning') { icon = '⚠️'; bg = '#d97706'; }
+  if (type === 'info') { icon = 'ℹ️'; bg = '#0284c7'; }
+
+  toast.style.background = bg;
+  toast.textContent = icon + ' ' + (message || '');
+  toast.style.display = 'block';
+
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => { toast.style.display = 'none'; }, 2800);
+}
+
+// ===== UNDO TOAST =====
+function showUndoToast(message, undoCallback, timeoutMs = 5000) {
+  let toast = document.getElementById('undoToast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'undoToast';
+    toast.setAttribute('role', 'status');
+    toast.setAttribute('aria-live', 'polite');
+    toast.style.cssText = `position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1f2937;color:white;padding:10px 14px 10px 18px;border-radius:12px;font-family:Heebo,sans-serif;font-size:14px;font-weight:600;z-index:10001;box-shadow:0 8px 24px rgba(0,0,0,0.3);align-items:center;gap:14px;`;
+    document.body.appendChild(toast);
+  }
+
+  toast.innerHTML = '';
+  const msgSpan = document.createElement('span');
+  msgSpan.textContent = message;
+  toast.appendChild(msgSpan);
+
+  const undoBtn = document.createElement('button');
+  undoBtn.textContent = 'בטל';
+  undoBtn.style.cssText = `background:#fbbf24;color:#1f2937;border:none;padding:6px 14px;border-radius:8px;font-family:Heebo,sans-serif;font-size:13px;font-weight:700;cursor:pointer;`;
+
+  let resolved = false;
+  const cleanup = () => {
+    if (resolved) return;
+    resolved = true;
+    toast.style.display = 'none';
+  };
+
+  undoBtn.addEventListener('click', async () => {
+    if (resolved) return;
+    resolved = true;
+    toast.style.display = 'none';
+    try {
+      await undoCallback();
+    } catch(e) {
+      console.error('Undo failed', e);
+      showToast('הביטול נכשל', 'error');
+    }
+  });
+
+  toast.appendChild(undoBtn);
+  toast.style.display = 'flex';
+
+  setTimeout(cleanup, timeoutMs);
 }
 
 // ===== ONE-TIME LOCALSTORAGE KEY MIGRATION =====
@@ -971,9 +1216,9 @@ function initUI() {
 }
 
 // ===== VIEW MENU =====
-function viewMenu() {
+async function viewMenu() {
   if (!currentSlug) {
-    alert('עדיין לא הגדרת לינק לתפריט.\nעבור להגדרות ← כתובת הלינק הציבורי.');
+    await alertAction('עדיין לא הגדרת לינק לתפריט.\nעבור להגדרות ← כתובת הלינק הציבורי.');
     switchTab('settings');
     setTimeout(()=>{document.getElementById('s-slug').focus();document.getElementById('s-slug').scrollIntoView({behavior:'smooth',block:'center'})},200);
     return;
@@ -981,10 +1226,13 @@ function viewMenu() {
   window.open(currentSlug ? 'menu.html?slug=' + encodeURIComponent(currentSlug) : 'menu.html', '_blank');
 }
 
-function switchTab(tab) {
+async function switchTab(tab) {
   if (hasAnyDirty()) {
     const dirtyList = Array.from(dirtySections).join(', ');
-    const ok = confirm(`יש לך שינויים לא שמורים ב: ${dirtyList}\n\nאם תעבור עכשיו, השינויים יאבדו. להמשיך?`);
+    const ok = await confirmAction(
+      `יש לך שינויים לא שמורים ב: ${dirtyList}\n\nאם תעבור עכשיו, השינויים יאבדו.`,
+      'שינויים לא שמורים'
+    );
     if (!ok) return;
 
     // User confirmed — rollback all dirty sections to their saved state
@@ -1125,7 +1373,9 @@ function handleDefaultTimeInput(field, input) {
 
 function renderHoursRows() {
   const container = document.getElementById('hoursPerDay');
+  const copyBtns = document.getElementById('hoursCopyButtons');
   const sortedDays = Object.keys(hoursDays).map(Number).sort((a,b)=>a-b);
+  if (copyBtns) copyBtns.style.display = sortedDays.length > 0 ? 'flex' : 'none';
   if (!sortedDays.length) { container.innerHTML=''; return; }
 
   container.innerHTML = sortedDays.map(idx => {
@@ -1455,25 +1705,12 @@ async function syncSettingsToLocalStorage() {
 async function syncProductsToLocalStorage() {
   localStorage.setItem('tafrit_preview_products', JSON.stringify(products));
   if (supabaseReady && currentUser) {
-    // Sort order is saved per-product via sort_order field
+    // Only update sort_order, to avoid races with concurrent saves
     try {
-      const updates = products.map((p, i) => ({
-        id: p.id,
-        user_id: currentUser.id,
-        name: p.name,
-        description: p.description || null,
-        price: p.price || 0,
-        image_url: p.image_url || null,
-        allergens: p.allergens || null,
-        dietary_type: p.dietary_type || null,
-        is_active: p.is_active !== false,
-        is_bestseller: !!p.is_bestseller,
-        is_new: !!p.is_new,
-        sort_order: i,
-        categories: p.categories || [],
-      }));
-      await supabaseClient.from('products').upsert(updates, { onConflict: 'id' });
-    } catch(e) { console.warn('Products sync to Supabase failed', e); }
+      for (const [i, p] of products.entries()) {
+        await supabaseClient.from('products').update({ sort_order: i }).eq('id', p.id);
+      }
+    } catch(e) { console.warn('Products order sync to Supabase failed', e); }
   }
   if (currentSettings) {
     currentSettings.updated_at = new Date().toISOString();
@@ -1486,14 +1723,10 @@ async function syncCategoriesToLocalStorage() {
   localStorage.setItem('tafrit_preview_categories', JSON.stringify(categories));
   if (supabaseReady && currentUser) {
     try {
-      const updates = categories.map((c, i) => ({
-        id: c.id,
-        user_id: currentUser.id,
-        name: c.name,
-        sort_order: i,
-      }));
-      await supabaseClient.from('categories').upsert(updates, { onConflict: 'id' });
-    } catch(e) { console.warn('Categories sync to Supabase failed', e); }
+      for (const [i, c] of categories.entries()) {
+        await supabaseClient.from('categories').update({ sort_order: i }).eq('id', c.id);
+      }
+    } catch(e) { console.warn('Categories order sync to Supabase failed', e); }
   }
   if (currentSettings) {
     currentSettings.updated_at = new Date().toISOString();
@@ -1504,12 +1737,18 @@ async function syncCategoriesToLocalStorage() {
 
 // ===== GLOBAL SUCCESS TOAST =====
 function showSuccess(msg) {
-  const toast = document.getElementById('globalSuccessToast');
-  if (!toast) return;
-  toast.textContent = '✓ ' + (msg || 'נשמר בהצלחה!');
-  toast.style.display = 'block';
-  clearTimeout(toast._t);
-  toast._t = setTimeout(() => { toast.style.display = 'none'; }, 2500);
+  let type = 'success';
+  let cleanMsg = msg || 'נשמר בהצלחה!';
+  if (cleanMsg.startsWith('❌')) {
+    type = 'error';
+    cleanMsg = cleanMsg.substring(2).trim();
+  } else if (cleanMsg.startsWith('⚠️')) {
+    type = 'warning';
+    cleanMsg = cleanMsg.substring(2).trim();
+  } else if (cleanMsg.startsWith('✓')) {
+    cleanMsg = cleanMsg.substring(1).trim();
+  }
+  showToast(cleanMsg, type);
 }
 
 function saveProductsOrder(){
@@ -1549,20 +1788,21 @@ function renderProducts(){
   if(productStatusFilter==='active')filtered=filtered.filter(p=>p.is_active!==false);
   else if(productStatusFilter==='inactive')filtered=filtered.filter(p=>p.is_active===false);
   document.getElementById('productCount').textContent=products.length;
-  if(!products.length){list.innerHTML='';empty.innerHTML='<p class="text-lg text-gray-400">אין מוצרים עדיין</p><p class="text-sm text-gray-400 mt-1">הוסף את המוצר הראשון!</p>';empty.style.display='block';return;}
-  if(!filtered.length){list.innerHTML='';empty.innerHTML='<p class="text-lg text-gray-400">לא נמצאו מוצרים</p>';empty.style.display='block';return;}
+  if(!products.length){list.innerHTML='';empty.style.display='block';return;}
+  if(!filtered.length){list.innerHTML='<p class="text-center text-gray-400 py-6 text-sm">לא נמצאו מוצרים שתואמים לחיפוש</p>';empty.style.display='none';return;}
   empty.style.display='none';
   list.innerHTML=filtered.map(p=>{
     const catNames=(p.categories||[]).map(cid=>categories.find(c=>String(c.id)===String(cid))?.name||'').filter(Boolean).join(', ');
     const ds=p.dietary_type==='חלבי'?'background:#dbeafe;color:#1e40af':p.dietary_type==='בשרי'?'background:#fce7f3;color:#9d174d':'background:#f3f4f6;color:#374151';
-    return `<div class="card drag-item px-3 py-2.5 flex items-center gap-3" draggable="true" data-id="${p.id}" style="${p.is_active?'':'opacity:0.45;filter:grayscale(30%)'}">
-      <div class="drag-handle"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="9" y1="18" x2="9" y2="6"/><line x1="15" y1="18" x2="15" y2="6"/></svg></div>
+    return `<div class="card ${bulkMode ? '' : 'drag-item'} px-3 py-2.5 flex items-center gap-3" ${bulkMode ? '' : 'draggable="true"'} data-id="${p.id}" style="${p.is_active?'':'opacity:0.45;filter:grayscale(30%)'}">
+      ${bulkMode ? `<label style="padding:4px;cursor:pointer;display:flex;align-items:center;" onclick="event.stopPropagation()"><input type="checkbox" data-product-id="${p.id}" ${selectedProductIds.has(String(p.id)) ? 'checked' : ''} onchange="toggleProductSelection('${p.id}', this.checked)" style="width:18px;height:18px;accent-color:#92400e;cursor:pointer;"/></label>` : ''}
+      <div class="drag-handle" ${bulkMode ? 'style="display:none;"' : ''}><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="9" y1="18" x2="9" y2="6"/><line x1="15" y1="18" x2="15" y2="6"/></svg></div>
       <div class="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 ${p.image_url?'':'bg-amber-50 flex items-center justify-center text-xl'}">
         ${p.image_url?`<img src="${p.image_url}" class="w-full h-full object-cover" loading="lazy" alt="${p.name}"/>`:'🥐'}
       </div>
       <div class="flex-1 min-w-0">
         <div class="flex items-center gap-1.5 flex-wrap">
-          <span class="font-bold text-gray-900 text-sm">${p.name}</span>
+          <span class="font-bold text-gray-900 text-sm">${search ? highlightMatch(p.name, search) : p.name}</span>
           ${p.is_bestseller?`<span style="background:var(--accent);color:white;font-size:9px;font-weight:700;padding:1px 6px;border-radius:99px">נמכר ביותר</span>`:''}
           ${p.is_new?`<span style="background:#065f46;color:white;font-size:9px;font-weight:700;padding:1px 6px;border-radius:99px">חדש</span>`:''}
           ${p.is_sold_out?`<span style="background:#6b7280;color:white;font-size:9px;font-weight:700;padding:1px 6px;border-radius:99px">אזל</span>`:''}
@@ -1574,8 +1814,9 @@ function renderProducts(){
         </div>
       </div>
       <div class="flex gap-0.5 flex-shrink-0">
-        <button class="btn-ghost text-gray-500" onclick="openProductForm('${p.id}')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-        <button class="btn-danger" onclick="deleteProduct('${p.id}')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg></button>
+        <button class="btn-ghost text-gray-500" onclick="openProductForm('${p.id}')" aria-label="ערוך מוצר" title="ערוך"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+        <button class="btn-ghost text-gray-500" onclick="duplicateProduct('${p.id}')" aria-label="שכפל מוצר" title="שכפל"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+        <button class="btn-danger" onclick="deleteProduct('${p.id}')" aria-label="מחק מוצר" title="מחק"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg></button>
       </div>
     </div>`;
   }).join('');
@@ -1615,6 +1856,32 @@ function openProductForm(id){
   document.getElementById('productFormOverlay').style.display='flex';
   document.body.style.overflow='hidden';
   setTimeout(()=>{const modalBody=document.querySelector('#productFormOverlay .overflow-y-auto');if(modalBody)modalBody.scrollTop=0;},50);
+
+  const modalEl = document.getElementById('productFormOverlay');
+  if (modalEl && !modalEl.dataset.trapInstalled) {
+    modalEl.dataset.trapInstalled = 'true';
+    modalEl.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeProductForm();
+        return;
+      }
+      if (e.key !== 'Tab') return;
+      const focusables = Array.from(modalEl.querySelectorAll('button, input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+        .filter(el => !el.disabled && el.offsetParent !== null);
+      if (!focusables.length) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault(); last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault(); first.focus();
+      }
+    });
+  }
+  setTimeout(() => {
+    const firstInput = document.getElementById('pf-name');
+    if (firstInput) firstInput.focus();
+  }, 100);
 }
 
 function closeProductForm(){delete pendingImageBlobs['pf-img-url'];const pfp=document.getElementById('pf-img-preview');if(pfp&&pfp.dataset.blobUrl){try{URL.revokeObjectURL(pfp.dataset.blobUrl);}catch(e){}delete pfp.dataset.blobUrl;}document.getElementById('productFormOverlay').style.display='none';document.body.style.overflow='';}
@@ -1684,7 +1951,262 @@ async function saveProduct(){
   renderProducts();closeProductForm();showSuccess(isEdit?"המוצר עודכן בהצלחה!":"המוצר נוסף בהצלחה!");
 }
 
-async function deleteProduct(id){const p=products.find(x=>String(x.id)===String(id));if(!p||!confirm(`למחוק את "${p.name}"?`))return;if(p.image_url)deleteOldImageFromStorage(p.image_url);products=products.filter(x=>String(x.id)!==String(id));if(supabaseReady){try{await supabaseClient.from('products').delete().eq('id',id);}catch(e){console.warn('Supabase delete product failed',e);}}syncProductsToLocalStorage();invalidateMenuCache();renderProducts();}
+async function deleteProduct(id) {
+  const p = products.find(x => String(x.id) === String(id));
+  if (!p) return;
+
+  const ok = await confirmDanger(`למחוק את "${p.name}"?`, 'מחק', 'מחיקת מוצר');
+  if (!ok) return;
+
+  const backup = JSON.parse(JSON.stringify(p));
+  const originalIndex = products.findIndex(x => String(x.id) === String(id));
+
+  products = products.filter(x => String(x.id) !== String(id));
+  renderProducts();
+
+  if (supabaseReady) {
+    try {
+      await supabaseClient.from('products').delete().eq('id', id);
+    } catch(e) {
+      console.warn('Supabase delete product failed', e);
+    }
+  }
+
+  syncProductsToLocalStorage();
+  invalidateMenuCache();
+
+  showUndoToast(`"${backup.name}" נמחק`, async () => {
+    products.splice(originalIndex, 0, backup);
+    if (supabaseReady && currentUser) {
+      try {
+        await supabaseClient.from('products').insert(backup);
+      } catch(e) {
+        console.error('Re-insert failed', e);
+        showToast('הביטול נכשל — המוצר לא הוחזר', 'error');
+        products = products.filter(x => String(x.id) !== String(backup.id));
+        renderProducts();
+        return;
+      }
+    }
+    syncProductsToLocalStorage();
+    invalidateMenuCache();
+    renderProducts();
+    showToast('המחיקה בוטלה', 'success');
+  });
+
+  if (backup.image_url) {
+    setTimeout(() => {
+      const stillExists = products.find(x => String(x.id) === String(backup.id));
+      if (!stillExists) {
+        deleteOldImageFromStorage(backup.image_url);
+      }
+    }, 5500);
+  }
+}
+
+async function duplicateProduct(id) {
+  const original = products.find(x => String(x.id) === String(id));
+  if (!original) return;
+
+  const newProduct = {
+    ...JSON.parse(JSON.stringify(original)),
+    id: crypto.randomUUID(),
+    name: original.name + ' (עותק)',
+    sort_order: products.length,
+    is_active: false,
+  };
+
+  if (supabaseReady && currentUser) {
+    newProduct.user_id = currentUser.id;
+    try {
+      const { data: inserted, error } = await supabaseClient
+        .from('products')
+        .insert(newProduct)
+        .select()
+        .single();
+      if (error) throw error;
+      if (inserted) {
+        products.push(inserted);
+        syncProductsToLocalStorage();
+        invalidateMenuCache();
+        renderProducts();
+        showToast(`שוכפל: "${inserted.name}" — נוצר כלא פעיל. ערוך ופרסם.`, 'success');
+        return;
+      }
+    } catch(e) {
+      console.error('Duplicate failed', e);
+      showToast('השכפול נכשל', 'error');
+      return;
+    }
+  }
+
+  products.push(newProduct);
+  syncProductsToLocalStorage();
+  renderProducts();
+  showToast(`שוכפל: "${newProduct.name}"`, 'success');
+}
+
+// ===== BULK ACTIONS =====
+function toggleBulkMode() {
+  bulkMode = !bulkMode;
+  if (!bulkMode) selectedProductIds.clear();
+  const btn = document.getElementById('bulkToggleBtn');
+  if (btn) btn.textContent = bulkMode ? 'סיים בחירה' : 'בחר כמה';
+  renderProducts();
+  updateBulkBar();
+}
+
+function cancelBulkMode() {
+  bulkMode = false;
+  selectedProductIds.clear();
+  const btn = document.getElementById('bulkToggleBtn');
+  if (btn) btn.textContent = 'בחר כמה';
+  renderProducts();
+  updateBulkBar();
+}
+
+function toggleProductSelection(id, isChecked) {
+  if (isChecked) selectedProductIds.add(String(id));
+  else selectedProductIds.delete(String(id));
+  updateBulkBar();
+}
+
+function updateBulkBar() {
+  const bar = document.getElementById('bulkActionBar');
+  if (!bar) return;
+  const count = selectedProductIds.size;
+  if (count === 0 || !bulkMode) {
+    bar.style.display = 'none';
+    return;
+  }
+  bar.style.display = 'flex';
+  const counter = document.getElementById('bulkSelectedCount');
+  if (counter) counter.textContent = `${count} נבחרו`;
+}
+
+async function bulkSetActive(isActive) {
+  const ids = Array.from(selectedProductIds);
+  if (!ids.length) return;
+
+  const updates = ids.map(id => {
+    const p = products.find(x => String(x.id) === id);
+    return p ? { id: p.id, is_active: isActive } : null;
+  }).filter(Boolean);
+  if (!updates.length) return;
+
+  for (const u of updates) {
+    const p = products.find(x => String(x.id) === u.id);
+    if (p) p.is_active = isActive;
+  }
+
+  if (supabaseReady) {
+    try {
+      for (const u of updates) {
+        await supabaseClient.from('products').update({ is_active: u.is_active }).eq('id', u.id);
+      }
+    } catch(e) {
+      console.error('Bulk update failed', e);
+      showToast('העדכון נכשל', 'error');
+      return;
+    }
+  }
+
+  if (currentSettings) {
+    currentSettings.updated_at = new Date().toISOString();
+    localStorage.setItem('tafrit_preview_products', JSON.stringify(products));
+    if (typeof updatePublishBanner === 'function') updatePublishBanner();
+  }
+  invalidateMenuCache();
+  cancelBulkMode();
+  renderProducts();
+  showToast(`${updates.length} מוצרים ${isActive ? 'מוצגים' : 'מוסתרים'} עכשיו`, 'success');
+}
+
+async function bulkDelete() {
+  const ids = Array.from(selectedProductIds);
+  if (!ids.length) return;
+
+  const ok = await confirmDanger(
+    `למחוק ${ids.length} מוצרים? פעולה זו אינה ניתנת לביטול.`,
+    'מחק הכל',
+    'מחיקה מרובה'
+  );
+  if (!ok) return;
+
+  const imageUrls = ids
+    .map(id => products.find(p => String(p.id) === id))
+    .filter(p => p && p.image_url)
+    .map(p => p.image_url);
+
+  products = products.filter(p => !selectedProductIds.has(String(p.id)));
+
+  if (supabaseReady) {
+    try {
+      await supabaseClient.from('products').delete().in('id', ids);
+    } catch(e) {
+      console.error('Bulk delete failed', e);
+      showToast('המחיקה נכשלה', 'error');
+      return;
+    }
+  }
+
+  imageUrls.forEach(url => deleteOldImageFromStorage(url));
+
+  localStorage.setItem('tafrit_preview_products', JSON.stringify(products));
+  if (currentSettings) {
+    currentSettings.updated_at = new Date().toISOString();
+    if (typeof updatePublishBanner === 'function') updatePublishBanner();
+  }
+  invalidateMenuCache();
+  cancelBulkMode();
+  renderProducts();
+  showToast(`${ids.length} מוצרים נמחקו`, 'success');
+}
+
+// ===== COPY HOURS =====
+function _applyHoursToDays(dayKeys, label) {
+  const sortedKeys = Object.keys(hoursDays).sort();
+  if (!sortedKeys.length) {
+    showToast('בחר תחילה לפחות יום אחד עם שעות', 'warning');
+    return;
+  }
+  const sourceKey = sortedKeys[0];
+  const sourceHours = hoursDays[sourceKey];
+  if (!sourceHours.open || !sourceHours.close) {
+    showToast('הגדר שעות פתיחה וסגירה ביום הראשון תחילה', 'warning');
+    return;
+  }
+
+  for (const dayKey of dayKeys) {
+    hoursDays[dayKey] = { open: sourceHours.open, close: sourceHours.close };
+    if (!hoursOverrides.includes(dayKey)) hoursOverrides.push(dayKey);
+  }
+
+  const btns = document.querySelectorAll('.day-btn');
+  for (const dayKey of dayKeys) {
+    const idx = parseInt(dayKey, 10);
+    if (btns[idx]) {
+      btns[idx].style.background = 'var(--accent)';
+      btns[idx].style.borderColor = 'var(--accent)';
+      btns[idx].style.color = 'white';
+    }
+  }
+
+  document.getElementById('defaultHoursRow').style.display = 'block';
+  renderHoursRows();
+  updateHoursPreview();
+  dirtySections.add('Hours');
+  updateDirtyIndicator('Hours');
+  showToast(`השעות הועתקו ${label}`, 'success');
+}
+
+function copyHoursToWeekdays() {
+  _applyHoursToDays(['0','1','2','3','4'], 'לימי חול');
+}
+
+function copyHoursToAllWeek() {
+  _applyHoursToDays(['0','1','2','3','4','5','6'], 'לכל השבוע');
+}
 
 // ===== CATEGORIES =====
 function renderCategories(){
@@ -1695,7 +2217,6 @@ function renderCategories(){
   if(!categories.length){
     list.innerHTML='';
     empty.style.display='block';
-    empty.innerHTML='<p style="font-weight:600;font-size:15px;color:var(--text-2);">אין קטגוריות עדיין</p><p style="font-size:13px;margin-top:4px;color:var(--text-3);">הוסף את הקטגוריה הראשונה</p>';
     return;}
   if(!filtered.length){list.innerHTML='<p class="text-center text-gray-400 py-6 text-sm">לא נמצאו קטגוריות</p>';empty.style.display='none';return;}
   empty.style.display='none';
@@ -1703,7 +2224,7 @@ function renderCategories(){
     <div class="flex items-center gap-3 p-3 drag-item" draggable="true" data-id="${c.id}">
       <div class="drag-handle"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="9" y1="18" x2="9" y2="6"/><line x1="15" y1="18" x2="15" y2="6"/></svg></div>
       <div id="cat-view-${c.id}" class="flex-1 flex items-center justify-between gap-2">
-        <span class="font-semibold text-gray-800">${c.name}</span>
+        <span class="font-semibold text-gray-800">${search ? highlightMatch(c.name, search) : c.name}</span>
         <div class="flex gap-1">
           <button class="btn-ghost text-gray-500" onclick="startEditCategory('${c.id}')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
           <button class="btn-danger" onclick="deleteCategory('${c.id}')"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg></button>
@@ -1724,26 +2245,80 @@ async function saveNewCategory(){const name=document.getElementById('newCategory
 function startEditCategory(id){document.getElementById('cat-view-'+id).style.display='none';document.getElementById('cat-edit-'+id).style.display='flex';setTimeout(()=>document.getElementById('cat-input-'+id).focus(),50);}
 function cancelEditCategory(id){document.getElementById('cat-view-'+id).style.display='flex';document.getElementById('cat-edit-'+id).style.display='none';}
 async function saveEditCategory(id){const name=document.getElementById('cat-input-'+id).value.trim();if(!name)return;const cat=categories.find(c=>String(c.id)===String(id));if(cat)cat.name=name;if(supabaseReady){try{await supabaseClient.from('categories').update({name}).eq('id',id);}catch(e){console.warn('Supabase update category failed',e);}}syncCategoriesToLocalStorage();invalidateMenuCache();renderCategories();showSuccess('הקטגוריה עודכנה בהצלחה!');}
-async function deleteCategory(id){
-  const cat=categories.find(c=>String(c.id)===String(id));
-  if(!cat||!confirm(`למחוק את "${cat.name}"?\nמוצרים המשויכים אליה לא יוצגו תחתיה.`))return;
-  categories=categories.filter(c=>String(c.id)!==String(id));
-  if(supabaseReady){try{await supabaseClient.from('categories').delete().eq('id',id);}catch(e){console.warn('Supabase delete category failed',e);}}
-  const affectedProducts = products.filter(p => (p.categories || []).some(c => String(c) === String(id)));
-  for (const p of affectedProducts) {
-    p.categories = (p.categories || []).filter(c => String(c) !== String(id));
+async function deleteCategory(id) {
+  const cat = categories.find(c => String(c.id) === String(id));
+  if (!cat) return;
+
+  const ok = await confirmDanger(
+    `למחוק את "${cat.name}"?\nמוצרים המשויכים אליה יישארו אך לא יוצגו תחתיה.`,
+    'מחק',
+    'מחיקת קטגוריה'
+  );
+  if (!ok) return;
+
+  const catBackup = JSON.parse(JSON.stringify(cat));
+  const affectedProductsBackup = products
+    .filter(p => (p.categories || []).some(c => String(c) === String(id)))
+    .map(p => ({ id: p.id, originalCategories: [...(p.categories || [])] }));
+
+  categories = categories.filter(c => String(c.id) !== String(id));
+  for (const p of products) {
+    if ((p.categories || []).some(c => String(c) === String(id))) {
+      p.categories = (p.categories || []).filter(c => String(c) !== String(id));
+    }
   }
-  if (affectedProducts.length && supabaseReady) {
-    try {
-      await supabaseClient.from('products').upsert(
-        affectedProducts.map(p => ({ id: p.id, categories: p.categories })),
-        { onConflict: 'id' }
-      );
-    } catch(e) { console.warn('Failed to clean orphan category refs', e); }
-  }
-  syncCategoriesToLocalStorage();
-  invalidateMenuCache();
+
   renderCategories();
+  renderProducts();
+
+  if (supabaseReady) {
+    try {
+      await supabaseClient.from('categories').delete().eq('id', id);
+      const productsToUpdate = affectedProductsBackup.map(p => {
+        const prod = products.find(x => String(x.id) === String(p.id));
+        return prod ? { id: prod.id, categories: prod.categories } : null;
+      }).filter(Boolean);
+      if (productsToUpdate.length) {
+        await supabaseClient.from('products').upsert(productsToUpdate, { onConflict: 'id' });
+      }
+    } catch(e) {
+      console.warn('Supabase delete category failed', e);
+    }
+  }
+
+  syncCategoriesToLocalStorage();
+  syncProductsToLocalStorage();
+  invalidateMenuCache();
+
+  showUndoToast(`"${catBackup.name}" נמחקה`, async () => {
+    categories.push(catBackup);
+    for (const backup of affectedProductsBackup) {
+      const prod = products.find(x => String(x.id) === String(backup.id));
+      if (prod) prod.categories = backup.originalCategories;
+    }
+    if (supabaseReady && currentUser) {
+      try {
+        await supabaseClient.from('categories').insert(catBackup);
+        const productsToRestore = affectedProductsBackup.map(p => {
+          const prod = products.find(x => String(x.id) === String(p.id));
+          return prod ? { id: prod.id, categories: prod.categories } : null;
+        }).filter(Boolean);
+        if (productsToRestore.length) {
+          await supabaseClient.from('products').upsert(productsToRestore, { onConflict: 'id' });
+        }
+      } catch(e) {
+        console.error('Re-insert category failed', e);
+        showToast('הביטול נכשל', 'error');
+        return;
+      }
+    }
+    syncCategoriesToLocalStorage();
+    syncProductsToLocalStorage();
+    invalidateMenuCache();
+    renderCategories();
+    renderProducts();
+    showToast('המחיקה בוטלה', 'success');
+  });
 }
 
 // ===== LOCALSTORAGE FALLBACK LOADER =====
@@ -1806,7 +2381,7 @@ function shareSlugLink() {
   if (navigator.share) {
     navigator.share({ title: 'התפריט שלי', url: link });
   } else {
-    navigator.clipboard.writeText(link).then(() => alert('הלינק הועתק לשיתוף!'));
+    navigator.clipboard.writeText(link).then(() => showToast('הלינק הועתק לשיתוף!', 'success'));
   }
 }
 function updateSlugDisplay() {
@@ -1917,7 +2492,10 @@ async function saveSlug() {
     errEl.style.display='block'; return;
   }
   if (currentSlug) {
-    const ok = confirm(`⚠️ שינוי הלינק\n\nלינק נוכחי: ${buildMenuLink(currentSlug)}\nלינק חדש: ${buildMenuLink(val)}\n\nהלינק הקודם יפסיק לעבוד!\n\nלהמשיך?`);
+    const ok = await confirmAction(
+      `לינק נוכחי: ${buildMenuLink(currentSlug)}\nלינק חדש: ${buildMenuLink(val)}\n\nהלינק הקודם יפסיק לעבוד.`,
+      '⚠️ שינוי כתובת לינק'
+    );
     if (!ok) return;
   }
   if (supabaseReady && currentUser) {
@@ -1992,7 +2570,7 @@ function updateBusinessView() {
 
 // ===== VIEW MENU FROM SETTINGS =====
 function viewMenuFromSettings() {
-  if (!currentSlug) { alert('לינק לא הוגדר עדיין'); return; }
+  if (!currentSlug) { alertAction('לינק לא הוגדר עדיין'); return; }
   window.open(currentSlug ? 'menu.html?slug=' + encodeURIComponent(currentSlug) : 'menu.html', '_blank');
 }
 
@@ -2012,11 +2590,11 @@ const _aboutSamples = [
   'שלום, אני [שם] מ[עיר]. אני מכין/ה מטעמים חלביים ביתיים — פשטידות, לזניות, קישים, עוגות גבינה ועוד. כל מנה מוכנה בהזמנה אישית מחומרים טריים ואיכותיים. אני מאמינ/ה שאוכל טוב מתחיל בחומרים טובים ובהרבה אהבה. ההזמנות הן מראש בלבד כדי שכל לקוח יקבל את המנה הכי טרייה ואיכותית. אשמח לדבר איתכם ולהתאים את ההזמנה לכל אירוע.',
 ];
 let _aboutSampleIdx = 0;
-function loadSampleAbout() {
+async function loadSampleAbout() {
   const ta = document.getElementById('s-about');
   const current = ta.value.trim();
   const isSample = !current || _aboutSamples.some(s => s === current);
-  if (!isSample && !confirm('הטקסט שכתבת יימחק. להמשיך?')) return;
+  if (!isSample && !await confirmAction('הטקסט שכתבת יימחק.', 'טעינת טקסט לדוגמא')) return;
   if (isSample && current) {
     const idx = _aboutSamples.indexOf(current);
     if (idx !== -1) _aboutSampleIdx = (idx + 1) % _aboutSamples.length;
@@ -2033,11 +2611,11 @@ function autoResizeTextarea(el) {
 
 // ===== TERMS =====
 const _termsSample = 'ביטול הזמנה — ניתן לבטל הזמנה עד 24 שעות לפני מועד האיסוף. ביטול מאוחר יותר עלול לגרור חיוב מלא.\nתשלום — התשלום מתבצע במזומן בעת האיסוף בלבד. אין אפשרות לתשלום מקוון.\nשינויים בהזמנה — ניתן לשנות הזמנה עד 24 שעות לפני מועד האיסוף, בכפוף לזמינות.';
-function loadSampleTerms() {
+async function loadSampleTerms() {
   const ta = document.getElementById('s-terms');
   const current = ta.value.trim();
   const isSample = !current || current === _termsSample;
-  if (!isSample && !confirm('הטקסט שכתבת יימחק. להמשיך?')) return;
+  if (!isSample && !await confirmAction('הטקסט שכתבת יימחק.', 'טעינת תקנון לדוגמא')) return;
   ta.value = _termsSample;
 }
 
@@ -2617,6 +3195,75 @@ window.addEventListener('beforeunload', function(e) {
   }
 });
 
+// ===== KEYBOARD SHORTCUTS =====
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    const productOverlay = document.getElementById('productFormOverlay');
+    if (productOverlay && productOverlay.style.display !== 'none' && productOverlay.style.display !== '') {
+      e.preventDefault();
+      if (typeof closeProductForm === 'function') closeProductForm();
+      return;
+    }
+    const galleryModal = document.getElementById('galleryModal');
+    if (galleryModal && galleryModal.style.display !== 'none' && galleryModal.style.display !== '') {
+      e.preventDefault();
+      if (typeof closeGalleryModal === 'function') closeGalleryModal();
+      return;
+    }
+    const linkPopup = document.getElementById('linkPopup');
+    if (linkPopup && linkPopup.style.display !== 'none' && linkPopup.style.display !== '') {
+      e.preventDefault();
+      if (typeof closeLinkPopup === 'function') closeLinkPopup();
+      return;
+    }
+    if (typeof bulkMode !== 'undefined' && bulkMode) {
+      e.preventDefault();
+      if (typeof cancelBulkMode === 'function') cancelBulkMode();
+      return;
+    }
+  }
+
+  if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+    const productOverlay = document.getElementById('productFormOverlay');
+    if (productOverlay && productOverlay.style.display !== 'none' && productOverlay.style.display !== '') {
+      e.preventDefault();
+      if (typeof saveProduct === 'function') saveProduct();
+      return;
+    }
+    const editSections = ['Basics', 'Contact', 'Hours', 'Images', 'Content'];
+    for (const section of editSections) {
+      const editEl = document.getElementById('section' + section + 'Edit');
+      if (editEl && editEl.style.display !== 'none' && editEl.style.display !== '') {
+        e.preventDefault();
+        const saveFn = window['save' + section];
+        if (typeof saveFn === 'function') saveFn();
+        return;
+      }
+    }
+    const bannerEdit = document.getElementById('bannerEditMode');
+    if (bannerEdit && bannerEdit.style.display !== 'none' && bannerEdit.style.display !== '') {
+      e.preventDefault();
+      if (typeof saveBanner === 'function') saveBanner();
+      return;
+    }
+    const slugRow = document.getElementById('slugInputRow');
+    if (slugRow && slugRow.style.display !== 'none' && slugRow.style.display !== '') {
+      e.preventDefault();
+      if (typeof saveSlug === 'function') saveSlug();
+      return;
+    }
+  }
+
+  if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
+    const productsSection = document.getElementById('section-products');
+    if (productsSection && productsSection.style.display !== 'none') {
+      e.preventDefault();
+      if (typeof openProductForm === 'function') openProductForm(null);
+      return;
+    }
+  }
+});
+
 // ===== Expose functions to window for onclick handlers =====
 Object.defineProperty(window, 'currentSettings', { get: () => currentSettings, configurable: true });
 Object.assign(window, {
@@ -2644,9 +3291,22 @@ Object.assign(window, {
   publishChanges, publishChangesUI, openPreview, signOutWithCleanup,
   captureSnapshot, checkDirty, clearDirty, updateDirtyIndicator, hasAnyDirty,
   updatePublishBanner, computePublishDirty, formatTimeAgo,
+  showModal, confirmAction, alertAction, confirmDanger, showToast,
+  duplicateProduct, showUndoToast,
+  toggleBulkMode, cancelBulkMode, toggleProductSelection, bulkSetActive, bulkDelete,
+  copyHoursToWeekdays, copyHoursToAllWeek, highlightMatch,
 });
 </script>
 <!-- Global success toast -->
+<div id="bulkActionBar" style="display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:white;border:1px solid var(--border);border-radius:14px;padding:10px 16px;font-family:Heebo,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,0.15);z-index:100;align-items:center;gap:10px;flex-wrap:wrap;">
+  <span id="bulkSelectedCount" style="font-size:13px;font-weight:700;color:var(--text);">0 נבחרו</span>
+  <div style="width:1px;height:20px;background:var(--border);"></div>
+  <button onclick="bulkSetActive(true)" class="btn-outline" style="padding:6px 12px;font-size:12px;">הצג</button>
+  <button onclick="bulkSetActive(false)" class="btn-outline" style="padding:6px 12px;font-size:12px;">הסתר</button>
+  <button onclick="bulkDelete()" class="btn-outline" style="padding:6px 12px;font-size:12px;color:#dc2626;border-color:#fecaca;">מחק</button>
+  <button onclick="cancelBulkMode()" class="btn-ghost" style="padding:6px 10px;font-size:12px;color:var(--text-3);">ביטול</button>
+</div>
+
 <!-- Image Gallery Modal -->
 <div id="galleryModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);overflow-y:auto;" onclick="if(event.target===this)closeGalleryModal()">
   <div style="max-width:860px;margin:40px auto;background:var(--card-bg,#fff);border-radius:16px;padding:24px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
@@ -2733,6 +3393,15 @@ Object.assign(window, {
     _galleryPreviewId = previewId;
     document.getElementById('galleryModal').style.display = '';
     document.body.style.overflow = 'hidden';
+    const galleryEl = document.getElementById('galleryModal');
+    if (galleryEl && !galleryEl.dataset.trapInstalled) {
+      galleryEl.dataset.trapInstalled = 'true';
+      galleryEl.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          window.closeGalleryModal();
+        }
+      });
+    }
   };
   window.closeGalleryModal = function() {
     document.getElementById('galleryModal').style.display = 'none';
@@ -2741,7 +3410,7 @@ Object.assign(window, {
 })();
 </script>
 
-<div id="globalSuccessToast" style="display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#15803d;color:white;padding:12px 24px;border-radius:12px;font-size:14px;font-weight:600;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,0.15);white-space:nowrap;animation:slideUp 0.2s ease;">✓ נשמר בהצלחה!</div>
+<div id="globalSuccessToast" role="status" aria-live="polite" aria-atomic="true" style="display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#15803d;color:white;padding:12px 24px;border-radius:12px;font-size:14px;font-weight:600;z-index:10001;box-shadow:0 4px 20px rgba(0,0,0,0.15);white-space:nowrap;animation:slideUp 0.2s ease;"></div>
 
 <div style="text-align:center;padding:20px;font-size:13px;"><a href="terms.html">תנאי שימוש ומדיניות פרטיות</a></div>
 </body>
