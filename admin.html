@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="admin.css">
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js" defer></script>
 </head>
 <body>
 
@@ -38,6 +39,15 @@
       <span style="font-size:16px;font-weight:700;color:var(--text);">ניהול תפריט</span>
     </div>
     <div style="display:flex;align-items:center;gap:6px;position:relative;">
+      <button onclick="openQRModal()" class="btn-outline" style="padding:7px 12px;font-size:13px;gap:5px;" aria-label="קוד QR של התפריט">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3" y="3" width="7" height="7" rx="1"/>
+          <rect x="14" y="3" width="7" height="7" rx="1"/>
+          <rect x="3" y="14" width="7" height="7" rx="1"/>
+          <path d="M14 14h3v3h-3zM18 14h3M14 18v3M18 18h3v3h-3z"/>
+        </svg>
+        קוד QR
+      </button>
       <button onclick="toggleLinkPopup()" id="linkBtn" class="btn-outline" style="padding:7px 12px;font-size:13px;gap:5px;">
         <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" stroke-width="2" stroke-linecap="round"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" stroke-width="2" stroke-linecap="round"/></svg>
         שיתוף
@@ -3588,6 +3598,113 @@ window.addEventListener('beforeunload', function(e) {
   }
 });
 
+// ===== QR CODE =====
+function openQRModal() {
+  if (!currentSlug) {
+    alertAction('עדיין לא הגדרת כתובת לתפריט שלך.\nעבור להגדרות → כתובת הלינק הציבורי ← והגדר slug.', 'אין לינק לתפריט');
+    return;
+  }
+
+  const modal = document.getElementById('qrModal');
+  if (!modal) return;
+
+  const url = `https://mytafrit.co.il/menu.html?slug=${encodeURIComponent(currentSlug)}`;
+
+  const urlText = document.getElementById('qrUrlText');
+  if (urlText) urlText.textContent = url;
+
+  const container = document.getElementById('qrCodeContainer');
+  if (container) {
+    container.innerHTML = '';
+    try {
+      if (typeof qrcode === 'undefined') {
+        container.innerHTML = '<p style="color:#dc2626;">ספריית QR לא נטענה. נסה לרענן את הדף.</p>';
+      } else {
+        const qr = qrcode(0, 'M');
+        qr.addData(url);
+        qr.make();
+        const svg = qr.createSvgTag({ cellSize: 6, margin: 4, scalable: true });
+        container.innerHTML = svg;
+        const svgEl = container.querySelector('svg');
+        if (svgEl) {
+          svgEl.style.width = '220px';
+          svgEl.style.height = '220px';
+          svgEl.style.display = 'block';
+        }
+      }
+    } catch(e) {
+      console.error('QR generation failed', e);
+      container.innerHTML = '<p style="color:#dc2626;">יצירת קוד QR נכשלה.</p>';
+    }
+  }
+
+  modal.style.display = 'flex';
+
+  if (!modal.dataset.trapInstalled) {
+    modal.dataset.trapInstalled = 'true';
+    modal.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeQRModal();
+    });
+  }
+}
+
+function closeQRModal() {
+  const modal = document.getElementById('qrModal');
+  if (modal) modal.style.display = 'none';
+}
+
+function downloadQR() {
+  const container = document.getElementById('qrCodeContainer');
+  if (!container) return;
+  const svgEl = container.querySelector('svg');
+  if (!svgEl) {
+    showToast('אין קוד QR להורדה', 'error');
+    return;
+  }
+
+  try {
+    const svgData = new XMLSerializer().serializeToString(svgEl);
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const size = 1024;
+    canvas.width = size;
+    canvas.height = size;
+
+    const img = new Image();
+    const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+    const url = URL.createObjectURL(svgBlob);
+
+    img.onload = function() {
+      ctx.fillStyle = 'white';
+      ctx.fillRect(0, 0, size, size);
+      ctx.drawImage(img, 0, 0, size, size);
+      URL.revokeObjectURL(url);
+
+      canvas.toBlob(function(blob) {
+        const pngUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = pngUrl;
+        a.download = `qr-${currentSlug || 'menu'}.png`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(pngUrl);
+        showToast('הקובץ הורד', 'success');
+      }, 'image/png');
+    };
+
+    img.onerror = function() {
+      URL.revokeObjectURL(url);
+      showToast('ההורדה נכשלה', 'error');
+    };
+
+    img.src = url;
+  } catch(e) {
+    console.error('Download QR failed', e);
+    showToast('ההורדה נכשלה', 'error');
+  }
+}
+
 // ===== KEYBOARD SHORTCUTS =====
 function isVisible(el) {
   if (!el) return false;
@@ -3656,6 +3773,7 @@ Object.assign(window, {
   startEditHoliday, saveHoliday, cancelEditHoliday, updateHolidayView,
   startEditTestimonials, cancelEditTestimonials, updateTestimonialsView, checkTestimonialsDirty,
   startEditAutoBanners, cancelEditAutoBanners, updateAutoBannersView, checkAutoBannersDirty,
+  openQRModal, closeQRModal, downloadQR,
 });
 </script>
 <!-- Global success toast -->
@@ -3666,6 +3784,18 @@ Object.assign(window, {
   <button onclick="bulkSetActive(false)" class="btn-outline" style="padding:6px 12px;font-size:12px;">הסתר</button>
   <button onclick="bulkDelete()" class="btn-outline" style="padding:6px 12px;font-size:12px;color:#dc2626;border-color:#fecaca;">מחק</button>
   <button onclick="cancelBulkMode()" class="btn-ghost" style="padding:6px 10px;font-size:12px;color:var(--text-3);">ביטול</button>
+</div>
+
+<div id="qrModal" role="dialog" aria-modal="true" aria-labelledby="qrModalTitle" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:10000;align-items:center;justify-content:center;padding:16px;">
+  <div style="background:white;border-radius:14px;padding:24px;max-width:360px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.3);text-align:center;">
+    <h3 id="qrModalTitle" style="font-size:17px;font-weight:700;color:#111827;margin:0 0 14px;">קוד QR לתפריט</h3>
+    <div id="qrCodeContainer" style="display:flex;justify-content:center;margin-bottom:16px;min-height:220px;align-items:center;"></div>
+    <div id="qrUrlText" style="font-size:12px;color:#6b7280;margin-bottom:18px;word-break:break-all;direction:ltr;unicode-bidi:isolate;"></div>
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+      <button onclick="downloadQR()" class="btn-primary" style="padding:8px 16px;font-size:13px;">📥 הורד תמונה</button>
+      <button onclick="closeQRModal()" class="btn-outline" style="padding:8px 16px;font-size:13px;">סגור</button>
+    </div>
+  </div>
 </div>
 
 <!-- Image Gallery Modal -->
