@@ -575,45 +575,84 @@
 
       <h3 style="font-size:13px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.5px;margin:20px 4px 4px;">🏖️ מצב חופשה</h3>
 
-      <div class="card" style="padding:16px;">
+      <div id="sectionHolidayView" class="card" style="padding:16px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">מצב חופשה <span id="dirty-Holiday" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
+          <button onclick="startEditHoliday()" class="btn-outline" style="padding:5px 12px;font-size:12px;" aria-label="ערוך מצב חופשה">ערוך</button>
+        </div>
+        <div id="holidayStatusDisplay" style="font-size:14px;color:var(--text);"></div>
+      </div>
+
+      <div id="sectionHolidayEdit" class="card" style="display:none;padding:16px;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">מצב חופשה <span id="dirty-Holiday-edit" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
+        </div>
         <div style="display:flex;align-items:flex-start;gap:12px;">
           <div style="flex:1;">
             <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;">השהה הזמנות זמנית</div>
             <div style="font-size:12px;color:var(--text-3);line-height:1.5;">כש-ON, התפריט יוצג אבל הלקוחות לא יוכלו להזמין. מופיעה הודעה "המסעדה בחופשה, הזמנות יחזרו בקרוב".</div>
           </div>
           <label class="switch" style="flex-shrink:0;">
-            <input type="checkbox" id="s-orders-paused" onchange="handleOrdersPausedChange(this.checked)">
+            <input type="checkbox" id="s-orders-paused" onchange="checkDirty('Holiday', ['s-orders-paused'])">
             <span class="slider"></span>
           </label>
+        </div>
+        <div style="display:flex;gap:8px;justify-content:flex-end;">
+          <button onclick="cancelEditHoliday()" class="btn-outline" style="padding:7px 14px;font-size:13px;">בטל</button>
+          <button onclick="saveHoliday()" class="btn-primary" style="padding:7px 14px;font-size:13px;">שמור</button>
         </div>
       </div>
 
       <h3 style="font-size:13px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.5px;margin:20px 4px 4px;">📅 באנרים אוטומטיים</h3>
 
-      <div class="card" style="padding:16px;">
-        <div style="font-size:13px;color:var(--text-3);line-height:1.5;margin-bottom:12px;">
+      <div id="sectionAutoBannersView" class="card" style="padding:16px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">📅 באנרים אוטומטיים <span id="dirty-AutoBanners" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
+          <button onclick="startEditAutoBanners()" class="btn-outline" style="padding:5px 12px;font-size:12px;" aria-label="ערוך באנרים">ערוך</button>
+        </div>
+        <div id="autoBannersViewSummary" style="font-size:14px;color:var(--text-3);"></div>
+      </div>
+
+      <div id="sectionAutoBannersEdit" class="card" style="display:none;padding:16px;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">📅 באנרים אוטומטיים <span id="dirty-AutoBanners-edit" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
+        </div>
+        <div style="font-size:13px;color:var(--text-3);line-height:1.5;">
           באנרים שמופיעים אוטומטית בתפריט בימים ושעות שתקבע. מקסימום 10 באנרים.
         </div>
         <div id="autoBannersList" style="display:flex;flex-direction:column;gap:10px;"></div>
-        <button id="addAutoBannerBtn" onclick="addAutoBanner()" class="btn-outline" style="margin-top:12px;padding:8px 14px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;">
+        <button id="addAutoBannerBtn" onclick="addAutoBanner()" class="btn-outline" style="padding:8px 14px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;align-self:flex-start;">
           <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           הוסף באנר אוטומטי
         </button>
+        <div style="display:flex;gap:8px;justify-content:flex-end;">
+          <button onclick="cancelEditAutoBanners()" class="btn-outline" style="padding:7px 14px;font-size:13px;">בטל</button>
+          <button onclick="saveAutoBanners()" class="btn-primary" style="padding:7px 14px;font-size:13px;">שמור</button>
+        </div>
       </div>
 
       <h3 style="font-size:13px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.5px;margin:20px 4px 4px;">⭐ ביקורות לקוחות</h3>
 
-      <!-- Testimonials -->
-      <div class="card" style="padding:16px;">
+      <div id="sectionTestimonialsView" class="card" style="padding:16px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-          <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">ציטוטי לקוחות</h3>
+          <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">⭐ ביקורות לקוחות <span id="dirty-Testimonials" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
+          <button onclick="startEditTestimonials()" class="btn-outline" style="padding:5px 12px;font-size:12px;" aria-label="ערוך ציטוטים">ערוך</button>
+        </div>
+        <div id="testimonialsViewSummary" style="font-size:14px;color:var(--text-3);"></div>
+      </div>
+
+      <div id="sectionTestimonialsEdit" class="card" style="display:none;padding:16px;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">⭐ ביקורות לקוחות <span id="dirty-Testimonials-edit" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
           <span style="font-size:11px;color:var(--text-3);">עד 3 ציטוטים</span>
         </div>
-        <p style="font-size:12px;color:var(--text-2);margin-bottom:12px;line-height:1.5;">הוסיפו עד 3 ציטוטים קצרים מלקוחות מרוצים. הם יופיעו בתפריט הציבורי ויעלו אמון.</p>
+        <p style="font-size:12px;color:var(--text-2);line-height:1.5;margin:0;">הוסיפו עד 3 ציטוטים קצרים מלקוחות מרוצים. הם יופיעו בתפריט הציבורי ויעלו אמון.</p>
         <div id="testimonialsList"></div>
-        <button type="button" id="addTestimonialBtn" onclick="addTestimonial()" style="margin-top:8px;padding:8px 16px;background:var(--surface-2);border:1px dashed var(--border);border-radius:8px;font-size:13px;font-weight:600;color:var(--text-2);cursor:pointer;width:100%;">+ הוסף ציטוט</button>
-        <button type="button" onclick="saveTestimonials()" class="btn-primary" style="margin-top:12px;padding:9px 18px;font-size:13px;width:100%;">שמור ציטוטים</button>
-        <p id="testimonials-save-ok" style="display:none;font-size:12px;color:#16a34a;font-weight:600;margin-top:8px;text-align:center;">✓ הציטוטים נשמרו!</p>
+        <button type="button" id="addTestimonialBtn" onclick="addTestimonial()" style="padding:8px 16px;background:var(--surface-2);border:1px dashed var(--border);border-radius:8px;font-size:13px;font-weight:600;color:var(--text-2);cursor:pointer;width:100%;">+ הוסף ציטוט</button>
+        <div style="display:flex;gap:8px;justify-content:flex-end;">
+          <button onclick="cancelEditTestimonials()" class="btn-outline" style="padding:7px 14px;font-size:13px;">בטל</button>
+          <button onclick="saveTestimonials()" class="btn-primary" style="padding:7px 14px;font-size:13px;">שמור</button>
+        </div>
       </div>
 
       <h3 style="font-size:13px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.5px;margin:20px 4px 4px;">💳 מנוי</h3>
@@ -1172,47 +1211,156 @@ function addTestimonial() {
   if (testimonials.length >= 3) return;
   testimonials.push({ name: '', text: '' });
   renderTestimonials();
+  if (typeof checkTestimonialsDirty === 'function') checkTestimonialsDirty();
 }
 
 function removeTestimonial(index) {
   testimonials.splice(index, 1);
   renderTestimonials();
+  if (typeof checkTestimonialsDirty === 'function') checkTestimonialsDirty();
 }
 
 function updateTestimonial(index, field, value) {
   if (testimonials[index]) testimonials[index][field] = value;
+  if (typeof checkTestimonialsDirty === 'function') checkTestimonialsDirty();
 }
 
 async function saveTestimonials() {
-  const payload = {
-    testimonials: testimonials.filter(t => (t.name || '').trim() || (t.text || '').trim())
-  };
+  const filtered = testimonials.filter(t => (t.name || '').trim() || (t.text || '').trim());
   try {
-    await upsertSettingsPartial(payload);
+    await upsertSettingsPartial({ testimonials: filtered });
+    if (currentSettings) currentSettings.testimonials = JSON.parse(JSON.stringify(filtered));
+    testimonials = JSON.parse(JSON.stringify(filtered));
   } catch(e) {
     console.error('saveTestimonials failed', e);
     showSuccess('❌ שמירה נכשלה: ' + (e.message || e));
     return;
   }
   invalidateMenuCache();
-  const ok = document.getElementById('testimonials-save-ok');
-  ok.style.display = 'block';
-  setTimeout(() => ok.style.display = 'none', 2500);
+  clearDirty('Testimonials');
+  _showSectionView('Testimonials');
+  updateTestimonialsView();
+  showToast('הציטוטים נשמרו', 'success');
 }
 
-// ===== VACATION MODE =====
-async function handleOrdersPausedChange(isPaused) {
+// ===== HOLIDAY MODE SECTION =====
+function updateHolidayView() {
+  const display = document.getElementById('holidayStatusDisplay');
+  if (!display) return;
+  const isPaused = !!(currentSettings && currentSettings.orders_paused);
+  display.innerHTML = isPaused
+    ? '<span style="color:#d97706;">⏸️ פעיל — הזמנות מושהות</span>'
+    : '<span style="color:#059669;">✓ לא פעיל — המסעדה מקבלת הזמנות</span>';
+}
+
+function startEditHoliday() {
+  const checkbox = document.getElementById('s-orders-paused');
+  if (checkbox) checkbox.checked = !!(currentSettings && currentSettings.orders_paused);
+  _showSectionEdit('Holiday');
+  captureSnapshot('Holiday', ['s-orders-paused']);
+}
+
+async function saveHoliday() {
+  const isPaused = document.getElementById('s-orders-paused').checked;
   try {
-    await upsertSettingsPartial({ orders_paused: !!isPaused });
-    showToast(
-      isPaused ? '🏖️ מצב חופשה הופעל — זכור לפרסם!' : 'מצב חופשה בוטל — זכור לפרסם!',
-      'success'
-    );
+    await upsertSettingsPartial({ orders_paused: isPaused });
+    if (currentSettings) currentSettings.orders_paused = isPaused;
+    updateHolidayView();
+    clearDirty('Holiday');
+    _showSectionView('Holiday');
+    showToast(isPaused ? '🏖️ מצב חופשה הופעל' : '✓ מצב חופשה בוטל', 'success');
   } catch(e) {
-    console.error('Failed to update orders_paused', e);
-    showToast('השינוי נכשל', 'error');
-    document.getElementById('s-orders-paused').checked = !isPaused;
+    console.error('Save holiday failed', e);
+    showToast('השמירה נכשלה', 'error');
   }
+}
+
+function cancelEditHoliday() {
+  const checkbox = document.getElementById('s-orders-paused');
+  if (checkbox) checkbox.checked = !!(currentSettings && currentSettings.orders_paused);
+  clearDirty('Holiday');
+  _showSectionView('Holiday');
+}
+
+// ===== TESTIMONIALS SECTION =====
+let _testimonialsSnapshot = '[]';
+
+function updateTestimonialsView() {
+  const summary = document.getElementById('testimonialsViewSummary');
+  if (!summary) return;
+  const count = Array.isArray(currentSettings && currentSettings.testimonials) ? currentSettings.testimonials.length : 0;
+  if (count === 0) {
+    summary.innerHTML = '<span style="color:var(--text-3);">אין ציטוטים. לחץ "ערוך" להוסיף.</span>';
+  } else {
+    summary.innerHTML = `<span>📝 ${count} ציטוטים מוגדרים</span>`;
+  }
+}
+
+function startEditTestimonials() {
+  testimonials = Array.isArray(currentSettings && currentSettings.testimonials)
+    ? JSON.parse(JSON.stringify(currentSettings.testimonials)).slice(0, 3)
+    : [];
+  renderTestimonials();
+  _showSectionEdit('Testimonials');
+  _testimonialsSnapshot = JSON.stringify(testimonials);
+  dirtySections.delete('Testimonials');
+  updateDirtyIndicator('Testimonials');
+}
+
+function checkTestimonialsDirty() {
+  const current = JSON.stringify(testimonials);
+  if (current !== _testimonialsSnapshot) dirtySections.add('Testimonials');
+  else dirtySections.delete('Testimonials');
+  updateDirtyIndicator('Testimonials');
+}
+
+function cancelEditTestimonials() {
+  testimonials = Array.isArray(currentSettings && currentSettings.testimonials)
+    ? JSON.parse(JSON.stringify(currentSettings.testimonials)).slice(0, 3)
+    : [];
+  renderTestimonials();
+  clearDirty('Testimonials');
+  _showSectionView('Testimonials');
+  updateTestimonialsView();
+}
+
+// ===== AUTO BANNERS SECTION =====
+let _autoBannersSnapshot = '[]';
+
+function updateAutoBannersView() {
+  const summary = document.getElementById('autoBannersViewSummary');
+  if (!summary) return;
+  const list = Array.isArray(currentSettings && currentSettings.auto_banners) ? currentSettings.auto_banners : [];
+  const total = list.length;
+  const enabled = list.filter(b => b.enabled).length;
+  if (total === 0) {
+    summary.innerHTML = '<span>אין באנרים אוטומטיים. לחץ "ערוך" להוסיף.</span>';
+  } else {
+    summary.innerHTML = `<span>📢 ${total} באנרים (${enabled} פעילים)</span>`;
+  }
+}
+
+function startEditAutoBanners() {
+  autoBanners = JSON.parse(JSON.stringify((currentSettings && currentSettings.auto_banners) || []));
+  _autoBannersSnapshot = JSON.stringify(autoBanners);
+  renderAutoBanners();
+  _showSectionEdit('AutoBanners');
+  dirtySections.delete('AutoBanners');
+  updateDirtyIndicator('AutoBanners');
+}
+
+function checkAutoBannersDirty() {
+  const current = JSON.stringify(autoBanners);
+  if (current !== _autoBannersSnapshot) dirtySections.add('AutoBanners');
+  else dirtySections.delete('AutoBanners');
+  updateDirtyIndicator('AutoBanners');
+}
+
+function cancelEditAutoBanners() {
+  autoBanners = JSON.parse(JSON.stringify((currentSettings && currentSettings.auto_banners) || []));
+  renderAutoBanners();
+  clearDirty('AutoBanners');
+  _showSectionView('AutoBanners');
 }
 
 // ===== AUTO BANNERS =====
@@ -1306,12 +1454,11 @@ function renderAutoBanners() {
   `).join('');
 }
 
-async function addAutoBanner() {
+function addAutoBanner() {
   if (autoBanners.length >= MAX_AUTO_BANNERS) {
     showToast(`הגעת למקסימום של ${MAX_AUTO_BANNERS} באנרים`, 'warning');
     return;
   }
-
   autoBanners.push({
     text: '',
     mode: 'weekly',
@@ -1322,26 +1469,23 @@ async function addAutoBanner() {
     endTime: '',
     enabled: false,
   });
-
   renderAutoBanners();
-  await saveAutoBanners();
+  if (typeof checkAutoBannersDirty === 'function') checkAutoBannersDirty();
 }
 
 async function removeAutoBanner(idx) {
   const ok = await confirmDanger(`למחוק את הבאנר "${autoBanners[idx]?.text || 'ללא שם'}"?`, 'מחק', 'מחיקת באנר');
   if (!ok) return;
-
   autoBanners.splice(idx, 1);
   renderAutoBanners();
-  await saveAutoBanners();
+  if (typeof checkAutoBannersDirty === 'function') checkAutoBannersDirty();
 }
 
 function updateAutoBannerField(idx, field, value) {
   if (!autoBanners[idx]) return;
   autoBanners[idx][field] = value;
   if (field === 'mode') renderAutoBanners();
-  clearTimeout(window._autoBannerSaveTimer);
-  window._autoBannerSaveTimer = setTimeout(saveAutoBanners, 600);
+  if (typeof checkAutoBannersDirty === 'function') checkAutoBannersDirty();
 }
 
 function toggleAutoBannerDay(idx, dayIdx) {
@@ -1354,16 +1498,20 @@ function toggleAutoBannerDay(idx, dayIdx) {
     autoBanners[idx].days = [...days, dayIdx].sort();
   }
   renderAutoBanners();
-  clearTimeout(window._autoBannerSaveTimer);
-  window._autoBannerSaveTimer = setTimeout(saveAutoBanners, 600);
+  if (typeof checkAutoBannersDirty === 'function') checkAutoBannersDirty();
 }
 
 async function saveAutoBanners() {
   try {
     await upsertSettingsPartial({ auto_banners: autoBanners });
+    if (currentSettings) currentSettings.auto_banners = JSON.parse(JSON.stringify(autoBanners));
+    clearDirty('AutoBanners');
+    _showSectionView('AutoBanners');
+    updateAutoBannersView();
+    showToast('הבאנרים נשמרו', 'success');
   } catch(e) {
     console.error('Save auto banners failed', e);
-    showToast('שמירת באנרים נכשלה', 'error');
+    showToast('שמירה נכשלה', 'error');
   }
 }
 
@@ -1393,8 +1541,10 @@ function applySettingsToForm(s) {
   if (s.banner_active) document.getElementById('s-banner-active').checked = true;
   const ordersPausedEl = document.getElementById('s-orders-paused');
   if (ordersPausedEl) ordersPausedEl.checked = !!s.orders_paused;
+  if (typeof updateHolidayView === 'function') updateHolidayView();
   autoBanners = Array.isArray(s.auto_banners) ? s.auto_banners : [];
-  if (typeof renderAutoBanners === 'function') renderAutoBanners();
+  if (typeof updateAutoBannersView === 'function') updateAutoBannersView();
+  if (typeof updateTestimonialsView === 'function') updateTestimonialsView();
   if (s.hours_config && typeof s.hours_config === 'object') {
     const cfg = s.hours_config;
     hoursDefault = cfg.default || { open: '', close: '' };
@@ -1461,6 +1611,9 @@ async function switchTab(tab) {
       'Hours': typeof cancelEditHours === 'function' ? cancelEditHours : null,
       'Images': typeof cancelEditImages === 'function' ? cancelEditImages : null,
       'Content': typeof cancelEditContent === 'function' ? cancelEditContent : null,
+      'Holiday': typeof cancelEditHoliday === 'function' ? cancelEditHoliday : null,
+      'Testimonials': typeof cancelEditTestimonials === 'function' ? cancelEditTestimonials : null,
+      'AutoBanners': typeof cancelEditAutoBanners === 'function' ? cancelEditAutoBanners : null,
     };
 
     const sectionsToCancel = Array.from(dirtySections);
@@ -3490,7 +3643,10 @@ Object.assign(window, {
   showUndoToast,
   toggleBulkMode, cancelBulkMode, toggleProductSelection, bulkSetActive, bulkDelete,
   copyHoursToWeekdays, copyHoursToAllWeek, highlightMatch, isVisible,
-  handleOrdersPausedChange, addAutoBanner, removeAutoBanner, updateAutoBannerField, toggleAutoBannerDay,
+  addAutoBanner, removeAutoBanner, updateAutoBannerField, toggleAutoBannerDay, saveAutoBanners,
+  startEditHoliday, saveHoliday, cancelEditHoliday, updateHolidayView,
+  startEditTestimonials, cancelEditTestimonials, updateTestimonialsView, checkTestimonialsDirty,
+  startEditAutoBanners, cancelEditAutoBanners, updateAutoBannersView, checkAutoBannersDirty,
 });
 </script>
 <!-- Global success toast -->
