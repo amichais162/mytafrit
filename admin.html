@@ -3096,7 +3096,7 @@ async function saveSlug() {
     try {
       const { data: { session } } = await supabaseClient.auth.getSession();
       if (session && session.access_token) {
-        await fetch('https://mytafrit.co.il/rename-slug', {
+        const renameRes = await fetch('https://mytafrit.co.il/rename-slug', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -3104,9 +3104,30 @@ async function saveSlug() {
           },
           body: JSON.stringify({ oldSlug, newSlug: val }),
         });
+        if (!renameRes.ok) {
+          showToast('⚠️ הקישור עודכן אבל ההעברה לא הסתיימה. לחץ "פרסם" להשלמה.', 'warning');
+        }
+      } else {
+        showToast('⚠️ הקישור עודכן אבל ההעברה לא בוצעה (סשן פג). לחץ "פרסם" להשלמה.', 'warning');
       }
     } catch(e) {
       console.warn('KV slug migration failed', e);
+      showToast('⚠️ הקישור עודכן אבל ההעברה ב-KV נכשלה. לחץ "פרסם" להשלמה.', 'warning');
+    }
+  }
+
+  // Sync updated_at = last_published_at so the publish banner doesn't appear after refresh
+  // (slug change is an immediate operation, not a publishable change)
+  if (currentSettings && currentSettings.last_published_at && supabaseReady) {
+    try {
+      const syncTime = currentSettings.last_published_at;
+      await supabaseClient
+        .from('settings')
+        .update({ updated_at: syncTime })
+        .eq('user_id', currentUser.id);
+      if (currentSettings) currentSettings.updated_at = syncTime;
+    } catch(e) {
+      console.warn('Failed to sync updated_at after slug change', e);
     }
   }
 
