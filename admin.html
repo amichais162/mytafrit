@@ -3226,40 +3226,6 @@ document.addEventListener('keydown', function(e) {
     }
   }
 
-  if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-    if (isVisible(document.getElementById('productFormOverlay'))) {
-      e.preventDefault();
-      if (typeof saveProduct === 'function') saveProduct();
-      return;
-    }
-    const editSections = ['Basics', 'Contact', 'Hours', 'Images', 'Content'];
-    for (const section of editSections) {
-      if (isVisible(document.getElementById('section' + section + 'Edit'))) {
-        e.preventDefault();
-        const saveFn = window['save' + section];
-        if (typeof saveFn === 'function') saveFn();
-        return;
-      }
-    }
-    if (isVisible(document.getElementById('bannerEditMode'))) {
-      e.preventDefault();
-      if (typeof saveBanner === 'function') saveBanner();
-      return;
-    }
-    if (isVisible(document.getElementById('slugInputRow'))) {
-      e.preventDefault();
-      if (typeof saveSlug === 'function') saveSlug();
-      return;
-    }
-  }
-
-  if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
-    if (isVisible(document.getElementById('section-products'))) {
-      e.preventDefault();
-      if (typeof openProductForm === 'function') openProductForm(null);
-      return;
-    }
-  }
 });
 
 // ===== Expose functions to window for onclick handlers =====
