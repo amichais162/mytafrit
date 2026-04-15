@@ -166,7 +166,7 @@
         <!-- מלבן 1: פרטי העסק — עריכה -->
         <div id="sectionBasicsEdit" class="card" style="display:none;padding:16px;flex-direction:column;gap:14px;">
           <div style="display:flex;align-items:center;justify-content:space-between;">
-            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">פרטי העסק</h3>
+            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">פרטי העסק <span id="dirty-Basics-edit" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
             <div style="display:flex;gap:6px;">
               <button type="button" id="basicsSaveBtn" onclick="saveBasics()" class="btn-primary" style="font-size:12px;padding:6px 12px;">שמור</button>
               <button type="button" id="basicsCancelBtn" onclick="cancelEditBasics()" class="btn-outline" style="font-size:12px;padding:6px 12px;">בטל</button>
@@ -213,7 +213,7 @@
         <!-- מלבן 2: יצירת קשר — עריכה -->
         <div id="sectionContactEdit" class="card" style="display:none;padding:16px;flex-direction:column;gap:14px;">
           <div style="display:flex;align-items:center;justify-content:space-between;">
-            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">יצירת קשר</h3>
+            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">יצירת קשר <span id="dirty-Contact-edit" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
             <div style="display:flex;gap:6px;">
               <button type="button" id="contactSaveBtn" onclick="saveContact()" class="btn-primary" style="font-size:12px;padding:6px 12px;">שמור</button>
               <button type="button" id="contactCancelBtn" onclick="cancelEditContact()" class="btn-outline" style="font-size:12px;padding:6px 12px;">בטל</button>
@@ -252,7 +252,7 @@
         <!-- מלבן 3: שעות פעילות — עריכה -->
         <div id="sectionHoursEdit" class="card" style="display:none;padding:16px;flex-direction:column;gap:14px;">
           <div style="display:flex;align-items:center;justify-content:space-between;">
-            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">שעות פעילות</h3>
+            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">שעות פעילות <span id="dirty-Hours-edit" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
             <div style="display:flex;gap:6px;">
               <button type="button" id="hoursSaveBtn" onclick="saveHours()" class="btn-primary" style="font-size:12px;padding:6px 12px;">שמור</button>
               <button type="button" id="hoursCancelBtn" onclick="cancelEditHours()" class="btn-outline" style="font-size:12px;padding:6px 12px;">בטל</button>
@@ -327,7 +327,7 @@
         <!-- מלבן 4: תמונות — עריכה -->
         <div id="sectionImagesEdit" class="card" style="display:none;padding:16px;flex-direction:column;gap:14px;">
           <div style="display:flex;align-items:center;justify-content:space-between;">
-            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">תמונות</h3>
+            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">תמונות <span id="dirty-Images-edit" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
             <div style="display:flex;gap:6px;">
               <button type="button" id="imagesSaveBtn" onclick="saveImages()" class="btn-primary" style="font-size:12px;padding:6px 12px;">שמור</button>
               <button type="button" id="imagesCancelBtn" onclick="cancelEditImages()" class="btn-outline" style="font-size:12px;padding:6px 12px;">בטל</button>
@@ -414,7 +414,7 @@
         <!-- מלבן 5: תוכן — עריכה -->
         <div id="sectionContentEdit" class="card" style="display:none;padding:16px;flex-direction:column;gap:14px;">
           <div style="display:flex;align-items:center;justify-content:space-between;">
-            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">תוכן</h3>
+            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">תוכן <span id="dirty-Content-edit" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
             <div style="display:flex;gap:6px;">
               <button type="button" id="contentSaveBtn" onclick="saveContent()" class="btn-primary" style="font-size:12px;padding:6px 12px;">שמור</button>
               <button type="button" id="contentCancelBtn" onclick="cancelEditContent()" class="btn-outline" style="font-size:12px;padding:6px 12px;">בטל</button>
@@ -728,10 +728,14 @@ function clearDirty(sectionId) {
 }
 
 function updateDirtyIndicator(sectionId) {
-  const indicator = document.getElementById('dirty-' + sectionId);
-  if (indicator) {
-    indicator.style.display = dirtySections.has(sectionId) ? 'inline-block' : 'none';
-  }
+  const isDirty = dirtySections.has(sectionId);
+  const display = isDirty ? 'inline-block' : 'none';
+
+  const viewIndicator = document.getElementById('dirty-' + sectionId);
+  if (viewIndicator) viewIndicator.style.display = display;
+
+  const editIndicator = document.getElementById('dirty-' + sectionId + '-edit');
+  if (editIndicator) editIndicator.style.display = display;
 }
 
 function hasAnyDirty() {
