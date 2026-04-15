@@ -94,6 +94,7 @@
         <svg class="search-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input id="productSearch" class="form-input" style="padding-right:36px" placeholder="חיפוש מוצר..." oninput="debouncedRenderProducts()"/>
       </div>
+      <button id="editOrderBtn" onclick="startEditProductsOrder()" class="btn-outline" style="padding:6px 14px;font-size:12px;">⇅ ערוך סדר</button>
       <button id="bulkToggleBtn" onclick="toggleBulkMode()" class="btn-outline" style="padding:6px 14px;font-size:12px;">בחר כמה</button>
       <button class="btn-primary" onclick="openProductForm(null)">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -105,10 +106,6 @@
         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="9" y1="18" x2="9" y2="6"/><line x1="15" y1="18" x2="15" y2="6"/></svg>
         גרור שורות לשינוי סדר המוצרים בתפריט
       </p>
-      <button id="saveProductsOrderBtn" onclick="saveProductsOrder()" class="btn-primary" style="display:none;padding:6px 12px;font-size:12px">
-        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="20 6 9 13 4 9"/></svg>
-        שמור סדר
-      </button>
     </div>
     <div class="flex items-center gap-2 mb-3 flex-wrap">
       <button onclick="setProductFilter('all')" id="prodFilter-all" class="btn-primary" style="padding:6px 14px;font-size:12px">הכל</button>
@@ -116,6 +113,11 @@
       <button onclick="setProductFilter('inactive')" id="prodFilter-inactive" class="btn-outline" style="padding:6px 14px;font-size:12px">מוסתרים</button>
     </div>
     <div id="productsList" class="flex flex-col gap-2"></div>
+    <div id="orderEditActions" style="display:none;gap:8px;justify-content:flex-end;margin-top:12px;padding:10px;background:#fff7ed;border:1.5px solid #fbbf24;border-radius:10px;align-items:center;">
+      <span style="flex:1;color:#92400e;font-size:13px;font-weight:600;">⇅ מצב עריכת סדר — גרור שורות</span>
+      <button onclick="cancelEditProductsOrder()" class="btn-outline" style="padding:6px 14px;font-size:12px;">בטל</button>
+      <button onclick="saveProductsOrderEdit()" class="btn-primary" style="padding:6px 14px;font-size:12px;">שמור סדר</button>
+    </div>
     <div id="productsEmpty" class="card p-10 text-center" style="display:none">
       <div style="margin:0 auto 16px;width:80px;height:80px;background:#fef3c7;border-radius:50%;display:flex;align-items:center;justify-content:center;">
         <svg width="40" height="40" fill="none" stroke="#92400e" stroke-width="1.5" viewBox="0 0 24 24"><path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z" stroke-linecap="round"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16" stroke-linecap="round"/></svg>
@@ -137,27 +139,23 @@
         <svg class="search-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input id="categorySearch" class="form-input" style="padding-right:36px" placeholder="חיפוש קטגוריה..." oninput="debouncedRenderCategories()"/>
       </div>
+      <button id="editCategoriesOrderBtn" onclick="startEditCategoriesOrder()" class="btn-outline" style="padding:6px 14px;font-size:12px;">⇅ ערוך סדר</button>
       <button class="btn-primary" onclick="startNewCategory()">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         קטגוריה חדשה
       </button>
     </div>
-    <div class="flex items-center justify-between mb-3">
-      <p class="text-xs text-gray-400 flex items-center gap-1">
-        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="9" y1="18" x2="9" y2="6"/><line x1="15" y1="18" x2="15" y2="6"/></svg>
-        גרור שורות לשינוי סדר הקטגוריות בתפריט
-      </p>
-      <button id="saveCatsOrderBtn" onclick="saveCategoriesOrder()" class="btn-primary" style="display:none;padding:6px 12px;font-size:12px">
-        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="20 6 9 13 4 9"/></svg>
-        שמור סדר
-      </button>
-    </div>
     <div id="newCategoryRow" class="card p-3 mb-3 flex items-center gap-2" style="display:none">
-      <input id="newCategoryInput" class="form-input flex-1" placeholder="שם הקטגוריה" onkeydown="if(event.key==='Enter')saveNewCategory()"/>
+      <input id="newCategoryInput" class="form-input flex-1" placeholder="שם הקטגוריה החדשה" onkeydown="if(event.key==='Enter')saveNewCategory()"/>
       <button class="btn-primary" style="padding:8px 14px" onclick="saveNewCategory()">✓</button>
       <button class="btn-outline" style="padding:8px 14px" onclick="cancelNewCategory()">✕</button>
     </div>
     <div id="categoriesList" class="card divide-y divide-gray-100"></div>
+    <div id="categoriesOrderEditActions" style="display:none;gap:8px;justify-content:flex-end;margin-top:12px;padding:10px;background:#fff7ed;border:1.5px solid #fbbf24;border-radius:10px;align-items:center;">
+      <span style="flex:1;color:#92400e;font-size:13px;font-weight:600;">⇅ מצב עריכת סדר — גרור שורות</span>
+      <button onclick="cancelEditCategoriesOrder()" class="btn-outline" style="padding:6px 14px;font-size:12px;">בטל</button>
+      <button onclick="saveCategoriesOrderEdit()" class="btn-primary" style="padding:6px 14px;font-size:12px;">שמור סדר</button>
+    </div>
     <div id="categoriesEmpty" class="card p-10 text-center" style="display:none">
       <div style="margin:0 auto 16px;width:80px;height:80px;background:#fef3c7;border-radius:50%;display:flex;align-items:center;justify-content:center;">
         <svg width="40" height="40" fill="none" stroke="#92400e" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
@@ -796,8 +794,6 @@ const debouncedRenderCategories = debounce(() => renderCategories(), 150);
 let categories = [];
 let products = [];
 
-let pendingProductsOrder = null;
-let pendingCategoriesOrder = null;
 let editingProductId=null, selectedDietary='', selectedCategories=[];
 let selectedProductIds = new Set();
 let bulkMode = false;
@@ -1980,7 +1976,8 @@ function setupDrag(listEl, type) {
       e.preventDefault();
       item.classList.remove('drag-over-above','drag-over-below');
       if(!dragSrcId||dragSrcType!==type)return;
-      const arr=type==='product'?(pendingProductsOrder||[...products]):(pendingCategoriesOrder||[...categories]);
+      // Mutate the live array directly — rollback is held by the order-edit snapshot
+      const arr = type==='product' ? products : categories;
       const srcIdx=arr.findIndex(x=>String(x.id)===String(dragSrcId));
       const tgtIdx=arr.findIndex(x=>String(x.id)===item.dataset.id);
       if(srcIdx===-1||tgtIdx===-1||srcIdx===tgtIdx)return;
@@ -1989,8 +1986,6 @@ function setupDrag(listEl, type) {
       const[moved]=arr.splice(srcIdx,1);
       const newIdx=arr.findIndex(x=>String(x.id)===item.dataset.id);
       arr.splice(before?newIdx:newIdx+1,0,moved);
-      if(type==='product'){pendingProductsOrder=arr;document.getElementById('saveProductsOrderBtn').style.display='inline-flex';}
-      else{pendingCategoriesOrder=arr;document.getElementById('saveCatsOrderBtn').style.display='inline-flex';}
       const parent=item.parentNode;
       const srcEl=[...parent.querySelectorAll('.drag-item')].find(el=>el.dataset.id===String(dragSrcId));
       if(before)parent.insertBefore(srcEl,item);else item.after(srcEl);
@@ -2088,16 +2083,9 @@ async function syncSettingsToLocalStorage() {
   }
 }
 
-async function syncProductsToLocalStorage() {
+// ===== LOCAL PERSISTENCE HELPERS (no Supabase write — caller is responsible) =====
+function _persistProductsLocal() {
   localStorage.setItem('tafrit_preview_products', JSON.stringify(products));
-  if (supabaseReady && currentUser) {
-    // Only update sort_order, to avoid races with concurrent saves
-    try {
-      for (const [i, p] of products.entries()) {
-        await supabaseClient.from('products').update({ sort_order: i }).eq('id', p.id);
-      }
-    } catch(e) { console.warn('Products order sync to Supabase failed', e); }
-  }
   if (currentSettings) {
     currentSettings.updated_at = new Date().toISOString();
     localStorage.setItem('tafrit_preview_settings', JSON.stringify(currentSettings));
@@ -2105,15 +2093,8 @@ async function syncProductsToLocalStorage() {
   if (typeof updatePublishBanner === 'function') updatePublishBanner();
 }
 
-async function syncCategoriesToLocalStorage() {
+function _persistCategoriesLocal() {
   localStorage.setItem('tafrit_preview_categories', JSON.stringify(categories));
-  if (supabaseReady && currentUser) {
-    try {
-      for (const [i, c] of categories.entries()) {
-        await supabaseClient.from('categories').update({ sort_order: i }).eq('id', c.id);
-      }
-    } catch(e) { console.warn('Categories order sync to Supabase failed', e); }
-  }
   if (currentSettings) {
     currentSettings.updated_at = new Date().toISOString();
     localStorage.setItem('tafrit_preview_settings', JSON.stringify(currentSettings));
@@ -2137,22 +2118,118 @@ function showSuccess(msg) {
   showToast(cleanMsg, type);
 }
 
-function saveProductsOrder(){
-  if(pendingProductsOrder){products.length=0;products.push(...pendingProductsOrder);pendingProductsOrder=null;}
-  const btn=document.getElementById('saveProductsOrderBtn');
-  btn.style.display='none';
-  syncProductsToLocalStorage();
-  invalidateMenuCache();
-  showSuccess('סדר המוצרים נשמר!');
+// ===== ORDER EDIT MODE =====
+let productsOrderEditMode = false;
+let productsOrderSnapshot = null;
+let categoriesOrderEditMode = false;
+let categoriesOrderSnapshot = null;
+
+function startEditProductsOrder() {
+  productsOrderEditMode = true;
+  productsOrderSnapshot = JSON.parse(JSON.stringify(products));
+
+  const editBtn = document.getElementById('editOrderBtn');
+  const bulkBtn = document.getElementById('bulkToggleBtn');
+  const newProductBtn = document.querySelector('[onclick="openProductForm(null)"]');
+  const editActions = document.getElementById('orderEditActions');
+
+  if (editBtn) editBtn.style.display = 'none';
+  if (bulkBtn) bulkBtn.style.display = 'none';
+  if (newProductBtn) newProductBtn.style.display = 'none';
+  if (editActions) editActions.style.display = 'flex';
+
+  renderProducts();
 }
 
-function saveCategoriesOrder(){
-  if(pendingCategoriesOrder){categories.length=0;categories.push(...pendingCategoriesOrder);pendingCategoriesOrder=null;}
-  const btn=document.getElementById('saveCatsOrderBtn');
-  btn.style.display='none';
-  syncCategoriesToLocalStorage();
+function cancelEditProductsOrder() {
+  if (productsOrderSnapshot) products = JSON.parse(JSON.stringify(productsOrderSnapshot));
+  _exitProductsOrderEditMode();
+  renderProducts();
+}
+
+async function saveProductsOrderEdit() {
+  if (supabaseReady) {
+    try {
+      for (const [i, p] of products.entries()) {
+        await supabaseClient.from('products').update({ sort_order: i }).eq('id', p.id);
+      }
+    } catch(e) {
+      console.error('Save products order failed', e);
+      showToast('שמירת הסדר נכשלה', 'error');
+      return;
+    }
+  }
+  _persistProductsLocal();
   invalidateMenuCache();
-  showSuccess('סדר הקטגוריות נשמר!');
+  showToast('הסדר נשמר', 'success');
+  _exitProductsOrderEditMode();
+}
+
+function _exitProductsOrderEditMode() {
+  productsOrderEditMode = false;
+  productsOrderSnapshot = null;
+
+  const editBtn = document.getElementById('editOrderBtn');
+  const bulkBtn = document.getElementById('bulkToggleBtn');
+  const newProductBtn = document.querySelector('[onclick="openProductForm(null)"]');
+  const editActions = document.getElementById('orderEditActions');
+
+  if (editBtn) editBtn.style.display = 'inline-flex';
+  if (bulkBtn) bulkBtn.style.display = 'inline-flex';
+  if (newProductBtn) newProductBtn.style.display = 'inline-flex';
+  if (editActions) editActions.style.display = 'none';
+
+  renderProducts();
+}
+
+function startEditCategoriesOrder() {
+  categoriesOrderEditMode = true;
+  categoriesOrderSnapshot = JSON.parse(JSON.stringify(categories));
+
+  const editBtn = document.getElementById('editCategoriesOrderBtn');
+  const editActions = document.getElementById('categoriesOrderEditActions');
+
+  if (editBtn) editBtn.style.display = 'none';
+  if (editActions) editActions.style.display = 'flex';
+
+  renderCategories();
+}
+
+function cancelEditCategoriesOrder() {
+  if (categoriesOrderSnapshot) categories = JSON.parse(JSON.stringify(categoriesOrderSnapshot));
+  _exitCategoriesOrderEditMode();
+  renderCategories();
+}
+
+async function saveCategoriesOrderEdit() {
+  if (supabaseReady) {
+    try {
+      for (const [i, c] of categories.entries()) {
+        await supabaseClient.from('categories').update({ sort_order: i }).eq('id', c.id);
+      }
+    } catch(e) {
+      console.error('Save categories order failed', e);
+      showToast('שמירת הסדר נכשלה', 'error');
+      return;
+    }
+  }
+  _persistCategoriesLocal();
+  invalidateMenuCache();
+  showToast('הסדר נשמר', 'success');
+  _exitCategoriesOrderEditMode();
+}
+
+function _exitCategoriesOrderEditMode() {
+  categoriesOrderEditMode = false;
+  categoriesOrderSnapshot = null;
+
+  const editBtn = document.getElementById('editCategoriesOrderBtn');
+  const editActions = document.getElementById('categoriesOrderEditActions');
+
+  if (editBtn) editBtn.style.display = 'inline-flex';
+  if (editActions) editActions.style.display = 'none';
+
+  renderCategories();
 }
 
 // ===== RENDER PRODUCTS =====
@@ -2180,9 +2257,10 @@ function renderProducts(){
   list.innerHTML=filtered.map(p=>{
     const catNames=(p.categories||[]).map(cid=>categories.find(c=>String(c.id)===String(cid))?.name||'').filter(Boolean).join(', ');
     const ds=p.dietary_type==='חלבי'?'background:#dbeafe;color:#1e40af':p.dietary_type==='בשרי'?'background:#fce7f3;color:#9d174d':'background:#f3f4f6;color:#374151';
-    return `<div class="card ${bulkMode ? '' : 'drag-item'} px-3 py-2.5 flex items-center gap-3" ${bulkMode ? '' : 'draggable="true"'} data-id="${p.id}" style="${p.is_active?'':'opacity:0.45;filter:grayscale(30%)'}">
+    const dragOn = productsOrderEditMode && !bulkMode;
+    return `<div class="card ${dragOn ? 'drag-item' : ''} px-3 py-2.5 flex items-center gap-3" ${dragOn ? 'draggable="true"' : ''} data-id="${p.id}" style="${p.is_active?'':'opacity:0.45;filter:grayscale(30%)'}">
       ${bulkMode ? `<label style="padding:4px;cursor:pointer;display:flex;align-items:center;" onclick="event.stopPropagation()"><input type="checkbox" data-product-id="${p.id}" ${selectedProductIds.has(String(p.id)) ? 'checked' : ''} onchange="toggleProductSelection('${p.id}', this.checked)" style="width:18px;height:18px;accent-color:#92400e;cursor:pointer;"/></label>` : ''}
-      <div class="drag-handle" ${bulkMode ? 'style="display:none;"' : ''}><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="9" y1="18" x2="9" y2="6"/><line x1="15" y1="18" x2="15" y2="6"/></svg></div>
+      <div class="drag-handle" style="${dragOn ? '' : 'display:none;'}"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="9" y1="18" x2="9" y2="6"/><line x1="15" y1="18" x2="15" y2="6"/></svg></div>
       <div class="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 ${p.image_url?'':'bg-amber-50 flex items-center justify-center text-xl'}">
         ${p.image_url?`<img src="${p.image_url}" class="w-full h-full object-cover" loading="lazy" alt="${p.name}"/>`:'🥐'}
       </div>
@@ -2341,12 +2419,12 @@ async function saveProduct(){
       newProduct.user_id = currentUser.id;
       try {
         const { data: inserted } = await supabaseClient.from('products').insert(newProduct).select().single();
-        if (inserted) { products.push(inserted); syncProductsToLocalStorage(); invalidateMenuCache(); renderProducts(); closeProductForm(); showSuccess("המוצר נוסף בהצלחה!"); return; }
+        if (inserted) { products.push(inserted); _persistProductsLocal(); invalidateMenuCache(); renderProducts(); closeProductForm(); showSuccess("המוצר נוסף בהצלחה!"); return; }
       } catch(e) { console.warn('Supabase insert product failed', e); }
     }
     products.push(newProduct);
   }
-  syncProductsToLocalStorage();
+  _persistProductsLocal();
   invalidateMenuCache();
   renderProducts();closeProductForm();showSuccess(isEdit?"המוצר עודכן בהצלחה!":"המוצר נוסף בהצלחה!");
 }
@@ -2372,7 +2450,7 @@ async function deleteProduct(id) {
     }
   }
 
-  syncProductsToLocalStorage();
+  _persistProductsLocal();
   invalidateMenuCache();
 
   showUndoToast(`"${backup.name}" נמחק`, async () => {
@@ -2388,7 +2466,7 @@ async function deleteProduct(id) {
         return;
       }
     }
-    syncProductsToLocalStorage();
+    _persistProductsLocal();
     invalidateMenuCache();
     renderProducts();
     showToast('המחיקה בוטלה', 'success');
@@ -2525,7 +2603,7 @@ async function bulkDelete() {
     }
   }
 
-  syncProductsToLocalStorage();
+  _persistProductsLocal();
   invalidateMenuCache();
   cancelBulkMode();
   renderProducts();
@@ -2551,7 +2629,7 @@ async function bulkDelete() {
       }
     }
 
-    syncProductsToLocalStorage();
+    _persistProductsLocal();
     invalidateMenuCache();
     renderProducts();
     showToast('המחיקה בוטלה', 'success');
@@ -2630,8 +2708,8 @@ function renderCategories(){
   if(!filtered.length){list.innerHTML='<p class="text-center text-gray-400 py-6 text-sm">לא נמצאו קטגוריות</p>';empty.style.display='none';return;}
   empty.style.display='none';
   list.innerHTML=filtered.map((c,i)=>`
-    <div class="flex items-center gap-3 p-3 drag-item" draggable="true" data-id="${c.id}">
-      <div class="drag-handle"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="9" y1="18" x2="9" y2="6"/><line x1="15" y1="18" x2="15" y2="6"/></svg></div>
+    <div class="flex items-center gap-3 p-3 ${categoriesOrderEditMode ? 'drag-item' : ''}" ${categoriesOrderEditMode ? 'draggable="true"' : ''} data-id="${c.id}">
+      <div class="drag-handle" style="${categoriesOrderEditMode ? '' : 'display:none;'}"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="9" y1="18" x2="9" y2="6"/><line x1="15" y1="18" x2="15" y2="6"/></svg></div>
       <div id="cat-view-${c.id}" class="flex-1 flex items-center justify-between gap-2">
         <span class="font-semibold text-gray-800">${search ? highlightMatch(c.name, search) : c.name}</span>
         <div class="flex gap-1">
@@ -2640,7 +2718,7 @@ function renderCategories(){
         </div>
       </div>
       <div id="cat-edit-${c.id}" class="flex-1 flex items-center gap-2" style="display:none">
-        <input id="cat-input-${c.id}" class="form-input flex-1" value="${c.name}" onkeydown="if(event.key==='Enter')saveEditCategory('${c.id}')"/>
+        <input id="cat-input-${c.id}" class="form-input flex-1" placeholder="${c.name}" onkeydown="if(event.key==='Enter')saveEditCategory('${c.id}')"/>
         <button class="btn-primary" style="padding:7px 12px" onclick="saveEditCategory('${c.id}')">✓</button>
         <button class="btn-outline" style="padding:7px 12px" onclick="cancelEditCategory('${c.id}')">✕</button>
       </div>
@@ -2649,11 +2727,95 @@ function renderCategories(){
 }
 
 function startNewCategory(){document.getElementById('newCategoryRow').style.display='flex';setTimeout(()=>document.getElementById('newCategoryInput').focus(),50);}
-function cancelNewCategory(){document.getElementById('newCategoryRow').style.display='none';}
-async function saveNewCategory(){const name=document.getElementById('newCategoryInput').value.trim();if(!name)return;const newId=crypto.randomUUID();const newCat={id:newId,name,sort_order:categories.length};if(supabaseReady&&currentUser){newCat.user_id=currentUser.id;try{const{data:inserted}=await supabaseClient.from('categories').insert(newCat).select().single();if(inserted){categories.push(inserted);document.getElementById('newCategoryInput').value='';document.getElementById('newCategoryRow').style.display='none';syncCategoriesToLocalStorage();invalidateMenuCache();renderCategories();showSuccess('הקטגוריה נוספה בהצלחה!');return;}}catch(e){console.warn('Supabase insert category failed',e);}}categories.push(newCat);document.getElementById('newCategoryInput').value='';document.getElementById('newCategoryRow').style.display='none';syncCategoriesToLocalStorage();invalidateMenuCache();renderCategories();showSuccess('הקטגוריה נוספה בהצלחה!');}
+
+function cancelNewCategory(){
+  const input = document.getElementById('newCategoryInput');
+  if (input) input.value = '';
+  document.getElementById('newCategoryRow').style.display = 'none';
+}
+
+async function saveNewCategory(){
+  const input = document.getElementById('newCategoryInput');
+  const name = input ? input.value.trim() : '';
+  if (!name) return;
+
+  const newId = crypto.randomUUID();
+  const newCat = { id:newId, name, sort_order: categories.length };
+
+  if (supabaseReady && currentUser) {
+    newCat.user_id = currentUser.id;
+    try {
+      const { data: inserted, error } = await supabaseClient.from('categories').insert(newCat).select().single();
+      if (error) throw error;
+      if (inserted) {
+        categories.push(inserted);
+        if (input) input.value = '';
+        document.getElementById('newCategoryRow').style.display = 'none';
+        _persistCategoriesLocal();
+        invalidateMenuCache();
+        renderCategories();
+        showToast('הקטגוריה נוספה', 'success');
+        return;
+      }
+    } catch(e) {
+      console.error('Supabase insert category failed', e);
+      showToast('הוספת הקטגוריה נכשלה', 'error');
+      return;
+    }
+  }
+
+  // Fallback only when supabase not ready
+  categories.push(newCat);
+  if (input) input.value = '';
+  document.getElementById('newCategoryRow').style.display = 'none';
+  _persistCategoriesLocal();
+  invalidateMenuCache();
+  renderCategories();
+  showToast('הקטגוריה נוספה', 'success');
+}
+
 function startEditCategory(id){document.getElementById('cat-view-'+id).style.display='none';document.getElementById('cat-edit-'+id).style.display='flex';setTimeout(()=>document.getElementById('cat-input-'+id).focus(),50);}
-function cancelEditCategory(id){document.getElementById('cat-view-'+id).style.display='flex';document.getElementById('cat-edit-'+id).style.display='none';}
-async function saveEditCategory(id){const name=document.getElementById('cat-input-'+id).value.trim();if(!name)return;const cat=categories.find(c=>String(c.id)===String(id));if(cat)cat.name=name;if(supabaseReady){try{await supabaseClient.from('categories').update({name}).eq('id',id);}catch(e){console.warn('Supabase update category failed',e);}}syncCategoriesToLocalStorage();invalidateMenuCache();renderCategories();showSuccess('הקטגוריה עודכנה בהצלחה!');}
+
+function cancelEditCategory(id){
+  const input = document.getElementById('cat-input-'+id);
+  if (input) input.value = '';
+  document.getElementById('cat-view-'+id).style.display = 'flex';
+  document.getElementById('cat-edit-'+id).style.display = 'none';
+}
+
+async function saveEditCategory(id){
+  const input = document.getElementById('cat-input-'+id);
+  const name = input ? input.value.trim() : '';
+
+  if (!name) {
+    cancelEditCategory(id);
+    return;
+  }
+
+  const cat = categories.find(c => String(c.id) === String(id));
+
+  if (cat && cat.name === name) {
+    cancelEditCategory(id);
+    return;
+  }
+
+  if (supabaseReady) {
+    try {
+      const { error } = await supabaseClient.from('categories').update({ name }).eq('id', id);
+      if (error) throw error;
+    } catch(e) {
+      console.error('Supabase update category failed', e);
+      showToast('שמירת הקטגוריה נכשלה', 'error');
+      return;
+    }
+  }
+
+  if (cat) cat.name = name;
+  _persistCategoriesLocal();
+  invalidateMenuCache();
+  renderCategories();
+  showToast('הקטגוריה עודכנה', 'success');
+}
 async function deleteCategory(id) {
   const cat = categories.find(c => String(c.id) === String(id));
   if (!cat) return;
@@ -2695,8 +2857,8 @@ async function deleteCategory(id) {
     }
   }
 
-  syncCategoriesToLocalStorage();
-  syncProductsToLocalStorage();
+  _persistCategoriesLocal();
+  _persistProductsLocal();
   invalidateMenuCache();
 
   showUndoToast(`"${catBackup.name}" נמחקה`, async () => {
@@ -2721,8 +2883,8 @@ async function deleteCategory(id) {
         return;
       }
     }
-    syncCategoriesToLocalStorage();
-    syncProductsToLocalStorage();
+    _persistCategoriesLocal();
+    _persistProductsLocal();
     invalidateMenuCache();
     renderCategories();
     renderProducts();
@@ -3766,7 +3928,8 @@ Object.assign(window, {
   renderProducts, renderCategories, debouncedRenderProducts, debouncedRenderCategories, setProductFilter,
   startNewCategory, cancelNewCategory, saveNewCategory,
   startEditCategory, cancelEditCategory, saveEditCategory, deleteCategory,
-  saveProductsOrder, saveCategoriesOrder,
+  startEditProductsOrder, cancelEditProductsOrder, saveProductsOrderEdit,
+  startEditCategoriesOrder, cancelEditCategoriesOrder, saveCategoriesOrderEdit,
   startEditBanner, cancelEditBanner, saveBanner, updateBannerPreview,
   startEditSlug, cancelEditSlug, saveSlug, validateSlug, formatSlug,
   toggleDay, toggleCategory, selectDietary,
