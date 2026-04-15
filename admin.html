@@ -2319,6 +2319,21 @@ async function saveProduct(){
   if(editingProductId){
     const idx=products.findIndex(p=>String(p.id)===String(editingProductId));
     if(idx!==-1) products[idx]={...products[idx],...data};
+
+    // Persist edit to Supabase
+    if (supabaseReady) {
+      try {
+        const { error } = await supabaseClient
+          .from('products')
+          .update(data)
+          .eq('id', editingProductId);
+        if (error) throw error;
+      } catch(e) {
+        console.error('Supabase update product failed', e);
+        showToast('השמירה נכשלה — נסה שוב', 'error');
+        return;
+      }
+    }
   } else {
     const newId = crypto.randomUUID();
     const newProduct = {id:newId, sort_order:products.length, ...data};
