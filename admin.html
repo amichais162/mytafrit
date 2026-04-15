@@ -1547,10 +1547,7 @@ function applySettingsToForm(s) {
   if (s.banner_active) document.getElementById('s-banner-active').checked = true;
   const ordersPausedEl = document.getElementById('s-orders-paused');
   if (ordersPausedEl) ordersPausedEl.checked = !!s.orders_paused;
-  if (typeof updateHolidayView === 'function') updateHolidayView();
   autoBanners = Array.isArray(s.auto_banners) ? s.auto_banners : [];
-  if (typeof updateAutoBannersView === 'function') updateAutoBannersView();
-  if (typeof updateTestimonialsView === 'function') updateTestimonialsView();
   if (s.hours_config && typeof s.hours_config === 'object') {
     const cfg = s.hours_config;
     hoursDefault = cfg.default || { open: '', close: '' };
@@ -1587,6 +1584,9 @@ function initUI() {
   updateSlugDisplay();
   initBannerView();
   updateBusinessView();
+  if (typeof updateHolidayView === 'function') updateHolidayView();
+  if (typeof updateAutoBannersView === 'function') updateAutoBannersView();
+  if (typeof updateTestimonialsView === 'function') updateTestimonialsView();
   initSubscription();
 }
 
