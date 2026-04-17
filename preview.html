@@ -109,6 +109,38 @@ async function loadPreview() {
       products: prodsRes.data || [],
     };
 
+    // Determine if there are unpublished changes
+    const hasUnpublished = (() => {
+      const s = settingsRes.data;
+      if (!s.last_published_at) return true; // Never published
+      if (!s.updated_at) return false;
+      return new Date(s.updated_at) > new Date(s.last_published_at);
+    })();
+
+    // Update banner text accordingly
+    const bannerSpan = document.querySelector('#previewBanner span');
+    if (bannerSpan) {
+      if (hasUnpublished) {
+        bannerSpan.textContent = '👁️ תצוגה מקדימה — הלקוחות עדיין לא רואים את זה. כדי להציג להם, חזור לאדמין ולחץ "פרסם".';
+      } else {
+        bannerSpan.textContent = '👁️ תצוגה מקדימה — ככה הלקוחות רואים את התפריט שלך.';
+      }
+    }
+
+    // Update banner color
+    const banner = document.getElementById('previewBanner');
+    if (banner) {
+      if (hasUnpublished) {
+        banner.style.background = '#fff7ed';
+        banner.style.borderBottomColor = '#fb923c';
+        banner.style.color = '#92400e';
+      } else {
+        banner.style.background = '#f0fdf4';
+        banner.style.borderBottomColor = '#86efac';
+        banner.style.color = '#166534';
+      }
+    }
+
     const dataScript = document.createElement('script');
     dataScript.id = '__MYTAFRIT_DATA__';
     dataScript.type = 'application/json';
