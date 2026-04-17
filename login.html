@@ -699,11 +699,15 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
     return;
   }
 
-  // בדיקה אם המשתמש כבר קיים (Supabase לא מחזיר שגיאה במקרה הזה)
+  // משתמש קיים שלא אימת - שולחים מייל אישור מחדש עם resend
   if (data.user && data.user.identities && data.user.identities.length === 0) {
-    msgEl.textContent = 'כבר קיים חשבון עם האימייל הזה';
-    msgEl.style.color = '#ba1a1a';
-    msgEl.classList.remove('hidden');
+    await supabase.auth.resend({
+      type: 'signup',
+      email,
+      options: { emailRedirectTo: 'https://mytafrit.co.il/login.html' }
+    });
+    sessionStorage.setItem('pendingEmail', email);
+    window.location.hash = 'check-email';
     return;
   }
 
