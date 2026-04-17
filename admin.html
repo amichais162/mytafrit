@@ -490,43 +490,6 @@
     <h2 style="font-size:17px;font-weight:700;color:var(--text);margin-bottom:16px;">הגדרות</h2>
     <div style="display:flex;flex-direction:column;gap:12px;">
 
-      <h3 style="font-size:13px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.5px;margin:8px 4px 4px;">📢 מראה ופרסום</h3>
-
-      <!-- Banner -->
-      <div class="card" style="padding:16px;">
-        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;">
-          <div>
-            <p style="font-size:14px;font-weight:700;color:var(--text);">באנר בראש העמוד</p>
-            <p style="font-size:12px;color:var(--text-3);margin-top:3px;">הודעה שתופיע בראש התפריט הציבורי</p>
-          </div>
-          <div style="display:flex;flex-direction:column;align-items:center;gap:3px;">
-            <label class="switch" onclick="if(document.getElementById('s-banner-active').disabled)showTooltip(event,'לחץ על ערוך תחילה')">
-              <input type="checkbox" id="s-banner-active" disabled onchange="updateBannerPreview();updateBannerStatus();checkDirty('Banner',['s-banner','s-banner-active'])"/>
-              <span class="slider"></span>
-            </label>
-            <span id="bannerStatusText" style="font-size:11px;font-weight:600;color:var(--text-3);">לא פעיל</span>
-          </div>
-        </div>
-        <div id="bannerViewMode">
-          <div id="bannerCurrentText" style="font-size:13px;color:var(--text-2);margin-bottom:8px;min-height:18px;"></div>
-          <button onclick="startEditBanner()" class="btn-outline" style="padding:7px 16px;font-size:13px;">
-            <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke-width="2"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2"/></svg>
-            ערוך
-          </button>
-        </div>
-        <div id="bannerEditMode" style="display:none;">
-          <div style="display:flex;gap:8px;margin-bottom:8px;">
-            <input id="s-banner" class="form-input" style="flex:1;font-size:13px;" placeholder='לדוגמא: "סגורים ביום שישי — חג שמח!"' oninput="updateBannerPreview();checkDirty('Banner',['s-banner','s-banner-active'])"/>
-          </div>
-          <div id="bannerPreview" style="display:none;margin-bottom:8px;background:#92400e;color:white;text-align:center;font-size:13px;padding:9px 14px;font-weight:600;border-radius:8px;"></div>
-          <div style="display:flex;gap:8px;">
-            <button onclick="saveBanner()" class="btn-primary" style="padding:8px 16px;font-size:13px;">שמור</button>
-            <button onclick="cancelEditBanner()" class="btn-outline" style="padding:8px 16px;font-size:13px;">בטל</button>
-          </div>
-        </div>
-        <div id="bannerSaveSuccess" style="display:none;margin-top:8px;font-size:12px;color:#16a34a;font-weight:600;text-align:center;">✓ הבאנר נשמר!</div>
-      </div>
-
       <h3 style="font-size:13px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.5px;margin:20px 4px 4px;">🔗 כתובת הלינק</h3>
 
       <!-- Public link -->
@@ -581,7 +544,68 @@
         </div>
       </div>
 
-      <h3 style="font-size:13px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.5px;margin:20px 4px 4px;">🏖️ מצב חופשה</h3>
+      <h3 style="font-size:13px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.5px;margin:8px 4px 4px;">📢 מראה ופרסום</h3>
+
+      <!-- Banner -->
+      <div class="card" style="padding:16px;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;">
+          <div>
+            <p style="font-size:14px;font-weight:700;color:var(--text);">באנר בראש העמוד</p>
+            <p style="font-size:12px;color:var(--text-3);margin-top:3px;">הודעה שתופיע בראש התפריט הציבורי</p>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:3px;">
+            <label class="switch" onclick="if(document.getElementById('s-banner-active').disabled)showTooltip(event,'לחץ על ערוך תחילה')">
+              <input type="checkbox" id="s-banner-active" disabled onchange="updateBannerPreview();updateBannerStatus();checkDirty('Banner',['s-banner','s-banner-active'])"/>
+              <span class="slider"></span>
+            </label>
+            <span id="bannerStatusText" style="font-size:11px;font-weight:600;color:var(--text-3);">לא פעיל</span>
+          </div>
+        </div>
+        <div id="bannerViewMode">
+          <div id="bannerCurrentText" style="font-size:13px;color:var(--text-2);margin-bottom:8px;min-height:18px;"></div>
+          <button onclick="startEditBanner()" class="btn-outline" style="padding:7px 16px;font-size:13px;">
+            <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke-width="2"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2"/></svg>
+            ערוך
+          </button>
+        </div>
+        <div id="bannerEditMode" style="display:none;">
+          <div style="display:flex;gap:8px;margin-bottom:8px;">
+            <input id="s-banner" class="form-input" style="flex:1;font-size:13px;" placeholder='לדוגמא: "סגורים ביום שישי — חג שמח!"' oninput="updateBannerPreview();checkDirty('Banner',['s-banner','s-banner-active'])"/>
+          </div>
+          <div id="bannerPreview" style="display:none;margin-bottom:8px;background:#92400e;color:white;text-align:center;font-size:13px;padding:9px 14px;font-weight:600;border-radius:8px;"></div>
+          <div style="display:flex;gap:8px;">
+            <button onclick="saveBanner()" class="btn-primary" style="padding:8px 16px;font-size:13px;">שמור</button>
+            <button onclick="cancelEditBanner()" class="btn-outline" style="padding:8px 16px;font-size:13px;">בטל</button>
+          </div>
+        </div>
+        <div id="bannerSaveSuccess" style="display:none;margin-top:8px;font-size:12px;color:#16a34a;font-weight:600;text-align:center;">✓ הבאנר נשמר!</div>
+      </div>
+
+      <div id="sectionAutoBannersView" class="card" style="padding:16px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">📅 באנרים אוטומטיים <span id="dirty-AutoBanners" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
+          <button onclick="startEditAutoBanners()" class="btn-outline" style="padding:5px 12px;font-size:12px;" aria-label="ערוך באנרים">ערוך</button>
+        </div>
+        <div id="autoBannersViewSummary" style="font-size:14px;color:var(--text-3);"></div>
+      </div>
+
+      <div id="sectionAutoBannersEdit" class="card" style="display:none;padding:16px;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">📅 באנרים אוטומטיים <span id="dirty-AutoBanners-edit" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
+        </div>
+        <div style="font-size:13px;color:var(--text-3);line-height:1.5;">
+          באנרים שמופיעים אוטומטית בתפריט בימים ושעות שתקבע. מקסימום 10 באנרים.
+        </div>
+        <div id="autoBannersList" style="display:flex;flex-direction:column;gap:10px;"></div>
+        <button id="addAutoBannerBtn" onclick="addAutoBanner()" class="btn-outline" style="padding:8px 14px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;align-self:flex-start;">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          הוסף באנר אוטומטי
+        </button>
+        <div style="display:flex;gap:8px;justify-content:flex-end;">
+          <button onclick="cancelEditAutoBanners()" class="btn-outline" style="padding:7px 14px;font-size:13px;">בטל</button>
+          <button onclick="saveAutoBanners()" class="btn-primary" style="padding:7px 14px;font-size:13px;">שמור</button>
+        </div>
+      </div>
 
       <div id="sectionHolidayView" class="card" style="padding:16px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
@@ -610,36 +634,6 @@
           <button onclick="saveHoliday()" class="btn-primary" style="padding:7px 14px;font-size:13px;">שמור</button>
         </div>
       </div>
-
-      <h3 style="font-size:13px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.5px;margin:20px 4px 4px;">📅 באנרים אוטומטיים</h3>
-
-      <div id="sectionAutoBannersView" class="card" style="padding:16px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-          <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">📅 באנרים אוטומטיים <span id="dirty-AutoBanners" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
-          <button onclick="startEditAutoBanners()" class="btn-outline" style="padding:5px 12px;font-size:12px;" aria-label="ערוך באנרים">ערוך</button>
-        </div>
-        <div id="autoBannersViewSummary" style="font-size:14px;color:var(--text-3);"></div>
-      </div>
-
-      <div id="sectionAutoBannersEdit" class="card" style="display:none;padding:16px;flex-direction:column;gap:14px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;">
-          <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">📅 באנרים אוטומטיים <span id="dirty-AutoBanners-edit" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
-        </div>
-        <div style="font-size:13px;color:var(--text-3);line-height:1.5;">
-          באנרים שמופיעים אוטומטית בתפריט בימים ושעות שתקבע. מקסימום 10 באנרים.
-        </div>
-        <div id="autoBannersList" style="display:flex;flex-direction:column;gap:10px;"></div>
-        <button id="addAutoBannerBtn" onclick="addAutoBanner()" class="btn-outline" style="padding:8px 14px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;align-self:flex-start;">
-          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          הוסף באנר אוטומטי
-        </button>
-        <div style="display:flex;gap:8px;justify-content:flex-end;">
-          <button onclick="cancelEditAutoBanners()" class="btn-outline" style="padding:7px 14px;font-size:13px;">בטל</button>
-          <button onclick="saveAutoBanners()" class="btn-primary" style="padding:7px 14px;font-size:13px;">שמור</button>
-        </div>
-      </div>
-
-      <h3 style="font-size:13px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.5px;margin:20px 4px 4px;">⭐ ביקורות לקוחות</h3>
 
       <div id="sectionTestimonialsView" class="card" style="padding:16px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
@@ -1606,6 +1600,14 @@ async function viewMenu() {
 }
 
 async function switchTab(tab) {
+  if (bulkMode && selectedProductIds.size > 0) {
+    const ok = await confirmAction(
+      `${selectedProductIds.size} מוצרים מסומנים. המעבר לטאב אחר יבטל את הבחירה. להמשיך?`,
+      'ביטול בחירה'
+    );
+    if (!ok) return;
+    cancelBulkMode();
+  }
   if (hasAnyDirty()) {
     const dirtyList = Array.from(dirtySections).join(', ');
     const ok = await confirmAction(
@@ -2134,7 +2136,16 @@ let productsOrderSnapshot = null;
 let categoriesOrderEditMode = false;
 let categoriesOrderSnapshot = null;
 
-function startEditProductsOrder() {
+async function startEditProductsOrder() {
+  if (bulkMode && selectedProductIds.size > 0) {
+    const ok = await confirmAction(
+      `${selectedProductIds.size} מוצרים מסומנים. המעבר לעריכת סדר יבטל את הבחירה. להמשיך?`,
+      'ביטול בחירה'
+    );
+    if (!ok) return;
+  }
+  if (bulkMode) cancelBulkMode();
+
   productsOrderEditMode = true;
   productsOrderSnapshot = JSON.parse(JSON.stringify(products));
   dirtySections.add('ProductsOrder');
@@ -2194,7 +2205,37 @@ function _exitProductsOrderEditMode() {
   renderProducts();
 }
 
-function startEditCategoriesOrder() {
+async function startEditCategoriesOrder() {
+  const newCatRow = document.getElementById('newCategoryRow');
+  const newCatInput = document.getElementById('newCategoryInput');
+  const newCatOpen = !!(newCatRow && newCatRow.style.display !== 'none');
+  const newCatValue = newCatInput ? newCatInput.value.trim() : '';
+
+  const openEdits = [];
+  document.querySelectorAll('[id^="cat-edit-"]').forEach(el => {
+    if (el.style.display !== 'none') {
+      const id = el.id.replace('cat-edit-', '');
+      const input = document.getElementById('cat-input-' + id);
+      openEdits.push({ id, value: input ? input.value.trim() : '' });
+    }
+  });
+
+  const hasOpenEdit = newCatOpen || openEdits.length > 0;
+  const hasTypedContent = (newCatOpen && newCatValue !== '') || openEdits.some(e => e.value !== '');
+
+  if (hasTypedContent) {
+    const ok = await confirmAction(
+      'יש עריכת קטגוריה פתוחה עם טקסט שלא נשמר. המעבר לעריכת סדר יבטל אותה. להמשיך?',
+      'שינויים לא שמורים'
+    );
+    if (!ok) return;
+  }
+
+  if (hasOpenEdit) {
+    if (newCatOpen) cancelNewCategory();
+    openEdits.forEach(e => cancelEditCategory(e.id));
+  }
+
   categoriesOrderEditMode = true;
   categoriesOrderSnapshot = JSON.parse(JSON.stringify(categories));
   dirtySections.add('CategoriesOrder');
@@ -2740,7 +2781,19 @@ function renderCategories(){
   setupDrag(list,'category');
 }
 
-function startNewCategory(){document.getElementById('newCategoryRow').style.display='flex';dirtySections.add('NewCategory');setTimeout(()=>document.getElementById('newCategoryInput').focus(),50);}
+async function startNewCategory(){
+  if (categoriesOrderEditMode) {
+    const ok = await confirmAction(
+      'מצב עריכת סדר פעיל. פתיחת עריכת קטגוריה תבטל אותו. להמשיך?',
+      'עריכת סדר פעילה'
+    );
+    if (!ok) return;
+    cancelEditCategoriesOrder();
+  }
+  document.getElementById('newCategoryRow').style.display='flex';
+  dirtySections.add('NewCategory');
+  setTimeout(()=>document.getElementById('newCategoryInput').focus(),50);
+}
 
 function cancelNewCategory(){
   const input = document.getElementById('newCategoryInput');
@@ -2791,7 +2844,23 @@ async function saveNewCategory(){
   showToast('הקטגוריה נוספה', 'success');
 }
 
-function startEditCategory(id){document.getElementById('cat-view-'+id).style.display='none';document.getElementById('cat-edit-'+id).style.display='flex';dirtySections.add('EditCategory');setTimeout(()=>document.getElementById('cat-input-'+id).focus(),50);}
+async function startEditCategory(id){
+  if (categoriesOrderEditMode) {
+    const ok = await confirmAction(
+      'מצב עריכת סדר פעיל. פתיחת עריכת קטגוריה תבטל אותו. להמשיך?',
+      'עריכת סדר פעילה'
+    );
+    if (!ok) return;
+    cancelEditCategoriesOrder();
+  }
+  const viewEl = document.getElementById('cat-view-'+id);
+  const editEl = document.getElementById('cat-edit-'+id);
+  if (!viewEl || !editEl) return;
+  viewEl.style.display='none';
+  editEl.style.display='flex';
+  dirtySections.add('EditCategory');
+  setTimeout(()=>{ const inp = document.getElementById('cat-input-'+id); if (inp) inp.focus(); },50);
+}
 
 function cancelEditCategory(id){
   const input = document.getElementById('cat-input-'+id);
