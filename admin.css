@@ -232,8 +232,31 @@ button:focus-visible, input:focus-visible, a:focus-visible, textarea:focus-visib
   #globalSuccessToast {
     bottom: calc(var(--mobile-nav-height) + 12px) !important;
   }
+  #productSearch,
+  #categorySearch {
+    flex-basis: 100%;
+  }
 }
 
 @media (min-width: 768px) {
   /* Desktop-specific rules — added in stages B/C/D */
+  #productsList {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  #categoriesList > div {
+    padding: 14px 18px;
+  }
+  #section-settings,
+  #section-business {
+    max-width: 820px;
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 1024px) {
+  #productsList {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
