@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="admin.css">
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js" defer></script>
 </head>
 <body>
 
@@ -2039,6 +2040,45 @@ function setupDrag(listEl, type) {
       if(before)parent.insertBefore(srcEl,item);else item.after(srcEl);
       dragSrcId=null;
     });
+  });
+}
+
+// ===== SORTABLE (new implementation, replaces setupDrag) =====
+function initSortable(listEl, type) {
+  if (typeof Sortable === 'undefined') {
+    console.warn('Sortable not loaded yet — skipping initSortable');
+    return;
+  }
+  // Destroy previous instance if exists (prevents memory leaks on re-render)
+  Sortable.get(listEl)?.destroy();
+
+  new Sortable(listEl, {
+    draggable: '.drag-item',
+    handle: '.drag-handle',
+    dataIdAttr: 'data-id',
+    animation: 150,
+    ghostClass: 'drag-source',
+    forceFallback: true,
+    delay: 150,
+    delayOnTouchOnly: true,
+    touchStartThreshold: 5,
+    onEnd: function(evt) {
+      const arr = type === 'product' ? products : categories;
+      // Build map from id to object
+      const idMap = new Map(arr.map(x => [String(x.id), x]));
+      // Read new order from DOM
+      const newOrder = [...listEl.querySelectorAll('.drag-item')]
+        .map(el => idMap.get(el.dataset.id))
+        .filter(Boolean);
+      // Validate: new order should contain exactly the same items
+      if (newOrder.length !== arr.length) {
+        console.error('Sortable order mismatch — aborting', { expected: arr.length, got: newOrder.length });
+        return;
+      }
+      // In-place mutation — preserves the array reference
+      arr.length = 0;
+      arr.push(...newOrder);
+    }
   });
 }
 
