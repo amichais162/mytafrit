@@ -36,6 +36,7 @@
       <div style="width:30px;height:30px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
         <svg width="16" height="16" fill="none" stroke="white" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke-width="2" stroke-linecap="round"/></svg>
       </div>
+      <button class="help-tip-btn" onclick="toggleMainHelp(event)" aria-label="עזרה" style="margin-right:0;margin-left:6px;">?</button>
       <span style="font-size:16px;font-weight:700;color:var(--text);">ניהול תפריט</span>
     </div>
     <div style="display:flex;align-items:center;gap:6px;position:relative;">
@@ -89,28 +90,26 @@
   <!-- ===== PRODUCTS ===== -->
   <div id="section-products" class="section-enter" role="tabpanel" aria-labelledby="tab-products">
     <div class="flex items-center gap-3 mb-3 flex-wrap">
-      <h2 class="text-lg font-bold text-gray-800">מוצרים (<span id="productCount">0</span>)</h2>
+      <h2 class="text-lg font-bold text-gray-800"><span class="help-tip-wrap"><button class="help-tip-btn" onclick="toggleHelpTip('products', event)" aria-label="עזרה" style="margin-right:0;margin-left:6px;">?</button><span id="help-products" class="help-tip-popover">המוצרים שמוצגים בתפריט הציבורי שלך. כל מוצר כולל שם, תיאור, מחיר, תמונה וקטגוריות. מוצרים שמסומנים כ'לא פעיל' לא יוצגו ללקוחות. אפשר לשנות את סדר המוצרים עם 'ערוך סדר' - הסדר שתקבע הוא הסדר שיופיע בתפריט.</span></span>מוצרים (<span id="productCount">0</span>)</h2>
       <div class="search-wrap flex-1 min-w-[160px]">
         <svg class="search-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input id="productSearch" class="form-input" style="padding-right:36px" placeholder="חיפוש מוצר..." oninput="debouncedRenderProducts()"/>
       </div>
-      <button id="editOrderBtn" onclick="startEditProductsOrder()" class="btn-outline" style="padding:6px 14px;font-size:12px;">⇅ ערוך סדר</button>
-      <button id="bulkToggleBtn" onclick="toggleBulkMode()" class="btn-outline" style="padding:6px 14px;font-size:12px;">בחר כמה</button>
       <button class="btn-primary" onclick="openProductForm(null)">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         מוצר חדש
       </button>
     </div>
-    <div class="flex items-center justify-between mb-3">
-      <p class="text-xs text-gray-400 flex items-center gap-1">
-        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="9" y1="18" x2="9" y2="6"/><line x1="15" y1="18" x2="15" y2="6"/></svg>
-        גרור שורות לשינוי סדר המוצרים בתפריט
-      </p>
-    </div>
-    <div class="flex items-center gap-2 mb-3 flex-wrap">
-      <button onclick="setProductFilter('all')" id="prodFilter-all" class="btn-primary" style="padding:6px 14px;font-size:12px">הכל</button>
-      <button onclick="setProductFilter('active')" id="prodFilter-active" class="btn-outline" style="padding:6px 14px;font-size:12px">מוצגים</button>
-      <button onclick="setProductFilter('inactive')" id="prodFilter-inactive" class="btn-outline" style="padding:6px 14px;font-size:12px">מוסתרים</button>
+    <div class="flex items-center gap-2 mb-3 flex-wrap" style="justify-content:space-between">
+      <div class="flex items-center gap-2 flex-wrap">
+        <button onclick="setProductFilter('all')" id="prodFilter-all" class="btn-primary" style="padding:6px 14px;font-size:12px">הכל</button>
+        <button onclick="setProductFilter('active')" id="prodFilter-active" class="btn-outline" style="padding:6px 14px;font-size:12px">מוצגים</button>
+        <button onclick="setProductFilter('inactive')" id="prodFilter-inactive" class="btn-outline" style="padding:6px 14px;font-size:12px">מוסתרים</button>
+      </div>
+      <div class="flex items-center gap-2 flex-wrap">
+        <button id="editOrderBtn" onclick="startEditProductsOrder()" class="btn-outline" style="padding:6px 14px;font-size:12px;">⇅ ערוך סדר</button>
+        <button id="bulkToggleBtn" onclick="toggleBulkMode()" class="btn-outline" style="padding:6px 14px;font-size:12px;">בחר כמה</button>
+      </div>
     </div>
     <div id="orderEditActions" style="display:none;gap:8px;justify-content:flex-end;margin-bottom:12px;padding:10px;background:#fff7ed;border:1.5px solid #fbbf24;border-radius:10px;align-items:center;">
       <span style="flex:1;color:#92400e;font-size:13px;font-weight:600;">⇅ מצב עריכת סדר — גרור שורות</span>
@@ -134,7 +133,7 @@
   <!-- ===== CATEGORIES ===== -->
   <div id="section-categories" style="display:none" role="tabpanel" aria-labelledby="tab-categories">
     <div class="flex items-center gap-3 mb-3 flex-wrap">
-      <h2 class="text-lg font-bold text-gray-800">קטגוריות (<span id="categoryCount">0</span>)</h2>
+      <h2 class="text-lg font-bold text-gray-800"><span class="help-tip-wrap"><button class="help-tip-btn" onclick="toggleHelpTip('categories', event)" aria-label="עזרה" style="margin-right:0;margin-left:6px;">?</button><span id="help-categories" class="help-tip-popover">הקטגוריות מחלקות את המוצרים שלך לקבוצות בתפריט, כמו 'עוגות', 'לחמים', 'מאפים מלוחים'. כל מוצר חייב להיות משויך לפחות לקטגוריה אחת - אפשר גם ליותר מאחת. הלקוחות יכולים לסנן את התפריט לפי קטגוריה כדי למצוא מה שהם מחפשים. אפשר לשנות את סדר הקטגוריות עם 'ערוך סדר' - הסדר שתקבע הוא הסדר שיופיע בתפריט.</span></span>קטגוריות (<span id="categoryCount">0</span>)</h2>
       <div class="search-wrap flex-1 min-w-[160px]">
         <svg class="search-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input id="categorySearch" class="form-input" style="padding-right:36px" placeholder="חיפוש קטגוריה..." oninput="debouncedRenderCategories()"/>
@@ -183,7 +182,7 @@
         <!-- מלבן 1: פרטי העסק -->
         <div id="sectionBasicsView" class="card" style="padding:16px;">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">פרטי העסק <span id="dirty-Basics" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
+            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;"><span class="help-tip-wrap"><button class="help-tip-btn" onclick="toggleHelpTip('bizinfo', event)" aria-label="עזרה" style="margin-right:0;margin-left:6px;">?</button><span id="help-bizinfo" class="help-tip-popover">• שם העסק - מופיע בראש התפריט ובשיתוף בוואטסאפ<br>- תיאור קצר - מופיע מתחת לשם העסק, עוזר ללקוחות להבין מה אתה מציע<br>- שם איש קשר - מופיע בהודעת ההזמנה שנשלחת בוואטסאפ</span></span>פרטי העסק <span id="dirty-Basics" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
             <button type="button" id="basicsEditBtn" onclick="startEditBasics()" class="btn-outline" style="font-size:12px;padding:6px 12px;">ערוך</button>
           </div>
           <div style="display:flex;flex-direction:column;gap:12px;">
@@ -205,7 +204,7 @@
         <!-- מלבן 1: פרטי העסק — עריכה -->
         <div id="sectionBasicsEdit" class="card" style="display:none;padding:16px;flex-direction:column;gap:14px;">
           <div style="display:flex;align-items:center;justify-content:space-between;">
-            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">פרטי העסק <span id="dirty-Basics-edit" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
+            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;"><span class="help-tip-wrap"><button class="help-tip-btn" onclick="toggleHelpTip('bizinfo-edit', event)" aria-label="עזרה" style="margin-right:0;margin-left:6px;">?</button><span id="help-bizinfo-edit" class="help-tip-popover">• שם העסק - מופיע בראש התפריט ובשיתוף בוואטסאפ<br>- תיאור קצר - מופיע מתחת לשם העסק, עוזר ללקוחות להבין מה אתה מציע<br>- שם איש קשר - מופיע בהודעת ההזמנה שנשלחת בוואטסאפ</span></span>פרטי העסק <span id="dirty-Basics-edit" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
             <div style="display:flex;gap:6px;">
               <button type="button" id="basicsSaveBtn" onclick="saveBasics()" class="btn-primary" style="font-size:12px;padding:6px 12px;">שמור</button>
               <button type="button" id="basicsCancelBtn" onclick="cancelEditBasics()" class="btn-outline" style="font-size:12px;padding:6px 12px;">בטל</button>
@@ -230,7 +229,7 @@
         <!-- מלבן 2: יצירת קשר -->
         <div id="sectionContactView" class="card" style="padding:16px;">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">יצירת קשר <span id="dirty-Contact" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
+            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;"><span class="help-tip-wrap"><button class="help-tip-btn" onclick="toggleHelpTip('contact', event)" aria-label="עזרה" style="margin-right:0;margin-left:6px;">?</button><span id="help-contact" class="help-tip-popover">• וואטסאפ - המספר שאליו מגיעות ההזמנות כהודעה מוכנה<br>- טלפון - מוצג בתפריט למי שרוצה להתקשר<br>- אזור איסוף - מוצג ללקוחות כדי שידעו מאיפה אפשר לאסוף</span></span>יצירת קשר <span id="dirty-Contact" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
             <button type="button" id="contactEditBtn" onclick="startEditContact()" class="btn-outline" style="font-size:12px;padding:6px 12px;">ערוך</button>
           </div>
           <div style="display:flex;flex-direction:column;gap:12px;">
@@ -252,7 +251,7 @@
         <!-- מלבן 2: יצירת קשר — עריכה -->
         <div id="sectionContactEdit" class="card" style="display:none;padding:16px;flex-direction:column;gap:14px;">
           <div style="display:flex;align-items:center;justify-content:space-between;">
-            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">יצירת קשר <span id="dirty-Contact-edit" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
+            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;"><span class="help-tip-wrap"><button class="help-tip-btn" onclick="toggleHelpTip('contact-edit', event)" aria-label="עזרה" style="margin-right:0;margin-left:6px;">?</button><span id="help-contact-edit" class="help-tip-popover">• וואטסאפ - המספר שאליו מגיעות ההזמנות כהודעה מוכנה<br>- טלפון - מוצג בתפריט למי שרוצה להתקשר<br>- אזור איסוף - מוצג ללקוחות כדי שידעו מאיפה אפשר לאסוף</span></span>יצירת קשר <span id="dirty-Contact-edit" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
             <div style="display:flex;gap:6px;">
               <button type="button" id="contactSaveBtn" onclick="saveContact()" class="btn-primary" style="font-size:12px;padding:6px 12px;">שמור</button>
               <button type="button" id="contactCancelBtn" onclick="cancelEditContact()" class="btn-outline" style="font-size:12px;padding:6px 12px;">בטל</button>
@@ -277,7 +276,7 @@
         <!-- מלבן 3: שעות פעילות -->
         <div id="sectionHoursView" class="card" style="padding:16px;">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">שעות פעילות <span id="dirty-Hours" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
+            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;"><span class="help-tip-wrap"><button class="help-tip-btn" onclick="toggleHelpTip('hours', event)" aria-label="עזרה" style="margin-right:0;margin-left:6px;">?</button><span id="help-hours" class="help-tip-popover">הימים והשעות שבהם אתה מקבל הזמנות. בחר את הימים הפעילים, הגדר שעות לכל יום, והלקוחות יוכלו להזמין רק בהתאם.</span></span>שעות פעילות <span id="dirty-Hours" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
             <button type="button" id="hoursEditBtn" onclick="startEditHours()" class="btn-outline" style="font-size:12px;padding:6px 12px;">ערוך</button>
           </div>
           <div style="display:flex;flex-direction:column;gap:12px;">
@@ -291,7 +290,7 @@
         <!-- מלבן 3: שעות פעילות — עריכה -->
         <div id="sectionHoursEdit" class="card" style="display:none;padding:16px;flex-direction:column;gap:14px;">
           <div style="display:flex;align-items:center;justify-content:space-between;">
-            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">שעות פעילות <span id="dirty-Hours-edit" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
+            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;"><span class="help-tip-wrap"><button class="help-tip-btn" onclick="toggleHelpTip('hours-edit', event)" aria-label="עזרה" style="margin-right:0;margin-left:6px;">?</button><span id="help-hours-edit" class="help-tip-popover">הימים והשעות שבהם אתה מקבל הזמנות. בחר את הימים הפעילים, הגדר שעות לכל יום, והלקוחות יוכלו להזמין רק בהתאם.</span></span>שעות פעילות <span id="dirty-Hours-edit" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
             <div style="display:flex;gap:6px;">
               <button type="button" id="hoursSaveBtn" onclick="saveHours()" class="btn-primary" style="font-size:12px;padding:6px 12px;">שמור</button>
               <button type="button" id="hoursCancelBtn" onclick="cancelEditHours()" class="btn-outline" style="font-size:12px;padding:6px 12px;">בטל</button>
@@ -348,7 +347,7 @@
         <!-- מלבן 4: תמונות -->
         <div id="sectionImagesView" class="card" style="padding:16px;">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">תמונות <span id="dirty-Images" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
+            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;"><span class="help-tip-wrap"><button class="help-tip-btn" onclick="toggleHelpTip('images', event)" aria-label="עזרה" style="margin-right:0;margin-left:6px;">?</button><span id="help-images" class="help-tip-popover">• לוגו - מופיע בראש התפריט, באייקון הדף, ובקישור ששולחים בוואטסאפ<br>- תמונת רקע - מוצגת מאחורי שם העסק בראש הדף<br>- תמונת אודות - מוצגת כרקע בראש סקשן 'קצת עלינו'</span></span>תמונות <span id="dirty-Images" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
             <button type="button" id="imagesEditBtn" onclick="startEditImages()" class="btn-outline" style="font-size:12px;padding:6px 12px;">ערוך</button>
           </div>
           <div style="display:flex;flex-direction:column;gap:12px;">
@@ -370,7 +369,7 @@
         <!-- מלבן 4: תמונות — עריכה -->
         <div id="sectionImagesEdit" class="card" style="display:none;padding:16px;flex-direction:column;gap:14px;">
           <div style="display:flex;align-items:center;justify-content:space-between;">
-            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">תמונות <span id="dirty-Images-edit" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
+            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;"><span class="help-tip-wrap"><button class="help-tip-btn" onclick="toggleHelpTip('images-edit', event)" aria-label="עזרה" style="margin-right:0;margin-left:6px;">?</button><span id="help-images-edit" class="help-tip-popover">• לוגו - מופיע בראש התפריט, באייקון הדף, ובקישור ששולחים בוואטסאפ<br>- תמונת רקע - מוצגת מאחורי שם העסק בראש הדף<br>- תמונת אודות - מוצגת כרקע בראש סקשן 'קצת עלינו'</span></span>תמונות <span id="dirty-Images-edit" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
             <div style="display:flex;gap:6px;">
               <button type="button" id="imagesSaveBtn" onclick="saveImages()" class="btn-primary" style="font-size:12px;padding:6px 12px;">שמור</button>
               <button type="button" id="imagesCancelBtn" onclick="cancelEditImages()" class="btn-outline" style="font-size:12px;padding:6px 12px;">בטל</button>
@@ -439,7 +438,7 @@
         <!-- מלבן 5: תוכן -->
         <div id="sectionContentView" class="card" style="padding:16px;">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">תוכן <span id="dirty-Content" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
+            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;"><span class="help-tip-wrap"><button class="help-tip-btn" onclick="toggleHelpTip('content', event)" aria-label="עזרה" style="margin-right:0;margin-left:6px;">?</button><span id="help-content" class="help-tip-popover">• אודות - טקסט חופשי שמספר על העסק שלך, מוצג בסקשן 'קצת עלינו'<br>- תקנון - תנאי שימוש, מוצגים בקישור בתחתית התפריט</span></span>תוכן <span id="dirty-Content" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
             <button type="button" id="contentEditBtn" onclick="startEditContent()" class="btn-outline" style="font-size:12px;padding:6px 12px;">ערוך</button>
           </div>
           <div style="display:flex;flex-direction:column;gap:12px;">
@@ -457,7 +456,7 @@
         <!-- מלבן 5: תוכן — עריכה -->
         <div id="sectionContentEdit" class="card" style="display:none;padding:16px;flex-direction:column;gap:14px;">
           <div style="display:flex;align-items:center;justify-content:space-between;">
-            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">תוכן <span id="dirty-Content-edit" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
+            <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;"><span class="help-tip-wrap"><button class="help-tip-btn" onclick="toggleHelpTip('content-edit', event)" aria-label="עזרה" style="margin-right:0;margin-left:6px;">?</button><span id="help-content-edit" class="help-tip-popover">• אודות - טקסט חופשי שמספר על העסק שלך, מוצג בסקשן 'קצת עלינו'<br>- תקנון - תנאי שימוש, מוצגים בקישור בתחתית התפריט</span></span>תוכן <span id="dirty-Content-edit" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
             <div style="display:flex;gap:6px;">
               <button type="button" id="contentSaveBtn" onclick="saveContent()" class="btn-primary" style="font-size:12px;padding:6px 12px;">שמור</button>
               <button type="button" id="contentCancelBtn" onclick="cancelEditContent()" class="btn-outline" style="font-size:12px;padding:6px 12px;">בטל</button>
@@ -494,8 +493,7 @@
 
       <!-- Public link -->
       <div class="card" style="padding:16px;">
-        <p style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;">כתובת הלינק של התפריט הציבורי <span style="color:#ef4444" aria-label="שדה חובה">*</span></p>
-        <p style="font-size:12px;color:var(--text-3);margin-bottom:12px;">באנגלית בלבד — אותיות קטנות, מספרים ומקפים (-)</p>
+        <p style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:12px;"><span class="help-tip-wrap"><button class="help-tip-btn" onclick="toggleHelpTip('slug', event)" aria-label="עזרה" style="margin-right:0;margin-left:6px;">?</button><span id="help-slug" class="help-tip-popover">זו הכתובת הייחודית של התפריט שלך באינטרנט. שתף אותה עם לקוחות דרך וואטסאפ, אינסטגרם, או כל מקום אחר. אפשר לשנות את הכתובת בכל רגע - השינוי נכנס לתוקף מיד, והכתובת הקודמת מפסיקה לעבוד.</span></span>כתובת הלינק של התפריט הציבורי <span style="color:#ef4444" aria-label="שדה חובה">*</span></p>
 
         <!-- Link display when set -->
         <div id="slugDisplayRow" style="display:none;background:var(--bg);border-radius:10px;padding:12px;margin-bottom:12px;">
@@ -519,20 +517,20 @@
 
         <!-- Slug edit -->
         <div id="slugEditArea">
-          <button onclick="startEditSlug()" id="slugEditBtn" class="btn-outline" style="padding:7px 16px;font-size:13px;">
-            <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke-width="2"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2"/></svg>
-            ערוך כתובת
-          </button>
+          <div style="display:flex;justify-content:flex-end;">
+            <button onclick="startEditSlug()" id="slugEditBtn" class="btn-outline" style="padding:5px 12px;font-size:12px;">ערוך</button>
+          </div>
           <div id="slugInputRow" style="display:none;margin-top:10px;">
+            <p style="font-size:12px;color:var(--text-3);margin-bottom:8px;">באנגלית בלבד — אותיות קטנות, מספרים ומקפים (-)</p>
             <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
               <div style="display:flex;align-items:center;flex:1;min-width:180px;border:1.5px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;background:white;">
                 <span style="font-size:12px;color:var(--text-3);padding:10px 8px;background:var(--bg);border-left:1px solid var(--border);white-space:nowrap;flex-shrink:0;">mytafrit.co.il/menu.html?slug=</span>
                 <input id="s-slug" aria-label="כתובת הלינק" aria-describedby="slug-err slug-preview" aria-required="true" style="flex:1;border:none;outline:none;padding:10px 10px;font-size:13px;font-family:'Heebo',sans-serif;direction:ltr;text-align:left;background:transparent;transition:border-color 0.15s;" placeholder="my-business" dir="ltr" oninput="validateSlug(this);checkDirty('Slug',['s-slug'])" onblur="formatSlug(this)"/>
               </div>
             </div>
-            <div style="display:flex;gap:8px;margin-top:8px;">
-              <button onclick="saveSlug()" class="btn-primary" style="padding:8px 16px;font-size:13px;">שמור</button>
+            <div style="display:flex;gap:8px;margin-top:8px;justify-content:flex-end;">
               <button onclick="cancelEditSlug()" class="btn-outline" style="padding:8px 16px;font-size:13px;">בטל</button>
+              <button onclick="saveSlug()" class="btn-primary" style="padding:8px 16px;font-size:13px;">שמור</button>
             </div>
           </div>
         </div>
@@ -550,8 +548,7 @@
       <div class="card" style="padding:16px;">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;">
           <div>
-            <p style="font-size:14px;font-weight:700;color:var(--text);">באנר בראש העמוד</p>
-            <p style="font-size:12px;color:var(--text-3);margin-top:3px;">הודעה שתופיע בראש התפריט הציבורי</p>
+            <p style="font-size:14px;font-weight:700;color:var(--text);"><span class="help-tip-wrap"><button class="help-tip-btn" onclick="toggleHelpTip('banner', event)" aria-label="עזרה" style="margin-right:0;margin-left:6px;">?</button><span id="help-banner" class="help-tip-popover">הודעה שמופיעה בראש התפריט הציבורי שלך. הלקוחות יראו אותה ברגע שהם נכנסים לתפריט. מתאים להודעות כמו 'משלוח חינם מעל 100 ש״ח', 'סגור בחגים', או כל מידע חשוב שרוצים להעביר. אפשר להפעיל ולכבות בכל רגע עם הכפתור למעלה.</span></span>באנר בראש העמוד</p>
           </div>
           <div style="display:flex;flex-direction:column;align-items:center;gap:3px;">
             <label class="switch" onclick="if(document.getElementById('s-banner-active').disabled)showTooltip(event,'לחץ על ערוך תחילה')">
@@ -563,38 +560,36 @@
         </div>
         <div id="bannerViewMode">
           <div id="bannerCurrentText" style="font-size:13px;color:var(--text-2);margin-bottom:8px;min-height:18px;"></div>
-          <button onclick="startEditBanner()" class="btn-outline" style="padding:7px 16px;font-size:13px;">
-            <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke-width="2"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2"/></svg>
-            ערוך
-          </button>
+          <div style="display:flex;justify-content:flex-end;">
+            <button onclick="startEditBanner()" class="btn-outline" style="padding:5px 12px;font-size:12px;">ערוך</button>
+          </div>
         </div>
         <div id="bannerEditMode" style="display:none;">
           <div style="display:flex;gap:8px;margin-bottom:8px;">
             <input id="s-banner" class="form-input" style="flex:1;font-size:13px;" placeholder='לדוגמא: "סגורים ביום שישי — חג שמח!"' oninput="updateBannerPreview();checkDirty('Banner',['s-banner','s-banner-active'])"/>
           </div>
           <div id="bannerPreview" style="display:none;margin-bottom:8px;background:#92400e;color:white;text-align:center;font-size:13px;padding:9px 14px;font-weight:600;border-radius:8px;"></div>
-          <div style="display:flex;gap:8px;">
-            <button onclick="saveBanner()" class="btn-primary" style="padding:8px 16px;font-size:13px;">שמור</button>
+          <div style="display:flex;gap:8px;justify-content:flex-end;">
             <button onclick="cancelEditBanner()" class="btn-outline" style="padding:8px 16px;font-size:13px;">בטל</button>
+            <button onclick="saveBanner()" class="btn-primary" style="padding:8px 16px;font-size:13px;">שמור</button>
           </div>
         </div>
         <div id="bannerSaveSuccess" style="display:none;margin-top:8px;font-size:12px;color:#16a34a;font-weight:600;text-align:center;">✓ הבאנר נשמר!</div>
       </div>
 
       <div id="sectionAutoBannersView" class="card" style="padding:16px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-          <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">📅 באנרים אוטומטיים <span id="dirty-AutoBanners" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
-          <button onclick="startEditAutoBanners()" class="btn-outline" style="padding:5px 12px;font-size:12px;" aria-label="ערוך באנרים">ערוך</button>
+        <div style="margin-bottom:12px;">
+          <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;"><span class="help-tip-wrap"><button class="help-tip-btn" onclick="toggleHelpTip('autobanners', event)" aria-label="עזרה" style="margin-right:0;margin-left:6px;">?</button><span id="help-autobanners" class="help-tip-popover">באנרים שמופיעים בראש התפריט אוטומטית בימים ובשעות שאתה קובע. למשל: 'הזמנות לשבת נסגרות ביום חמישי ב-12:00' שיופיע רק בחמישי בין 8:00 ל-12:00. אפשר ליצור עד 10 באנרים, כל אחד עם ימים ושעות משלו. כשבאנר אוטומטי פעיל - הוא גובר על הבאנר הידני.</span></span>📅 באנרים אוטומטיים <span id="dirty-AutoBanners" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
         </div>
         <div id="autoBannersViewSummary" style="font-size:14px;color:var(--text-3);"></div>
+        <div style="display:flex;justify-content:flex-end;margin-top:12px;">
+          <button onclick="startEditAutoBanners()" class="btn-outline" style="padding:5px 12px;font-size:12px;" aria-label="ערוך באנרים">ערוך</button>
+        </div>
       </div>
 
       <div id="sectionAutoBannersEdit" class="card" style="display:none;padding:16px;flex-direction:column;gap:14px;">
         <div style="display:flex;align-items:center;justify-content:space-between;">
-          <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">📅 באנרים אוטומטיים <span id="dirty-AutoBanners-edit" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
-        </div>
-        <div style="font-size:13px;color:var(--text-3);line-height:1.5;">
-          באנרים שמופיעים אוטומטית בתפריט בימים ושעות שתקבע. מקסימום 10 באנרים.
+          <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;"><span class="help-tip-wrap"><button class="help-tip-btn" onclick="toggleHelpTip('autobanners-edit', event)" aria-label="עזרה" style="margin-right:0;margin-left:6px;">?</button><span id="help-autobanners-edit" class="help-tip-popover">באנרים שמופיעים בראש התפריט אוטומטית בימים ובשעות שאתה קובע. למשל: 'הזמנות לשבת נסגרות ביום חמישי ב-12:00' שיופיע רק בחמישי בין 8:00 ל-12:00. אפשר ליצור עד 10 באנרים, כל אחד עם ימים ושעות משלו. כשבאנר אוטומטי פעיל - הוא גובר על הבאנר הידני.</span></span>📅 באנרים אוטומטיים <span id="dirty-AutoBanners-edit" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
         </div>
         <div id="autoBannersList" style="display:flex;flex-direction:column;gap:10px;"></div>
         <button id="addAutoBannerBtn" onclick="addAutoBanner()" class="btn-outline" style="padding:8px 14px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;align-self:flex-start;">
@@ -608,26 +603,30 @@
       </div>
 
       <div id="sectionHolidayView" class="card" style="padding:16px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-          <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">מצב חופשה <span id="dirty-Holiday" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
-          <button onclick="startEditHoliday()" class="btn-outline" style="padding:5px 12px;font-size:12px;" aria-label="ערוך מצב חופשה">ערוך</button>
+        <div style="margin-bottom:12px;">
+          <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;"><span class="help-tip-wrap"><button class="help-tip-btn" onclick="toggleHelpTip('holiday', event)" aria-label="עזרה" style="margin-right:0;margin-left:6px;">?</button><span id="help-holiday" class="help-tip-popover">כשמצב חופשה פעיל, הלקוחות עדיין רואים את התפריט שלך אבל לא יכולים לשלוח הזמנות. בראש התפריט מופיעה הודעה שהמסעדה בחופשה, והבאנרים האחרים (ידני ואוטומטי) לא מוצגים. שימושי כשאתה בחופש, חג, או כל תקופה שלא מקבלים הזמנות. אפשר לכבות ולחזור לפעילות רגילה בלחיצה אחת.</span></span>מצב חופשה <span id="dirty-Holiday" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
         </div>
         <div id="holidayStatusDisplay" style="font-size:14px;color:var(--text);"></div>
+        <div style="display:flex;justify-content:flex-end;margin-top:12px;">
+          <button onclick="startEditHoliday()" class="btn-outline" style="padding:5px 12px;font-size:12px;" aria-label="ערוך מצב חופשה">ערוך</button>
+        </div>
       </div>
 
       <div id="sectionHolidayEdit" class="card" style="display:none;padding:16px;flex-direction:column;gap:14px;">
         <div style="display:flex;align-items:center;justify-content:space-between;">
-          <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">מצב חופשה <span id="dirty-Holiday-edit" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
+          <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;"><span class="help-tip-wrap"><button class="help-tip-btn" onclick="toggleHelpTip('holiday-edit', event)" aria-label="עזרה" style="margin-right:0;margin-left:6px;">?</button><span id="help-holiday-edit" class="help-tip-popover">כשמצב חופשה פעיל, הלקוחות עדיין רואים את התפריט שלך אבל לא יכולים לשלוח הזמנות. בראש התפריט מופיעה הודעה שהמסעדה בחופשה, והבאנרים האחרים (ידני ואוטומטי) לא מוצגים. שימושי כשאתה בחופש, חג, או כל תקופה שלא מקבלים הזמנות. אפשר לכבות ולחזור לפעילות רגילה בלחיצה אחת.</span></span>מצב חופשה <span id="dirty-Holiday-edit" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
         </div>
-        <div style="display:flex;align-items:flex-start;gap:12px;">
+        <div style="display:flex;align-items:center;gap:12px;">
           <div style="flex:1;">
-            <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;">השהה הזמנות זמנית</div>
-            <div style="font-size:12px;color:var(--text-3);line-height:1.5;">כש-ON, התפריט יוצג אבל הלקוחות לא יוכלו להזמין. מופיעה הודעה "המסעדה בחופשה, הזמנות יחזרו בקרוב".</div>
+            <div style="font-size:14px;font-weight:700;color:var(--text);">השהה הזמנות זמנית</div>
           </div>
-          <label class="switch" style="flex-shrink:0;">
-            <input type="checkbox" id="s-orders-paused" onchange="checkDirty('Holiday', ['s-orders-paused'])">
-            <span class="slider"></span>
-          </label>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0;">
+            <label class="switch">
+              <input type="checkbox" id="s-orders-paused" onchange="checkDirty('Holiday', ['s-orders-paused']);updateHolidayPausedStatus()">
+              <span class="slider"></span>
+            </label>
+            <span id="holidayPausedStatusText" style="font-size:11px;font-weight:600;color:#16a34a;">לא פעיל</span>
+          </div>
         </div>
         <div style="display:flex;gap:8px;justify-content:flex-end;">
           <button onclick="cancelEditHoliday()" class="btn-outline" style="padding:7px 14px;font-size:13px;">בטל</button>
@@ -636,19 +635,20 @@
       </div>
 
       <div id="sectionTestimonialsView" class="card" style="padding:16px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-          <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">⭐ ביקורות לקוחות <span id="dirty-Testimonials" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
-          <button onclick="startEditTestimonials()" class="btn-outline" style="padding:5px 12px;font-size:12px;" aria-label="ערוך ציטוטים">ערוך</button>
+        <div style="margin-bottom:12px;">
+          <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;"><span class="help-tip-wrap"><button class="help-tip-btn" onclick="toggleHelpTip('testimonials', event)" aria-label="עזרה" style="margin-right:0;margin-left:6px;">?</button><span id="help-testimonials" class="help-tip-popover">ציטוטים של לקוחות מרוצים שמוצגים בתחתית התפריט הציבורי שלך. ביקורות טובות מעודדות לקוחות חדשים להזמין. אפשר להוסיף עד 3 ציטוטים עם שם הלקוח. כש-3 ציטוטים מלאים זה נראה הכי מסודר בתפריט.</span></span>⭐ ביקורות לקוחות <span id="dirty-Testimonials" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
         </div>
         <div id="testimonialsViewSummary" style="font-size:14px;color:var(--text-3);"></div>
+        <div style="display:flex;justify-content:flex-end;margin-top:12px;">
+          <button onclick="startEditTestimonials()" class="btn-outline" style="padding:5px 12px;font-size:12px;" aria-label="ערוך ציטוטים">ערוך</button>
+        </div>
       </div>
 
       <div id="sectionTestimonialsEdit" class="card" style="display:none;padding:16px;flex-direction:column;gap:14px;">
         <div style="display:flex;align-items:center;justify-content:space-between;">
-          <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;">⭐ ביקורות לקוחות <span id="dirty-Testimonials-edit" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
+          <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0;"><span class="help-tip-wrap"><button class="help-tip-btn" onclick="toggleHelpTip('testimonials-edit', event)" aria-label="עזרה" style="margin-right:0;margin-left:6px;">?</button><span id="help-testimonials-edit" class="help-tip-popover">ציטוטים של לקוחות מרוצים שמוצגים בתחתית התפריט הציבורי שלך. ביקורות טובות מעודדות לקוחות חדשים להזמין. אפשר להוסיף עד 3 ציטוטים עם שם הלקוח. כש-3 ציטוטים מלאים זה נראה הכי מסודר בתפריט.</span></span>⭐ ביקורות לקוחות <span id="dirty-Testimonials-edit" style="display:none;color:#f59e0b;font-size:12px;font-weight:600;margin-right:6px;">● שינויים לא שמורים</span></h3>
           <span style="font-size:11px;color:var(--text-3);">עד 3 ציטוטים</span>
         </div>
-        <p style="font-size:12px;color:var(--text-2);line-height:1.5;margin:0;">הוסיפו עד 3 ציטוטים קצרים מלקוחות מרוצים. הם יופיעו בתפריט הציבורי ויעלו אמון.</p>
         <div id="testimonialsList"></div>
         <button type="button" id="addTestimonialBtn" onclick="addTestimonial()" style="padding:8px 16px;background:var(--surface-2);border:1px dashed var(--border);border-radius:8px;font-size:13px;font-weight:600;color:var(--text-2);cursor:pointer;width:100%;">+ הוסף ציטוט</button>
         <div style="display:flex;gap:8px;justify-content:flex-end;">
@@ -661,7 +661,7 @@
 
       <!-- Subscription -->
       <div class="card" style="padding:16px;">
-        <p style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:12px;">המנוי שלי</p>
+        <p style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:12px;"><span class="help-tip-wrap"><button class="help-tip-btn" onclick="toggleHelpTip('subscription', event)" aria-label="עזרה" style="margin-right:0;margin-left:6px;">?</button><span id="help-subscription" class="help-tip-popover">פרטי המנוי שלך ב-Mytafrit. כאן תוכל לראות את סטטוס המנוי, תאריך חידוש, וכמה ימים נשארו. לשאלות על מנוי או חיוב, פנה אלינו במייל.</span></span>המנוי שלי</p>
         <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">
           <div style="display:flex;justify-content:space-between;font-size:13px;">
             <span style="color:var(--text-3);">סטטוס</span>
@@ -695,7 +695,10 @@
 <div id="productFormOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:100;align-items:center;justify-content:center;padding:16px" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="productFormTitle">
   <div class="modal-box bg-white rounded-2xl w-full max-w-lg shadow-2xl flex flex-col" style="max-height:90vh">
     <div class="flex items-center justify-between p-5 border-b border-gray-100 flex-shrink-0">
-      <h3 id="productFormTitle" style="font-family:'Frank Ruhl Libre',serif" class="font-bold text-gray-900 text-lg">מוצר חדש</h3>
+      <div class="flex items-center">
+        <span class="help-tip-wrap"><button class="help-tip-btn" onclick="toggleHelpTip('productform', event)" aria-label="עזרה" style="margin-right:0;margin-left:6px;">?</button><span id="help-productform" class="help-tip-popover">• שם המוצר - מוצג בתפריט כשם הפריט<br>- תיאור - טקסט קצר שמופיע מתחת לשם, מתאר את המוצר<br>- מחיר - המחיר שמוצג ללקוח<br>- תמונה - תמונת המוצר שמופיעה בתפריט<br>- קטגוריות - חובה לבחור לפחות אחת, אפשר יותר<br>- פעיל - מוצר לא פעיל לא יוצג ללקוחות בתפריט<br>- סוג - חלבי, בשרי או פרווה. מוצג כסימון ליד המוצר בתפריט<br>- אלרגנים - סמן אלרגנים רלוונטיים. מוצגים ללקוח בעמוד המוצר. אם לא סומן כלום - לא מוצג שום דבר<br>- נמכר ביותר / מוצר חדש - מציגים תווית בולטת על המוצר בתפריט<br>- אזל מהמלאי - המוצר מוצג מעומעם בתפריט והלקוח לא יכול להוסיף אותו לעגלה</span></span>
+        <h3 id="productFormTitle" style="font-family:'Frank Ruhl Libre',serif" class="font-bold text-gray-900 text-lg">מוצר חדש</h3>
+      </div>
       <button onclick="closeProductForm()" class="btn-ghost text-gray-500" aria-label="סגור">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
@@ -4140,6 +4143,47 @@ Object.assign(window, {
   </div>
 </div>
 
+<script>
+window.toggleHelpTip = function(id, event) {
+  event && event.stopPropagation();
+  const tip = document.getElementById('help-' + id);
+  if (!tip) return;
+  document.querySelectorAll('.help-tip-popover').forEach(el => {
+    if (el.id !== 'help-' + id) el.style.display = 'none';
+  });
+  tip.style.display = tip.style.display === 'block' ? 'none' : 'block';
+};
+document.addEventListener('click', () => {
+  document.querySelectorAll('.help-tip-popover').forEach(el => el.style.display = 'none');
+});
+
+window.toggleMainHelp = function(event) {
+  event && event.stopPropagation();
+  const card = document.getElementById('mainHelpCard');
+  const backdrop = document.getElementById('mainHelpBackdrop');
+  if (!card || !backdrop) return;
+  const isVisible = card.style.display === 'block';
+  card.style.display = isVisible ? 'none' : 'block';
+  backdrop.style.display = isVisible ? 'none' : 'block';
+};
+
+window.updateHolidayPausedStatus = function() {
+  const checkbox = document.getElementById('s-orders-paused');
+  const el = document.getElementById('holidayPausedStatusText');
+  if (!checkbox || !el) return;
+  const paused = checkbox.checked;
+  el.textContent = paused ? 'פעיל' : 'לא פעיל';
+  el.style.color = paused ? '#d97706' : '#16a34a';
+};
+(function() {
+  const panel = document.getElementById('sectionHolidayEdit');
+  if (!panel || typeof MutationObserver === 'undefined') return;
+  new MutationObserver(() => {
+    if (panel.style.display !== 'none') window.updateHolidayPausedStatus();
+  }).observe(panel, { attributes: true, attributeFilter: ['style'] });
+})();
+</script>
+
 <!-- Image Gallery Modal -->
 <div id="galleryModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);overflow-y:auto;" onclick="if(event.target===this)closeGalleryModal()" role="dialog" aria-modal="true" aria-labelledby="galleryModalTitle">
   <div style="max-width:860px;margin:40px auto;background:var(--card-bg,#fff);border-radius:16px;padding:24px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
@@ -4242,6 +4286,20 @@ Object.assign(window, {
   };
 })();
 </script>
+
+<div id="mainHelpBackdrop" onclick="toggleMainHelp()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.15);z-index:9999;"></div>
+<div id="mainHelpCard" role="dialog" aria-modal="true" aria-label="עזרה - ניהול תפריט" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;border-radius:16px;padding:24px;max-width:440px;width:90%;z-index:10000;box-shadow:0 20px 60px rgba(0,0,0,0.2);font-family:Heebo,sans-serif;direction:rtl;line-height:1.7;font-size:14px;color:#374151;max-height:80vh;overflow-y:auto;">
+  <h3 style="font-size:17px;font-weight:800;color:#111827;margin:0 0 14px;">ניהול תפריט - עזרה</h3>
+  <p style="margin:0 0 10px;"><strong>מוצרים</strong> - הוסף ונהל את המוצרים שלך</p>
+  <p style="margin:0 0 10px;"><strong>קטגוריות</strong> - חלק את המוצרים לקבוצות</p>
+  <p style="margin:0 0 10px;"><strong>העסק</strong> - פרטי העסק, שעות, תמונות ותוכן</p>
+  <p style="margin:0 0 14px;"><strong>הגדרות</strong> - כתובת לינק, באנרים, מצב חופשה וביקורות</p>
+  <p style="margin:0 0 10px;"><strong>תצוגה מקדימה</strong> - לראות איך התפריט נראה לפני שמפרסמים</p>
+  <p style="margin:0 0 10px;"><strong>שיתוף</strong> - שלח את הלינק ללקוחות</p>
+  <p style="margin:0 0 14px;"><strong>קוד QR</strong> - צור קוד QR להדפסה או שיתוף</p>
+  <h4 style="font-size:15px;font-weight:700;color:#92400e;margin:0 0 8px;">איך עובד הפרסום?</h4>
+  <p style="margin:0;">כשאתה עורך משהו באדמין - השינויים נשמרים אצלך אבל הלקוחות עדיין לא רואים אותם. ככה אתה יכול לערוך בנחת בלי שהלקוחות רואים שינויים באמצע. כשאתה מוכן - לחץ 'פרסם שינויים' בבאנר הכתום שמופיע למעלה, והשינויים ייכנסו לתפריט הציבורי. אם הבאנר לא מופיע - זה אומר שהכל כבר מעודכן ואין מה לפרסם.</p>
+</div>
 
 <div id="globalSuccessToast" role="status" aria-live="polite" aria-atomic="true" style="display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#15803d;color:white;padding:12px 24px;border-radius:12px;font-size:14px;font-weight:600;z-index:10001;box-shadow:0 4px 20px rgba(0,0,0,0.15);white-space:nowrap;animation:slideUp 0.2s ease;"></div>
 
