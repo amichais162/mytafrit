@@ -50,6 +50,19 @@ export default {
         return await handleRenameSlug(request, env, ctx);
       }
 
+      // CORS preflight for /admin-delete-kv
+      if (request.method === 'OPTIONS' && url.pathname === '/admin-delete-kv') {
+        return handleCorsPreflightResponse();
+      }
+
+      // /admin-delete-kv endpoint — internal admin tool, secret-protected
+      if (url.pathname === '/admin-delete-kv') {
+        if (request.method !== 'POST') {
+          return jsonResponse({ error: 'Method not allowed' }, 405);
+        }
+        return await handleAdminDeleteKv(request, env, ctx);
+      }
+
       // Existing /menu* handling — passthrough to current OG injection logic
       if (url.pathname.startsWith('/menu')) {
         return await handleMenuRequest(request, env, ctx);
@@ -551,4 +564,45 @@ function injectMetaTags(html, data) {
   html = html.replace('</head>', `${ogTags}\n</head>`);
 
   return html;
+}
+
+// ============================================
+// /admin-delete-kv handler — internal admin tool
+// Deletes published:{slug} from KV. Requires ADMIN_SECRET in header.
+// ============================================
+async function handleAdminDeleteKv(request, env, ctx) {
+  try {
+    // 1. Verify admin secret
+    const providedSecret = request.headers.get('X-Admin-Secret') || '';
+    if (!env.ADMIN_SECRET) {
+      console.error('ADMIN_SECRET not configured in Worker env');
+      return jsonResponse({ error: 'Admin secret not configured on server' }, 500);
+    }
+    if (providedSecret !== env.ADMIN_SECRET) {
+      return jsonResponse({ error: 'Invalid admin secret' }, 403);
+    }
+
+    // 2. Parse body
+    let body;
+    try { body = await request.json(); }
+    catch { return jsonResponse({ error: 'Invalid JSON body' }, 400); }
+
+    const slug = (body.slug || '').trim();
+    if (!slug) return jsonResponse({ error: 'Missing slug' }, 400);
+
+    // 3. Delete from KV
+    const kvKey = `published:${slug}`;
+    const existed = await env.MYTAFRIT_KV_PROD.get(kvKey);
+    await env.MYTAFRIT_KV_PROD.delete(kvKey);
+
+    return jsonResponse({
+      ok: true,
+      slug,
+      action: existed ? 'deleted' : 'not_found',
+    }, 200);
+
+  } catch (e) {
+    console.error('Admin delete KV error:', e);
+    return jsonResponse({ error: 'Internal error', message: String(e.message || e) }, 500);
+  }
 }

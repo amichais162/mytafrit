@@ -11,6 +11,27 @@
 </head>
 <body>
 
+<!-- ===== SUBSCRIPTION EXPIRED OVERLAY ===== -->
+<div id="expiredOverlay" style="display:none;position:fixed;inset:0;background:rgba(17,24,39,0.92);z-index:9999;align-items:center;justify-content:center;padding:20px;font-family:'Heebo',sans-serif;direction:rtl;">
+  <div style="background:white;border-radius:16px;padding:32px 28px;max-width:420px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+    <div style="font-size:48px;margin-bottom:12px;">🔒</div>
+    <h2 style="font-size:20px;font-weight:700;color:#111827;margin-bottom:10px;">המנוי שלך פג תוקף</h2>
+    <p style="font-size:14px;color:#6b7280;line-height:1.6;margin-bottom:24px;">
+      הגישה לפאנל הניהול הוגבלה.<br>
+      כדי להמשיך להשתמש במערכת ולהעלות את התפריט שלך לאוויר, אנא צור קשר לחידוש המנוי.
+    </p>
+    <a href="mailto:support@mytafrit.co.il?subject=חידוש%20מנוי%20Mytafrit"
+       style="display:inline-flex;align-items:center;gap:8px;background:#92400e;color:white;text-decoration:none;padding:12px 24px;border-radius:10px;font-weight:700;font-size:14px;margin-bottom:12px;">
+      📧 צור קשר לחידוש
+    </a>
+    <div style="margin-top:8px;">
+      <button onclick="signOutWithCleanup()" style="background:none;border:none;color:#6b7280;font-size:13px;font-family:inherit;cursor:pointer;padding:8px;text-decoration:underline;">
+        התנתק
+      </button>
+    </div>
+  </div>
+</div>
+
 <div id="subscriptionBanner" style="display:none;text-align:center;padding:10px 16px;font-size:14px;font-weight:600;color:white;font-family:'Heebo',sans-serif;"></div>
 
 <div id="publishBanner" style="display:none;background:#fff7ed;border-bottom:2px solid #fb923c;padding:10px 16px;font-family:'Heebo',sans-serif;">
@@ -1185,6 +1206,17 @@ async function loadDataFromSupabase() {
     // Profile (subscription)
     if (profileRes.data) {
       localStorage.setItem('tafrit_profile', JSON.stringify(profileRes.data));
+
+      // Check subscription expiry — block UI if expired
+      if (isSubscriptionExpired(profileRes.data)) {
+        showExpiredOverlay();
+        return; // Do not init UI
+      }
+    } else {
+      // No profile row at all — block (should not happen due to handle_new_user trigger)
+      console.warn('No profile row for current user — blocking access');
+      showExpiredOverlay();
+      return;
     }
 
     initUI();
@@ -3923,6 +3955,27 @@ function openPreview() {
     return;
   }
   window.open('preview.html', '_blank');
+}
+
+// ===== SUBSCRIPTION ENFORCEMENT =====
+function isSubscriptionExpired(profile) {
+  if (!profile) return true;
+  // Explicit expired status
+  if (profile.status === 'expired') return true;
+  // Date-based check (no fallback — null = expired)
+  if (!profile.trial_ends_at) return true;
+  const expiry = new Date(profile.trial_ends_at);
+  if (isNaN(expiry.getTime())) return true;
+  return expiry < new Date();
+}
+
+function showExpiredOverlay() {
+  const overlay = document.getElementById('expiredOverlay');
+  if (overlay) overlay.style.display = 'flex';
+  // Hide other UI elements that may have started rendering
+  document.querySelectorAll('header, .tabs-bar, main, #publishBanner, #subscriptionBanner').forEach(el => {
+    if (el && el.id !== 'expiredOverlay') el.style.display = 'none';
+  });
 }
 
 async function signOutWithCleanup() {
