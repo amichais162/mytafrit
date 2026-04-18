@@ -159,7 +159,7 @@ button:focus-visible, input:focus-visible, a:focus-visible, textarea:focus-visib
   display: none;
   position: absolute;
   top: calc(100% + 6px);
-  left: 0;
+  right: 0;
   z-index: 20;
   width: max-content;
   max-width: 320px;
@@ -241,6 +241,17 @@ button:focus-visible, input:focus-visible, a:focus-visible, textarea:focus-visib
     padding: 16px !important;
     max-width: calc(100vw - 32px) !important;
   }
+  .help-tip-popover {
+    position: fixed !important;
+    top: auto !important;
+    bottom: calc(var(--mobile-nav-height) + 16px) !important;
+    left: 16px !important;
+    right: 16px !important;
+    max-width: none !important;
+    width: auto !important;
+    z-index: 95 !important;
+    box-shadow: 0 -4px 16px rgba(0,0,0,0.15) !important;
+  }
 }
 
 @media (min-width: 768px) {
@@ -260,6 +271,9 @@ button:focus-visible, input:focus-visible, a:focus-visible, textarea:focus-visib
   }
   #productFormOverlay .modal-box {
     max-width: 620px !important;
+  }
+  .help-tip-popover {
+    max-width: min(320px, calc(100vw - 48px)) !important;
   }
 }
 
