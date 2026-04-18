@@ -275,10 +275,18 @@ button:focus-visible, input:focus-visible, a:focus-visible, textarea:focus-visib
   .help-tip-popover {
     max-width: min(320px, calc(100vw - 48px)) !important;
   }
+  #productsList.order-edit-mode {
+    grid-template-columns: 1fr !important;
+    max-width: 640px;
+    margin: 0 auto;
+  }
 }
 
 @media (min-width: 1024px) {
   #productsList {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  #productsList.order-edit-mode {
+    grid-template-columns: 1fr !important;
   }
 }

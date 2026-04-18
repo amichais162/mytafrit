@@ -2372,6 +2372,7 @@ function renderProducts(){
       </div>
     </div>`;
   }).join('');
+  list.classList.toggle('order-edit-mode', productsOrderEditMode && !bulkMode);
   initSortable(list,'product');
 }
 
