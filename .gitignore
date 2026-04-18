@@ -5,3 +5,6 @@ schema.sql
 node_modules/
 .DS_Store
 *.log
+
+# Admin tool secrets — never commit
+admin_users.secret.js

@@ -126,6 +126,7 @@ Schema changes are run manually via Supabase SQL Editor. No migrations framework
 ## Things that must never happen
 
 - **Never touch `admin_users.html`.** It's personal and local-only. Don't edit, don't suggest changes, don't include in builds.
+- **Never touch `admin_users.secret.js`.** It contains the service_role key and must never be committed or modified.
 - **Never commit to git.** User does it manually.
 - **Never add Tailwind CDN back to any page.** We use local build only.
 - **Never hardcode Supabase service_role key anywhere in production files.**
