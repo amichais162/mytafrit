@@ -50,9 +50,9 @@ export default {
         return await handleRenameSlug(request, env, ctx);
       }
 
-      // CORS preflight for /admin-delete-kv
+      // CORS preflight for /admin-delete-kv (allows localhost for admin tool)
       if (request.method === 'OPTIONS' && url.pathname === '/admin-delete-kv') {
-        return handleCorsPreflightResponse();
+        return handleAdminCorsPreflightResponse(request);
       }
 
       // /admin-delete-kv endpoint — internal admin tool, secret-protected
@@ -576,33 +576,75 @@ async function handleAdminDeleteKv(request, env, ctx) {
     const providedSecret = request.headers.get('X-Admin-Secret') || '';
     if (!env.ADMIN_SECRET) {
       console.error('ADMIN_SECRET not configured in Worker env');
-      return jsonResponse({ error: 'Admin secret not configured on server' }, 500);
+      return adminJsonResponse({ error: 'Admin secret not configured on server' }, 500, request);
     }
     if (providedSecret !== env.ADMIN_SECRET) {
-      return jsonResponse({ error: 'Invalid admin secret' }, 403);
+      return adminJsonResponse({ error: 'Invalid admin secret' }, 403, request);
     }
 
     // 2. Parse body
     let body;
     try { body = await request.json(); }
-    catch { return jsonResponse({ error: 'Invalid JSON body' }, 400); }
+    catch { return adminJsonResponse({ error: 'Invalid JSON body' }, 400, request); }
 
     const slug = (body.slug || '').trim();
-    if (!slug) return jsonResponse({ error: 'Missing slug' }, 400);
+    if (!slug) return adminJsonResponse({ error: 'Missing slug' }, 400, request);
 
     // 3. Delete from KV
     const kvKey = `published:${slug}`;
     const existed = await env.MYTAFRIT_KV_PROD.get(kvKey);
     await env.MYTAFRIT_KV_PROD.delete(kvKey);
 
-    return jsonResponse({
+    return adminJsonResponse({
       ok: true,
       slug,
       action: existed ? 'deleted' : 'not_found',
-    }, 200);
+    }, 200, request);
 
   } catch (e) {
     console.error('Admin delete KV error:', e);
-    return jsonResponse({ error: 'Internal error', message: String(e.message || e) }, 500);
+    return adminJsonResponse({ error: 'Internal error', message: String(e.message || e) }, 500, request);
   }
+}
+
+// ============================================
+// JSON response helper for /admin-delete-kv (allows localhost)
+// ============================================
+function adminJsonResponse(obj, status, request) {
+  const origin = request.headers.get('Origin') || '';
+  // Allow mytafrit.co.il production AND localhost (for local admin tool)
+  const isAllowed =
+    origin === 'https://mytafrit.co.il' ||
+    /^http:\/\/localhost(:\d+)?$/.test(origin) ||
+    /^http:\/\/127\.0\.0\.1(:\d+)?$/.test(origin);
+  return new Response(JSON.stringify(obj), {
+    status: status || 200,
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': isAllowed ? origin : 'https://mytafrit.co.il',
+      'Access-Control-Allow-Credentials': 'true',
+      'Cache-Control': 'no-store',
+    },
+  });
+}
+
+// ============================================
+// CORS preflight for /admin-delete-kv (allows localhost)
+// ============================================
+function handleAdminCorsPreflightResponse(request) {
+  const origin = request.headers.get('Origin') || '';
+  const isAllowed =
+    origin === 'https://mytafrit.co.il' ||
+    /^http:\/\/localhost(:\d+)?$/.test(origin) ||
+    /^http:\/\/127\.0\.0\.1(:\d+)?$/.test(origin);
+  return new Response(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Origin': isAllowed ? origin : 'https://mytafrit.co.il',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Admin-Secret',
+      'Access-Control-Allow-Credentials': 'true',
+      'Access-Control-Max-Age': '86400',
+    },
+  });
 }
