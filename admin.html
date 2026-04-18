@@ -2414,7 +2414,7 @@ function renderProducts(){
       </div>
     </div>`;
   }).join('');
-  setupDrag(list,'product');
+  initSortable(list,'product');
 }
 
 // ===== PRODUCT FORM =====
@@ -2854,7 +2854,7 @@ function renderCategories(){
         <button class="btn-outline" style="padding:7px 12px" onclick="cancelEditCategory('${c.id}')">✕</button>
       </div>
     </div>`).join('');
-  setupDrag(list,'category');
+  initSortable(list,'category');
 }
 
 async function startNewCategory(){
