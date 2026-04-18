@@ -12,9 +12,26 @@
   --radius-sm: 10px;
   --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 8px rgba(0,0,0,0.04);
   --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  /* Responsive layout tokens */
+  --container-max: 1100px;
+  --mobile-nav-height: 64px;
+  --header-height: auto;
+  --breakpoint-mobile: 767.98px;
 }
 * { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
 body { font-family:'Heebo',sans-serif; background:var(--bg); color:var(--text); direction:rtl; font-size:15px; }
+/* ===== LAYOUT CONTAINER ===== */
+.admin-container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 16px;
+}
+.admin-container--header {
+  padding: 13px 16px;
+}
+.admin-main {
+  padding: 20px 16px 48px;
+}
 @keyframes fadeIn { from{opacity:0} to{opacity:1} }
 @keyframes slideUp { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
 @keyframes slideDown { from{transform:translateY(-8px);opacity:0} to{transform:translateY(0);opacity:1} }
@@ -157,4 +174,16 @@ button:focus-visible, input:focus-visible, a:focus-visible, textarea:focus-visib
   white-space: normal;
   text-align: right;
   font-weight: 400;
+}
+
+/* ===================================================
+   RESPONSIVE — will be filled in stages B/C/D
+   =================================================== */
+
+@media (max-width: 767.98px) {
+  /* Mobile-specific rules — added in stages B/C/D */
+}
+
+@media (min-width: 768px) {
+  /* Desktop-specific rules — added in stages B/C/D */
 }
