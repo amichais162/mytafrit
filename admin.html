@@ -832,7 +832,6 @@ let hoursDays = {};
 let hoursDefault = { open: '', close: '' };
 let hoursOverrides = [];
 let testimonials = [];
-let dragSrcId=null, dragSrcType=null;
 let currentUser = null;
 let currentSettings = null;
 let supabaseReady = false;
@@ -2002,48 +2001,7 @@ function updatePreviewFromUrl(input,previewId,fallback){
   el.innerHTML=`<img src="${url}" class="w-full h-full object-cover" alt="" onerror="this.parentElement.innerHTML='❌'"/>`;
 }
 
-// ===== DRAG & DROP =====
-function setupDrag(listEl, type) {
-  listEl.querySelectorAll('.drag-item').forEach(item=>{
-    item.addEventListener('dragstart',e=>{
-      dragSrcId=item.dataset.id; dragSrcType=type;
-      e.dataTransfer.effectAllowed='move';
-      setTimeout(()=>item.classList.add('drag-source'),0);
-    });
-    item.addEventListener('dragend',()=>{
-      item.classList.remove('drag-source');
-      listEl.querySelectorAll('.drag-over-above,.drag-over-below').forEach(el=>el.classList.remove('drag-over-above','drag-over-below'));
-    });
-    item.addEventListener('dragover',e=>{
-      e.preventDefault();
-      listEl.querySelectorAll('.drag-over-above,.drag-over-below').forEach(el=>el.classList.remove('drag-over-above','drag-over-below'));
-      const rect=item.getBoundingClientRect();
-      item.classList.add(e.clientY<rect.top+rect.height/2?'drag-over-above':'drag-over-below');
-    });
-    item.addEventListener('dragleave',()=>item.classList.remove('drag-over-above','drag-over-below'));
-    item.addEventListener('drop',e=>{
-      e.preventDefault();
-      item.classList.remove('drag-over-above','drag-over-below');
-      if(!dragSrcId||dragSrcType!==type)return;
-      // Mutate the live array directly — rollback is held by the order-edit snapshot
-      const arr = type==='product' ? products : categories;
-      const srcIdx=arr.findIndex(x=>String(x.id)===String(dragSrcId));
-      const tgtIdx=arr.findIndex(x=>String(x.id)===item.dataset.id);
-      if(srcIdx===-1||tgtIdx===-1||srcIdx===tgtIdx)return;
-      const rect=item.getBoundingClientRect();
-      const before=e.clientY<rect.top+rect.height/2;
-      const[moved]=arr.splice(srcIdx,1);
-      const newIdx=arr.findIndex(x=>String(x.id)===item.dataset.id);
-      arr.splice(before?newIdx:newIdx+1,0,moved);
-      const parent=item.parentNode;
-      const srcEl=[...parent.querySelectorAll('.drag-item')].find(el=>el.dataset.id===String(dragSrcId));
-      if(before)parent.insertBefore(srcEl,item);else item.after(srcEl);
-      dragSrcId=null;
-    });
-  });
-}
-
-// ===== SORTABLE (new implementation, replaces setupDrag) =====
+// ===== SORTABLE =====
 function initSortable(listEl, type) {
   if (typeof Sortable === 'undefined') {
     console.warn('Sortable not loaded yet — skipping initSortable');
