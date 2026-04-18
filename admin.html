@@ -2389,7 +2389,7 @@ function renderProducts(){
     const catNames=(p.categories||[]).map(cid=>categories.find(c=>String(c.id)===String(cid))?.name||'').filter(Boolean).join(', ');
     const ds=p.dietary_type==='חלבי'?'background:#dbeafe;color:#1e40af':p.dietary_type==='בשרי'?'background:#fce7f3;color:#9d174d':'background:#f3f4f6;color:#374151';
     const dragOn = productsOrderEditMode && !bulkMode;
-    return `<div class="card ${dragOn ? 'drag-item' : ''} px-3 py-2.5 flex items-center gap-3" ${dragOn ? 'draggable="true"' : ''} data-id="${p.id}" style="${p.is_active?'':'opacity:0.45;filter:grayscale(30%)'}">
+    return `<div class="card ${dragOn ? 'drag-item' : ''} px-3 py-2.5 flex items-center gap-3" data-id="${p.id}" style="${p.is_active?'':'opacity:0.45;filter:grayscale(30%)'}">
       ${bulkMode ? `<label style="padding:4px;cursor:pointer;display:flex;align-items:center;" onclick="event.stopPropagation()"><input type="checkbox" data-product-id="${p.id}" ${selectedProductIds.has(String(p.id)) ? 'checked' : ''} onchange="toggleProductSelection('${p.id}', this.checked)" style="width:18px;height:18px;accent-color:#92400e;cursor:pointer;"/></label>` : ''}
       <div class="drag-handle" style="${dragOn ? '' : 'display:none;'}"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="9" y1="18" x2="9" y2="6"/><line x1="15" y1="18" x2="15" y2="6"/></svg></div>
       <div class="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 ${p.image_url?'':'bg-amber-50 flex items-center justify-center text-xl'}">
@@ -2839,7 +2839,7 @@ function renderCategories(){
   if(!filtered.length){list.innerHTML='<p class="text-center text-gray-400 py-6 text-sm">לא נמצאו קטגוריות</p>';empty.style.display='none';return;}
   empty.style.display='none';
   list.innerHTML=filtered.map((c,i)=>`
-    <div class="flex items-center gap-3 p-3 ${categoriesOrderEditMode ? 'drag-item' : ''}" ${categoriesOrderEditMode ? 'draggable="true"' : ''} data-id="${c.id}">
+    <div class="flex items-center gap-3 p-3 ${categoriesOrderEditMode ? 'drag-item' : ''}" data-id="${c.id}">
       <div class="drag-handle" style="${categoriesOrderEditMode ? '' : 'display:none;'}"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="9" y1="18" x2="9" y2="6"/><line x1="15" y1="18" x2="15" y2="6"/></svg></div>
       <div id="cat-view-${c.id}" class="flex-1 flex items-center justify-between gap-2">
         <span class="font-semibold text-gray-800">${search ? highlightMatch(c.name, search) : c.name}</span>
